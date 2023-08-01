@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 
+// env 환경변수 처리하기
 export const dbProviders = [
   {
     provide: 'DATA_SOURCE',
