@@ -30,7 +30,4 @@ export class Users {
 
   @Column()
   phone_number!: string;
-
-  @Column()
-  mbti?: string;
 }
