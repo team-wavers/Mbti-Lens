@@ -21,7 +21,7 @@ export class Users {
   @DeleteDateColumn()
   deleted_at?: Date;
 
-  @Column()
+  @Column({ unique: true })
   email!: string;
 
   @Column()
