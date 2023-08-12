@@ -7,6 +7,6 @@ import { UsersModule } from './users/users.module';
 @Module({
   controllers: [V1Controller],
   providers: [V1Service],
-  imports: [AuthModule, UsersModule]
+  imports: [AuthModule, UsersModule],
 })
 export class V1Module {}
