@@ -17,16 +17,14 @@ export class AuthController {
   @UseGuards(AuthGuard('kakao'))
   async kakaoLoginCallback(@Req() req: Request, @Res() res: Response) {
     const user = req.user;
+
     if (user) {
       this.authService.handleKakaoLogin(user, res);
     } else {
-      // 로그인 실패 처리
+      const errorMessage =
+        req.query.error_description || '카카오 로그인에 실패했습니다.';
+      // 클라이언트로 에러 메시지 전달
+      res.status(400).json({ error: errorMessage });
     }
-  }
-
-  @Get('logout')
-  async logout(@Res() res: Response) {
-    // 로그아웃 로직 구현 (토큰 무효화 등)
-    res.redirect('/');
   }
 }
