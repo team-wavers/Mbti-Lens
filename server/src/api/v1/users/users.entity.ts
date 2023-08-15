@@ -21,12 +21,15 @@ export class Users {
   @DeleteDateColumn()
   deleted_at?: Date;
 
-  @Column({ unique: true })
-  email!: string;
+  @Column()
+  userid!: string;
 
   @Column()
   nickname!: string;
 
-  @Column()
-  phone_number!: string;
+  @Column({ nullable: true })
+  age?: string;
+
+  @Column({ nullable: true })
+  gender?: string;
 }

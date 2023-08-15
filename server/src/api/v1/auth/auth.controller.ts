@@ -23,7 +23,6 @@ export class AuthController {
     } else {
       const errorMessage =
         req.query.error_description || '카카오 로그인에 실패했습니다.';
-      // 클라이언트로 에러 메시지 전달
       res.status(400).json({ error: errorMessage });
     }
   }

@@ -8,7 +8,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly configService: ConfigService) {
     super({
       clientID: configService.get('KAKAO_API_KEY'),
-      callbackURL: 'v1/auth/oauth/kakao/callback',
+      callbackURL: configService.get('KAKAO_CALLBACK_URL'),
     });
   }
 
@@ -21,9 +21,11 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
     try {
       const { _json } = profile;
       const user = {
-        email: _json.kakao_account.email,
+        userid: _json.id,
         nickname: _json.properties.nickname,
-        phone_number: _json.kakao_account.phone_number,
+        gender: _json.kakao_account.gender,
+        age: _json.kakao_account.age_range,
+        accessToken: accessToken,
       };
       done(null, user);
     } catch (error) {
