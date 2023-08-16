@@ -6,21 +6,20 @@ export class Mbti {
   _id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column()
   mbti: string;
-  //코멘트를 위한 수정 필요
 
-  // @Column('text', { array: true })
-  // mbti_a: string[][];
+  @Column('text', { array: true, nullable: true })
+  EI: string[];
 
-  // @Column('text', { array: true })
-  // mbti_b: string[][];
+  @Column('text', { array: true, nullable: true })
+  NS: string[];
 
-  // @Column('text', { array: true })
-  // mbti_c: string[][];
+  @Column('text', { array: true, nullable: true })
+  TF: string[];
 
-  // @Column('text', { array: true })
-  // mbti_d: string[][];
+  @Column('text', { array: true, nullable: true })
+  PJ: string[];
 }
