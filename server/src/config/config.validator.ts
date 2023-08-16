@@ -8,6 +8,8 @@ export const CONFIG_VALIDATOR: ConfigModuleOptions = {
     DB_USERNAME: Joi.string().required(),
     DB_PASSWORD: Joi.string().required(),
     DB_SCHEMA: Joi.string().required(),
+    KAKAO_API_KEY: Joi.string().required(),
+    KAKAO_CALLBACK_URL: Joi.string().required(),
   }),
   isGlobal: true,
   cache: true,
