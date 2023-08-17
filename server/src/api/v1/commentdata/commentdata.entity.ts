@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Mbti {
+export class CommentData {
   @PrimaryGeneratedColumn()
   _id: number;
 
@@ -10,4 +10,10 @@ export class Mbti {
 
   @Column()
   mbti: string;
+
+  @Column()
+  status: number;
+
+  @Column()
+  comment: string;
 }

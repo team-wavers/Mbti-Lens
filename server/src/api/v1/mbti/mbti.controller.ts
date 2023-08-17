@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { MbtiService } from './mbti.service';
 import { UsersService } from '../users/users.service';
 import { Mbti } from './mbti.entity';
@@ -16,11 +9,6 @@ export class MbtiController {
     private readonly mbtiService: MbtiService,
     private readonly usersService: UsersService,
   ) {}
-
-  @Get()
-  async findAll(): Promise<Mbti[]> {
-    return this.mbtiService.findAll();
-  }
 
   @Post(':userId/mbtis')
   async createMbti(
@@ -41,20 +29,5 @@ export class MbtiController {
     } else {
       return await this.mbtiService.updateMbti(newData);
     }
-  }
-  @Post(':userId/mbtis/:mbti/comments')
-  async createComment(
-    @Param('userId') paramUserId: number,
-    @Param('mbti') paramMbti: string,
-    @Body() bodyData: string[],
-  ): Promise<any> {
-    const mbtiTable = await this.mbtiService.findOne({
-      where: { userId: paramUserId },
-    });
-    //mbtiTable undefined check
-    if (!mbtiTable) {
-      throw new NotFoundException('mbtiTable not found');
-    }
-    return await this.mbtiService.createComment(mbtiTable, paramMbti, bodyData);
   }
 }
