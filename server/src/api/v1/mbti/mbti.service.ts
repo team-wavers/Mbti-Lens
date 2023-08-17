@@ -48,7 +48,6 @@ export class MbtiService {
       mbtiTable.PJ.push(bodyData.status);
       mbtiTable.PJ.push(bodyData.comment);
     }
-    console.log(mbtiTable);
     await this.mbtiRepository.save(mbtiTable);
   }
 }
