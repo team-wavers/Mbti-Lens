@@ -1,12 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommentData } from './commentdata.entity';
 import { Repository } from 'typeorm';
+import { MbtiService } from '../mbti/mbti.service';
 
 @Injectable()
 export class CommentdataService {
   constructor(
     @Inject('COMMENTDATA_REPOSITORY')
     private commentRepository: Repository<CommentData>,
+    private mbtiService: MbtiService,
   ) {}
   async createNewData(
     paramUserId: number,
@@ -14,18 +16,26 @@ export class CommentdataService {
     bodyData: any,
   ): Promise<CommentData> {
     const newData: CommentData = new CommentData();
-    newData.userId = paramUserId;
+    newData.host_id = paramUserId;
     newData.mbti = paramMbti;
-    newData.status = bodyData.status;
+    newData.like = bodyData.like;
     newData.comment = bodyData.comment;
     return newData;
   }
-  async createComment(newData: CommentData): Promise<CommentData> {
-    return await this.commentRepository.save(newData);
+  async countLikes(options: any): Promise<number> {
+    const count = await this.commentRepository.count(options);
+    return count;
   }
-  // 미사용
-  async findAll(options: any): Promise<CommentData[] | undefined> {
-    const commentdata = await this.commentRepository.find(options);
-    return commentdata || undefined;
+  async createComment(newData: CommentData): Promise<CommentData> {
+    const savecomment = await this.commentRepository.save(newData);
+    const count = await this.countLikes({
+      where: {
+        host_id: newData.host_id,
+        mbti: newData.mbti,
+        like: newData.like,
+      },
+    });
+    await this.mbtiService.updateLikes(newData.host_id, newData.mbti, count);
+    return savecomment;
   }
 }

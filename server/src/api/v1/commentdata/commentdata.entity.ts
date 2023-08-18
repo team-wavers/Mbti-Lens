@@ -6,13 +6,13 @@ export class CommentData {
   _id: number;
 
   @Column()
-  userId: number;
+  host_id: number;
 
   @Column()
   mbti: string;
 
   @Column()
-  status: number;
+  like: boolean;
 
   @Column()
   comment: string;
