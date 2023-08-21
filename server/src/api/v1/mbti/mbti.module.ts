@@ -8,5 +8,6 @@ import { DatabaseModule } from 'src/db/db.module';
   imports: [DatabaseModule],
   controllers: [MbtiController],
   providers: [MbtiService, ...MbtiProviders],
+  exports: [MbtiService],
 })
 export class MbtiModule {}

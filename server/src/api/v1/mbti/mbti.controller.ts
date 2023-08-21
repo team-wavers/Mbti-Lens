@@ -6,17 +6,29 @@ import { Mbti } from './mbti.entity';
 export class MbtiController {
   constructor(private readonly mbtiService: MbtiService) {}
 
-  @Get()
-  async findAll(): Promise<Mbti[]> {
-    return this.mbtiService.findAll();
-  }
-
   @Post(':userId/mbtis')
   async createMbti(
-    //생성시 파라미터 불필요
-    //@Param('userId') userId: string,
-    @Body() mbtiData: Mbti,
+    @Param('userId') paramUserId: number,
+    @Body() bodyData: any,
   ): Promise<Mbti> {
-    return this.mbtiService.createMbti(mbtiData);
+    // 사용자 정보 검색
+    const mbtiTableCheck = await this.mbtiService.findOne({
+      where: { user_id: paramUserId },
+    });
+    // MBTI 정보가 없으면 생성, 있으면 업데이트
+    if (!mbtiTableCheck) {
+      return await this.mbtiService.createMbti(paramUserId, bodyData);
+    } else {
+      return await this.mbtiService.updateMbti(paramUserId, bodyData);
+    }
+  }
+
+  @Get(':userId/mbtis')
+  async showMbtis(
+    @Param('userId') paramUserId: number,
+  ): Promise<Mbti | undefined> {
+    return await this.mbtiService.findOne({
+      where: { user_id: paramUserId },
+    });
   }
 }
