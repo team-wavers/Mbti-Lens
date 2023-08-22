@@ -18,4 +18,12 @@ export class CommentdataController {
     );
     return await this.commentdataService.createComment(newData);
   }
+
+  @Get(':userId/mbtis/:mbti/comments')
+  async showComments(
+    @Param('userId') paramUserId: number,
+    @Param('mbti') paramMbti: string,
+  ): Promise<any> {
+    return await this.commentdataService.findComments(paramUserId, paramMbti);
+  }
 }

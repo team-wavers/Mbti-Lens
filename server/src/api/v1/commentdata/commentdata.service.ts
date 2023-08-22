@@ -38,4 +38,12 @@ export class CommentdataService {
     await this.mbtiService.updateLikes(newData.host_id, newData.mbti, count);
     return savecomment;
   }
+  async findComments(
+    paramUserId: number,
+    paramMbti: string,
+  ): Promise<CommentData[]> {
+    return await this.commentRepository.find({
+      where: { host_id: paramUserId, mbti: paramMbti },
+    });
+  }
 }
