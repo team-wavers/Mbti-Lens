@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CommentData } from './commentdata.entity';
 import { Repository } from 'typeorm';
 import { MbtiService } from '../mbti/mbti.service';
@@ -26,7 +26,7 @@ export class CommentdataService {
     const count = await this.commentRepository.count(options);
     return count;
   }
-  async createComment(newData: CommentData): Promise<CommentData> {
+  async createComment(newData: CommentData): Promise<any> {
     const savecomment = await this.commentRepository.save(newData);
     const count = await this.countLikes({
       where: {
@@ -36,7 +36,10 @@ export class CommentdataService {
       },
     });
     await this.mbtiService.updateLikes(newData.host_id, newData.mbti, count);
-    return savecomment;
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'api.common.created',
+    };
   }
   async findComments(
     paramUserId: number,

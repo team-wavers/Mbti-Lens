@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { CommentdataService } from './commentdata.service';
 
 @Controller('v1/users')
@@ -24,6 +24,10 @@ export class CommentdataController {
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
   ): Promise<any> {
-    return await this.commentdataService.findComments(paramUserId, paramMbti);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'api.common.ok',
+      data: await this.commentdataService.findComments(paramUserId, paramMbti),
+    };
   }
 }

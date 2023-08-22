@@ -1,6 +1,13 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { MbtiService } from './mbti.service';
-import { Mbti } from './mbti.entity';
 
 @Controller('v1/users')
 export class MbtiController {
@@ -10,25 +17,58 @@ export class MbtiController {
   async createMbti(
     @Param('userId') paramUserId: number,
     @Body() bodyData: any,
-  ): Promise<Mbti> {
+  ): Promise<any> {
     // 사용자 정보 검색
     const mbtiTableCheck = await this.mbtiService.findOne({
       where: { user_id: paramUserId },
     });
     // MBTI 정보가 없으면 생성, 있으면 업데이트
     if (!mbtiTableCheck) {
-      return await this.mbtiService.createMbti(paramUserId, bodyData);
+      await this.mbtiService.createMbti(paramUserId, bodyData);
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'api.common.created',
+      };
     } else {
-      return await this.mbtiService.updateMbti(paramUserId, bodyData);
+      await this.mbtiService.updateMbti(paramUserId, bodyData);
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'api.common.created',
+      };
     }
   }
 
   @Get(':userId/mbtis')
-  async showMbtis(
-    @Param('userId') paramUserId: number,
-  ): Promise<Mbti | undefined> {
-    return await this.mbtiService.findOne({
-      where: { user_id: paramUserId },
-    });
+  async showMbtis(@Param('userId') paramUserId: number): Promise<any> {
+    try {
+      const result = await this.mbtiService.findOne({
+        where: { user_id: paramUserId },
+      });
+      if (!result) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'Mbti not found for the given user ID',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'api.common.ok',
+        data: result,
+      };
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Mbti not found for the given user ID',
+        },
+        HttpStatus.NOT_FOUND,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 }
