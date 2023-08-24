@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import MenuOpenIcon from "../../assets/icons/menu-open.svg";
-import MenuCloseIcon from "../../assets/icons/menu-close.svg";
 import Drawer from "./Drawer";
 
 type Props = {
@@ -13,9 +12,12 @@ const CommonLayout = ({ children }: Props) => {
     return (
         <Container>
             <DrawerButton onClick={() => setIsOpen((prev) => !prev)}>
-                {isOpen ? <MenuCloseIcon width={28} /> : <MenuOpenIcon />}
+                <MenuOpenIcon width={28} />
             </DrawerButton>
-            {isOpen && <Drawer />}
+            <Drawer
+                isOpen={isOpen}
+                closeEvent={() => setIsOpen((prev) => !prev)}
+            />
             <Main>{children}</Main>
         </Container>
     );
@@ -46,7 +48,6 @@ const DrawerButton = styled.button`
     border: none;
     background-color: transparent;
     outline: none;
-    z-index: 9999;
 `;
 
 export default CommonLayout;
