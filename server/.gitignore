@@ -36,4 +36,7 @@ lerna-debug.log*
 
 # env
 .env.*
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> 193d972ba42e700c0f86adaa04deefbc9bc77bba
