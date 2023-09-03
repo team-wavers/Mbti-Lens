@@ -19,7 +19,10 @@ export class CommentdataService {
     newData.host_id = paramUserId;
     newData.mbti = paramMbti;
     newData.like = bodyData.like;
-    newData.comment = bodyData.comment;
+    newData.comment = '';
+    if (bodyData.comment !== undefined) {
+      newData.comment = bodyData.comment;
+    }
     return newData;
   }
   async countLikes(options: any): Promise<number> {
@@ -41,12 +44,20 @@ export class CommentdataService {
       message: 'api.common.created',
     };
   }
-  async findComments(
-    paramUserId: number,
-    paramMbti: string,
-  ): Promise<CommentData[]> {
-    return await this.commentRepository.find({
+  async findComments(paramUserId: number, paramMbti: string): Promise<any[]> {
+    const comments = await this.commentRepository.find({
       where: { host_id: paramUserId, mbti: paramMbti },
     });
+
+    // 빈 문자열인 comment 속성을 제거하고 반환
+    const filteredComments = comments.map((commentObject) => {
+      if (commentObject.comment === '') {
+        const { comment, ...rest } = commentObject;
+        return rest;
+      }
+      return commentObject;
+    });
+
+    return filteredComments;
   }
 }
