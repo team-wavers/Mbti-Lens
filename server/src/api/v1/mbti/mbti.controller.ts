@@ -1,13 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { MbtiService } from './mbti.service';
+import { StandardResponseDto } from '../../../dto/standard-response.dto';
 
 @Controller('v1/users')
 export class MbtiController {
@@ -40,35 +33,9 @@ export class MbtiController {
 
   @Get(':userId/mbtis')
   async showMbtis(@Param('userId') paramUserId: number): Promise<any> {
-    try {
-      const result = await this.mbtiService.findOne({
-        where: { user_id: paramUserId },
-      });
-      if (!result) {
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: 'Mbti not found for the given user ID',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'api.common.ok',
-        data: result,
-      };
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'Mbti not found for the given user ID',
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
-    }
+    const result = await this.mbtiService.findOne({
+      where: { user_id: paramUserId },
+    });
+    return new StandardResponseDto(200, 'api.common.ok', result);
   }
 }

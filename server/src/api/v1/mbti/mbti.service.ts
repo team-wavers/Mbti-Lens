@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { Mbti } from './mbti.entity';
 import { Repository } from 'typeorm';
 
@@ -20,9 +20,12 @@ export class MbtiService {
 
     return this.mbtiRepository.save(newData);
   }
-  async findOne(options: any): Promise<Mbti | undefined> {
+  async findOne(options: any): Promise<Mbti> {
     const mbti = await this.mbtiRepository.findOne(options);
-    return mbti || undefined;
+    if (!mbti) {
+      throw new NotFoundException('user not found');
+    }
+    return mbti;
   }
   async updateMbti(paramUserId: number, bodyData: any): Promise<Mbti> {
     const newData = await this.mbtiRepository.update(
