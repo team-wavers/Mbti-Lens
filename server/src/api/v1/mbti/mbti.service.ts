@@ -13,6 +13,18 @@ export class MbtiService {
     // 새로운 MBTI 데이터 생성
     const newData: Mbti = new Mbti();
     newData.user_id = paramUserId;
+    if (
+      bodyData.ei === '' ||
+      bodyData.ns === '' ||
+      bodyData.tf === '' ||
+      bodyData.pj === '' ||
+      bodyData.ei === undefined ||
+      bodyData.ns === undefined ||
+      bodyData.tf === undefined ||
+      bodyData.pj === undefined
+    ) {
+      throw new NotFoundException('mbti data not found');
+    }
     newData.ei = bodyData.ei;
     newData.ns = bodyData.ns;
     newData.tf = bodyData.tf;
@@ -20,14 +32,23 @@ export class MbtiService {
 
     return this.mbtiRepository.save(newData);
   }
-  async findOne(options: any): Promise<Mbti> {
+  async findOne(options: any): Promise<Mbti | null> {
     const mbti = await this.mbtiRepository.findOne(options);
-    if (!mbti) {
-      throw new NotFoundException('user not found');
-    }
     return mbti;
   }
   async updateMbti(paramUserId: number, bodyData: any): Promise<Mbti> {
+    if (
+      bodyData.ei === '' ||
+      bodyData.ns === '' ||
+      bodyData.tf === '' ||
+      bodyData.pj === '' ||
+      bodyData.ei === undefined ||
+      bodyData.ns === undefined ||
+      bodyData.tf === undefined ||
+      bodyData.pj === undefined
+    ) {
+      throw new NotFoundException('mbti data not found');
+    }
     const newData = await this.mbtiRepository.update(
       { user_id: paramUserId },
       { ei: bodyData.ei, ns: bodyData.ns, tf: bodyData.tf, pj: bodyData.pj },
@@ -56,6 +77,8 @@ export class MbtiService {
         { [updateField]: count },
       );
       return updateData.raw[0];
+    } else {
+      throw new NotFoundException('mbti data is not correct');
     }
   }
 }
