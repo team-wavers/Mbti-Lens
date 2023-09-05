@@ -28,7 +28,7 @@ const Container = styled.div`
     width: min(480px, 100%);
     min-height: 100vh;
     margin: 0 auto;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.bg};
     color: ${({ theme }) => theme.colors.black};
     font-size: ${({ theme }) => theme.typography.l};
 `;
@@ -36,7 +36,7 @@ const Container = styled.div`
 const Main = styled.main`
     width: 100%;
     height: auto;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.bg};
 `;
 
 const DrawerButton = styled.button`

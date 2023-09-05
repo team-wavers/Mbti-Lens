@@ -23,24 +23,21 @@ const InputContainer = styled.input`
     width: 80px;
     height: 100px;
     outline: none;
-    color: ${({ theme }) => theme.colors.primary_1};
-    border: 1px solid ${({ theme }) => theme.colors.gray};
-    border-radius: 10px;
-    background-color: ${({ theme }) => theme.colors.white};
+    background: transparent;
+    border-radius: 20px;
+    border: 1px dashed rgba(0, 0, 0, 0.3);
     font-size: ${({ theme }) => theme.typography.x3l};
-    font-family: "LINE Seed Sans", sans-serif;
-    font-weight: 900;
+    font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
-    transition: 0.2s ease transform, 0.2s ease box-shadow;
+    color: ${({ theme }) => theme.colors.primary};
     &:focus {
         transform: scale(1.1);
     }
     &:not(:placeholder-shown) {
-        border-color: ${({ theme }) => theme.colors.primary_1};
-        color: ${({ theme }) => theme.colors.primary_1};
-        &:focus {
-            box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
-        }
+        border-radius: 20px;
+        border: 2px solid #fff;
+        background: rgba(207, 144, 144, 0.53);
+        box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
     }
 `;
 
