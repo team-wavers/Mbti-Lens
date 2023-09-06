@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Header, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
@@ -8,6 +8,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('kakao')
+  @Header('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8')
   @UseGuards(AuthGuard('kakao'))
   async kakaoLogin() {
     // 사용자를 카카오 인증 페이지로 리다이렉트

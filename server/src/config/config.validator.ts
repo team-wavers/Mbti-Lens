@@ -13,4 +13,5 @@ export const CONFIG_VALIDATOR: ConfigModuleOptions = {
   }),
   isGlobal: true,
   cache: true,
+  envFilePath: `.{$process.env.NODE_ENV}.env`,
 };
