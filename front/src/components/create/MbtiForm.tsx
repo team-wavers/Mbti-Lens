@@ -59,7 +59,7 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                         ref={(e) => e && (inputRefs.current[3] = e)}
                     />
                 </InputContainer>
-                <NextButton disabled={disabled} />
+                <NextButton disabled={disabled} text="다음" />
             </FormContainer>
         </Container>
     );

@@ -3,10 +3,16 @@ import { styled } from "styled-components";
 
 type Props = {
     disabled: boolean;
+    text: string;
+    onClick?: () => void;
 };
 
-const NextButton = ({ disabled }: Props) => {
-    return <ButtonContainer disabled={disabled}>다음</ButtonContainer>;
+const NextButton = ({ disabled, text, onClick }: Props) => {
+    return (
+        <ButtonContainer disabled={disabled} onClick={onClick}>
+            {text}
+        </ButtonContainer>
+    );
 };
 
 const ButtonContainer = styled.button`

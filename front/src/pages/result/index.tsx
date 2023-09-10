@@ -1,14 +1,57 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
-import CommentSection from "@/components/result/CommentSection";
+import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
+import { NextButton } from "@/components/common/Button";
 
 //코멘트 있는지 없는지 확인-> 있으면 띄우고 없으면 없다고 띄우기
 //코멘트 수가 많을 때 어떤 식으로 스크롤?
 //활용 자료 = mbti, 좋아요 수, 코멘트
 const index = () => {
-    const response = {
+    //state에 따라 data요청해서 commentBox에 동적으로 넘겨줘야할듯?
+    const commentResponse = {
+        statusCode: 200,
+        message: "api.common.ok",
+        data: [
+            {
+                _id: 2,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "comment",
+            },
+            {
+                _id: 3,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "e2",
+            },
+            {
+                _id: 4,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "comment",
+            },
+            {
+                _id: 5,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "comment",
+            },
+            {
+                _id: 6,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "comment",
+            },
+        ],
+    };
+    const mbtiResponse = {
         Code: 200,
         message: "api.common.ok",
         data: {
@@ -24,24 +67,43 @@ const index = () => {
             pj_like: 0,
         },
     };
-    const data = response.data;
-    const [mbti, setMbti] = useState([
-        data.ei.toUpperCase(),
-        data.ns.toUpperCase(),
-        data.tf.toUpperCase(),
-        data.pj.toUpperCase(),
-    ]);
+    const mbti = [
+        mbtiResponse.data.ei.toUpperCase(),
+        mbtiResponse.data.ns.toUpperCase(),
+        mbtiResponse.data.tf.toUpperCase(),
+        mbtiResponse.data.pj.toUpperCase(),
+    ];
+    const [mbtiState, setMbtiState] = useState<string | null>(null);
     return (
         <Container>
-            <Title>reuslt</Title>
+            {mbtiState === null ? (
+                <Title>남이보는 김철수님의 MBTI는?</Title>
+            ) : null}
             <MbtiContainer>
-                <MbitButton>{mbti[0]}</MbitButton>
-                <MbitButton>{mbti[0]}</MbitButton>
-                <MbitButton>{mbti[0]}</MbitButton>
-                <MbitButton>{mbti[0]}</MbitButton>
+                {mbti.map((e, i) => (
+                    <MbitButton
+                        key={i}
+                        onClick={() => setMbtiState(mbti[i].toLowerCase())}
+                    >
+                        {mbti[i]}
+                    </MbitButton>
+                ))}
             </MbtiContainer>
-            <ResultBox data={data} />
-            <CommentSection />
+            {mbtiState === null ? (
+                <ResultBox data={mbtiResponse.data} mbti={mbti} />
+            ) : (
+                <CommentSection>
+                    <CommentBox
+                        data={commentResponse.data}
+                        mbtistate={mbtiState}
+                    />
+                    <NextButton
+                        disabled={false}
+                        text="결과보기"
+                        onClick={() => setMbtiState(null)}
+                    />
+                </CommentSection>
+            )}
         </Container>
     );
 };
@@ -50,18 +112,22 @@ export default index;
 const Container = styled.div`
     ${flexBox("column", "center", "center;")}
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
+    background-color: white;
 `;
 
 const Title = styled.h1`
     font-size: ${({ theme }) => theme.typography.xl};
     font-weight: 500;
     text-align: center;
-    margin-bottom: 30px;
+    margin: 0px;
 `;
 const MbtiContainer = styled.div`
     ${flexBox("row", "center", "center;")}
+    margin-top: 10px;
     gap: 10px;
+    margin-top: 80px;
     margin-bottom: 50px;
 `;
 const MbitButton = styled.button`
@@ -86,5 +152,15 @@ const MbitButton = styled.button`
         &:focus {
             box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
         }
+    }
+`;
+const CommentSection = styled.div`
+    ${flexBox("column", "center", "center;")}
+    height: auto;
+    margin-bottom: 20px;
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar {
+        width: 0em;
+        display: none;
     }
 `;
