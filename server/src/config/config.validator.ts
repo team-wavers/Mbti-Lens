@@ -50,6 +50,7 @@ export const CONFIG_VALIDATOR: ConfigModuleOptions = {
     DB_SCHEMA: Joi.string().required(),
     KAKAO_API_KEY: Joi.string().required(),
     KAKAO_CALLBACK_URL: Joi.string().required(),
+    REDIRECT_URL: Joi.string().required(),
   }),
   isGlobal: true,
   cache: true,

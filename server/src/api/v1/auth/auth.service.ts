@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
+import { error } from 'console';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private configService: ConfigService,
+  ) {}
 
   async handleKakaoLogin(kakaoUser: any, res: Response): Promise<void> {
     const { userid } = kakaoUser;
@@ -15,6 +20,23 @@ export class AuthService {
     if (!user) {
       user = await this.usersService.createUser(kakaoUser);
     }
-    res.json(kakaoUser.accessToken);
+
+    const usercookie = JSON.stringify({
+      userid: user._id,
+      username: user.nickname,
+    });
+
+    res.cookie('user', usercookie, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 만료기간 5일
+    });
+
+    const redirectUrl = this.configService.get('REDIRECT_URL');
+
+    if (redirectUrl) {
+      res.redirect(redirectUrl);
+    } else {
+      error('REDIRECT_URL is not defined');
+    }
   }
 }
