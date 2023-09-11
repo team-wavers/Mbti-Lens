@@ -1,20 +1,4 @@
 @font-face {
-    font-family: "HSYuji", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-    src: url("./HS_YUJI.otf") format(otf);
-}
-
-@font-face {
-    font-family: "RixInooAriDuri", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-    src: url("./RixInooAriDuri.ttf") format(ttf);
-}
-
-@font-face {
     font-family: "LINE Seed Sans", sans-serif;
     font-weight: 300;
     font-style: normal;
