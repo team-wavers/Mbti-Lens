@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import MenuOpenIcon from "../../assets/icons/menu-open.svg";
-import MenuCloseIcon from "../../assets/icons/menu-close.svg";
 import Drawer from "./Drawer";
 
 type Props = {
@@ -13,9 +12,12 @@ const CommonLayout = ({ children }: Props) => {
     return (
         <Container>
             <DrawerButton onClick={() => setIsOpen((prev) => !prev)}>
-                {isOpen ? <MenuCloseIcon width={28} /> : <MenuOpenIcon />}
+                <MenuOpenIcon width={28} />
             </DrawerButton>
-            {isOpen && <Drawer />}
+            <Drawer
+                isOpen={isOpen}
+                closeEvent={() => setIsOpen((prev) => !prev)}
+            />
             <Main>{children}</Main>
         </Container>
     );
@@ -26,7 +28,7 @@ const Container = styled.div`
     width: min(480px, 100%);
     min-height: 100vh;
     margin: 0 auto;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.bg};
     color: ${({ theme }) => theme.colors.black};
     font-size: ${({ theme }) => theme.typography.l};
 `;
@@ -34,7 +36,7 @@ const Container = styled.div`
 const Main = styled.main`
     width: 100%;
     height: auto;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.bg};
 `;
 
 const DrawerButton = styled.button`
@@ -46,7 +48,6 @@ const DrawerButton = styled.button`
     border: none;
     background-color: transparent;
     outline: none;
-    z-index: 9999;
 `;
 
 export default CommonLayout;
