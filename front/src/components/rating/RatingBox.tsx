@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RatingUpOutlineIcon from "../../assets/icons/thumbs-up.svg";
 import RatingUpSelectedIcon from "../../assets/icons/thumbs-up-selected.svg";
@@ -12,6 +12,10 @@ type Props = {
 
 const RatingBox = ({ mbti }: Props) => {
     const [like, setLike] = useState<boolean | undefined>(undefined);
+
+    useEffect(() => {
+        console.log(like);
+    }, [like]);
     return (
         <Container>
             <ButtonContainer onClick={() => setLike(true)}>
@@ -22,7 +26,9 @@ const RatingBox = ({ mbti }: Props) => {
                 )}
             </ButtonContainer>
             <ButtonContainer onClick={() => setLike(false)}>
-                {!like ? (
+                {like === undefined ? (
+                    <RatingDownOutlineIcon width={30} />
+                ) : !like ? (
                     <RatingDownSelectedIcon width={30} />
                 ) : (
                     <RatingDownOutlineIcon width={30} />
@@ -37,13 +43,6 @@ const Container = styled.div`
     width: auto;
     height: auto;
     background-color: white;
-`;
-
-const RadioButton = styled.input`
-    display: none;
-    width: 0px;
-    height: 0px;
-    outline: none;
 `;
 
 const ButtonContainer = styled.button`
