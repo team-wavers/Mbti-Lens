@@ -5,11 +5,10 @@ export interface IColor {
 const colors: IColor = {
     black: "#222",
     white: "#fff",
-    gray: "#d0d0d0",
-    primary: "#A06868",
-    primary2: "#DFB8B2",
-    disabled_1: "#C9C4C0",
-    bg: "#F0E4D8",
+    gray: "#DODODO",
+    primary_1: "#569AFF",
+    primary_2: "#0066FF",
+    primary_3: "#D8E7FF",
 };
 
 export default colors;
