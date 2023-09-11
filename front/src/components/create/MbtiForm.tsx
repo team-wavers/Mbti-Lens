@@ -1,8 +1,7 @@
-import React, { useRef, useState, forwardRef } from "react";
+import React, { useRef, forwardRef } from "react";
 import { styled } from "styled-components";
-import { NextButton } from "../common/Button";
+import { CommonButton } from "../common/Button";
 import flexBox from "@/styles/utils/flexbox";
-import MbtiType from "@/types/mbti";
 import MbtiInput from "./MbtiInput";
 import { useRecoilState } from "recoil";
 import mbtiAtom from "@/recoil/mbti";
@@ -55,7 +54,7 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                         ref={(e) => e && (inputRefs.current[3] = e)}
                     />
                 </InputContainer>
-                <NextButton disabled={disabled} />
+                <CommonButton content={"다음"} disabled={disabled} />
             </FormContainer>
         </Container>
     );
