@@ -3,20 +3,34 @@ import KakaoLogin from "@/assets/images/kakaologin.png";
 import Image from "next/image";
 import flexBox from "@/styles/utils/flexbox";
 import { useRouter } from "next/router";
+import ServiceLogo from "@/assets/images/logo.png";
+import getAccessToken from "@/apis/oauth/kakao";
 
 const Index = () => {
     const router = useRouter();
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_LOGIN_CLIENT_ID;
+    const clientId = process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID;
     const loginHandler = () => {
-        console.log("test");
-        console.log(process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID);
-        router.push(
-            `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}`,
-        );
+        // console.log("test");
+        // console.log(process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID);
+        // router.push(
+        //     `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}`,
+        // ); // test
+        getAccessToken().then((res) => {
+            console.log(res);
+        });
     };
+
+    console.log(clientId);
     return (
         <Container>
             <Information>
+                <LogoContainer>
+                    <Image
+                        src={ServiceLogo}
+                        alt="남이보는 내  MBTI는? MBTI LENS"
+                        layout="responsive"
+                    />
+                </LogoContainer>
                 <LoginWithKakao onClick={() => loginHandler()}>
                     <Image
                         src={KakaoLogin}
@@ -37,7 +51,15 @@ const Container = styled.div`
 
 const Information = styled.div`
     width: 100%;
-    height: 300px;
+    height: auto;
+`;
+
+const LogoContainer = styled.div`
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    padding-top: 0;
+    margin-bottom: 30px;
 `;
 
 const LoginWithKakao = styled.button`
@@ -49,7 +71,7 @@ const LoginWithKakao = styled.button`
     padding: 0 10%;
     background: transparent;
     cursor: pointer;
-    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.1));
 `;
 
 export default Index;
