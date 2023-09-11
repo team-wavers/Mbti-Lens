@@ -2,12 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
   HttpStatus,
+  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
 import { MbtiService } from './mbti.service';
+import { StandardResponseDto } from '../../../dto/standard-response.dto';
 
 @Controller('v1/users')
 export class MbtiController {
@@ -25,50 +26,29 @@ export class MbtiController {
     // MBTI 정보가 없으면 생성, 있으면 업데이트
     if (!mbtiTableCheck) {
       await this.mbtiService.createMbti(paramUserId, bodyData);
-      return {
-        statusCode: HttpStatus.CREATED,
-        message: 'api.common.created',
-      };
+      return new StandardResponseDto(
+        201,
+        'api.common.created',
+        'new data create success',
+      );
     } else {
       await this.mbtiService.updateMbti(paramUserId, bodyData);
-      return {
-        statusCode: HttpStatus.CREATED,
-        message: 'api.common.created',
-      };
+      return new StandardResponseDto(
+        201,
+        'api.common.created',
+        'data update success',
+      );
     }
   }
 
   @Get(':userId/mbtis')
   async showMbtis(@Param('userId') paramUserId: number): Promise<any> {
-    try {
-      const result = await this.mbtiService.findOne({
-        where: { user_id: paramUserId },
-      });
-      if (!result) {
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: 'Mbti not found for the given user ID',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'api.common.ok',
-        data: result,
-      };
-    } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'Mbti not found for the given user ID',
-        },
-        HttpStatus.NOT_FOUND,
-        {
-          cause: error,
-        },
-      );
+    const result = await this.mbtiService.findOne({
+      where: { user_id: paramUserId },
+    });
+    if (result === null) {
+      throw new NotFoundException('mbti data not found');
     }
+    return new StandardResponseDto(200, 'api.common.ok', result);
   }
 }

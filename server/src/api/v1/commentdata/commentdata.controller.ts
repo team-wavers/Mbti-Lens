@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { CommentdataService } from './commentdata.service';
+import { StandardResponseDto } from 'src/dto/standard-response.dto';
 
 @Controller('v1/users')
 export class CommentdataController {
@@ -24,10 +25,10 @@ export class CommentdataController {
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
   ): Promise<any> {
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'api.common.ok',
-      data: await this.commentdataService.findComments(paramUserId, paramMbti),
-    };
+    return new StandardResponseDto(
+      200,
+      'api.common.ok',
+      await this.commentdataService.findComments(paramUserId, paramMbti),
+    );
   }
 }
