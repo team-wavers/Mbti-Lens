@@ -47,6 +47,20 @@ const index = () => {
                 host_id: 1,
                 mbti: "e",
                 like: true,
+                comment: "  comment",
+            },
+            {
+                _id: 7,
+                host_id: 1,
+                mbti: "e",
+                like: true,
+                comment: "comment",
+            },
+            {
+                _id: 8,
+                host_id: 1,
+                mbti: "e",
+                like: true,
                 comment: "comment",
             },
         ],
@@ -84,6 +98,7 @@ const index = () => {
                     <MbitButton
                         key={i}
                         onClick={() => setMbtiState(mbti[i].toLowerCase())}
+                        isFocus={mbtiState && mbti[i].toLowerCase}
                     >
                         {mbti[i]}
                     </MbitButton>
@@ -114,7 +129,7 @@ const Container = styled.div`
     width: 100%;
     min-height: 100vh;
     height: auto;
-    background-color: white;
+    background: #f0e4d8;
 `;
 
 const Title = styled.h1`
@@ -130,11 +145,12 @@ const MbtiContainer = styled.div`
     margin-top: 80px;
     margin-bottom: 50px;
 `;
-const MbitButton = styled.button`
+const MbitButton = styled.button<{ isFocus: boolean }>`
     width: 80px;
     height: 100px;
     outline: none;
-    color: ${({ theme }) => theme.colors.primary_1};
+    color: ${({ theme, isFocus }) =>
+        !isFocus ? theme.colors.primary_1 : theme.colors.primary_3};
     border: 1px solid ${({ theme }) => theme.colors.gray};
     border-radius: 10px;
     background-color: ${({ theme }) => theme.colors.white};
@@ -145,22 +161,12 @@ const MbitButton = styled.button`
     transition: 0.2s ease transform, 0.2s ease box-shadow;
     &:focus {
         transform: scale(1.1);
-    }
-    &:not(:placeholder-shown) {
-        border-color: ${({ theme }) => theme.colors.primary_1};
-        color: ${({ theme }) => theme.colors.primary_1};
-        &:focus {
-            box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
-        }
+        box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
     }
 `;
 const CommentSection = styled.div`
     ${flexBox("column", "center", "center;")}
     height: auto;
+    width: 100%;
     margin-bottom: 20px;
-    -ms-overflow-style: none;
-    ::-webkit-scrollbar {
-        width: 0em;
-        display: none;
-    }
 `;
