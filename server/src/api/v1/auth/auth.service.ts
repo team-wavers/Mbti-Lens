@@ -26,15 +26,14 @@ export class AuthService {
       username: user.nickname,
     });
 
-    res.cookie('user', usercookie, {
-      httpOnly: true,
-      expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 만료기간 5일
-    });
-
     const redirectUrl = this.configService.get('REDIRECT_URL');
 
     if (redirectUrl) {
-      res.redirect(redirectUrl);
+      res
+        .cookie('user', usercookie, {
+          expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 만료기간 5일
+        })
+        .redirect(redirectUrl);
     } else {
       error('REDIRECT_URL is not defined');
     }
