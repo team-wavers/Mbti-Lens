@@ -2,25 +2,18 @@ import styled from "styled-components";
 import KakaoLogin from "@/assets/images/kakaologin.png";
 import Image from "next/image";
 import flexBox from "@/styles/utils/flexbox";
-import { useRouter } from "next/router";
 import ServiceLogo from "@/assets/images/logo.png";
 import getAccessToken from "@/apis/oauth/kakao";
+import { useRouter } from "next/router";
 
 const Index = () => {
     const router = useRouter();
-    const clientId = process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID;
+    // const clientId = process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID;
     const loginHandler = () => {
-        // console.log("test");
-        // console.log(process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID);
-        // router.push(
-        //     `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}`,
-        // ); // test
         getAccessToken().then((res) => {
             console.log(res);
         });
     };
-
-    console.log(clientId);
     return (
         <Container>
             <Information>

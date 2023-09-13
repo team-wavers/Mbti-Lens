@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
-import { NextButton } from "@/components/common/Button";
+import MbtiButton from "@/components/result/MbtiButton";
+import { CommonButton } from "@/components/common/Button";
 
 //코멘트 있는지 없는지 확인-> 있으면 띄우고 없으면 없다고 띄우기
-//코멘트 수가 많을 때 어떤 식으로 스크롤?
 //활용 자료 = mbti, 좋아요 수, 코멘트
 const index = () => {
     //state에 따라 data요청해서 commentBox에 동적으로 넘겨줘야할듯?
@@ -40,7 +40,8 @@ const index = () => {
                 host_id: 1,
                 mbti: "e",
                 like: true,
-                comment: "comment",
+                comment:
+                    "comment comment comment commentcommentcomment comment comment",
             },
             {
                 _id: 6,
@@ -75,7 +76,7 @@ const index = () => {
             ns: "n",
             tf: "t",
             pj: "p",
-            ei_like: 4,
+            ei_like: 7,
             ns_like: 0,
             tf_like: 0,
             pj_like: 0,
@@ -88,33 +89,34 @@ const index = () => {
         mbtiResponse.data.pj.toUpperCase(),
     ];
     const [mbtiState, setMbtiState] = useState<string | null>(null);
+    console.log(commentResponse.data.length);
     return (
         <Container>
             {mbtiState === null ? (
                 <Title>남이보는 김철수님의 MBTI는?</Title>
             ) : null}
             <MbtiContainer>
-                {mbti.map((e, i) => (
-                    <MbitButton
-                        key={i}
-                        onClick={() => setMbtiState(mbti[i].toLowerCase())}
-                        isFocus={mbtiState && mbti[i].toLowerCase}
-                    >
-                        {mbti[i]}
-                    </MbitButton>
-                ))}
+                <MbtiButton
+                    mbti={mbti}
+                    setState={setMbtiState}
+                    state={mbtiState}
+                />
             </MbtiContainer>
             {mbtiState === null ? (
-                <ResultBox data={mbtiResponse.data} mbti={mbti} />
+                <ResultBox
+                    data={mbtiResponse.data}
+                    mbti={mbti}
+                    length={commentResponse.data.length}
+                />
             ) : (
                 <CommentSection>
                     <CommentBox
                         data={commentResponse.data}
                         mbtistate={mbtiState}
                     />
-                    <NextButton
+                    <CommonButton
                         disabled={false}
-                        text="결과보기"
+                        content={"결과보기"}
                         onClick={() => setMbtiState(null)}
                     />
                 </CommentSection>
@@ -134,7 +136,9 @@ const Container = styled.div`
 
 const Title = styled.h1`
     font-size: ${({ theme }) => theme.typography.xl};
-    font-weight: 500;
+    font-family: "HSYuji", sans-serif;
+    width: 350px;
+    color: #a06868;
     text-align: center;
     margin: 0px;
 `;
@@ -145,28 +149,8 @@ const MbtiContainer = styled.div`
     margin-top: 80px;
     margin-bottom: 50px;
 `;
-const MbitButton = styled.button<{ isFocus: boolean }>`
-    width: 80px;
-    height: 100px;
-    outline: none;
-    color: ${({ theme, isFocus }) =>
-        !isFocus ? theme.colors.primary_1 : theme.colors.primary_3};
-    border: 1px solid ${({ theme }) => theme.colors.gray};
-    border-radius: 10px;
-    background-color: ${({ theme }) => theme.colors.white};
-    font-size: ${({ theme }) => theme.typography.x3l};
-    font-family: "LINE Seed Sans", sans-serif;
-    font-weight: 900;
-    text-align: center;
-    transition: 0.2s ease transform, 0.2s ease box-shadow;
-    &:focus {
-        transform: scale(1.1);
-        box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
-    }
-`;
 const CommentSection = styled.div`
     ${flexBox("column", "center", "center;")}
-    height: auto;
     width: 100%;
     margin-bottom: 20px;
 `;

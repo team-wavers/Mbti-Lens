@@ -19,7 +19,6 @@ const CommentBox = ({ data, mbtistate }: Props) => {
     useEffect(() => {
         setismore(false);
     }, [mbtistate]);
-    console.log(isMore);
     return (
         <Container>
             {data && !isMore && (
