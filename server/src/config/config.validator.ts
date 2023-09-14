@@ -43,6 +43,7 @@ const envFilePath = getEnvFilePath();
 
 export const CONFIG_VALIDATOR: ConfigModuleOptions = {
   validationSchema: Joi.object({
+    APP_PORT: Joi.number().required(),
     DB_PORT: Joi.number().required(),
     DB_HOST: Joi.string().required(),
     DB_USERNAME: Joi.string().required(),
@@ -51,6 +52,7 @@ export const CONFIG_VALIDATOR: ConfigModuleOptions = {
     KAKAO_API_KEY: Joi.string().required(),
     KAKAO_CALLBACK_URL: Joi.string().required(),
     REDIRECT_URL: Joi.string().required(),
+    ROOT_URL: Joi.string().required(),
   }),
   isGlobal: true,
   cache: true,
