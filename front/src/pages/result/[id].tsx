@@ -1,88 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
 import MbtiButton from "@/components/result/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
-import { APIResponseType } from "@/types/response";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { mbtiResponse, commentResponse } from "@/utils/mokup";
+import { useRouter } from "next/router";
+import { getMbti } from "@/apis/comment";
 
-//코멘트 있는지 없는지 확인-> 있으면 띄우고 없으면 없다고 띄우기
-//활용 자료 = mbti, 좋아요 수, 코멘트
-const index = () => {
-    //state에 따라 data요청해서 commentBox에 동적으로 넘겨줘야할듯?
-    const commentResponse = {
-        statusCode: 200,
-        message: "api.common.ok",
-        data: [
-            {
-                _id: 2,
-                host_id: 1,
-                mbti: "e",
-                like: false,
-            },
-            {
-                _id: 3,
-                host_id: 1,
-                mbti: "e",
-                like: false,
-                comment: "e2",
-            },
-            {
-                _id: 4,
-                host_id: 1,
-                mbti: "n",
-                like: true,
-                comment: "comment",
-            },
-            {
-                _id: 5,
-                host_id: 1,
-                mbti: "e",
-                like: true,
-                comment:
-                    "comment comment comment commentcommentcomment comment comment",
-            },
-            {
-                _id: 6,
-                host_id: 1,
-                mbti: "e",
-                like: true,
-                comment: "  comment",
-            },
-            {
-                _id: 7,
-                host_id: 1,
-                mbti: "e",
-                like: true,
-                comment: "comment",
-            },
-            {
-                _id: 8,
-                host_id: 1,
-                mbti: "e",
-                like: true,
-                comment: "comment",
-            },
-        ],
+export async function getStaticPaths() {
+    return {
+        //kakao로그인 data에접근하면 가져올 수 있을듯?
+        paths: [{ params: { id: "1" } }],
+        fallback: true,
     };
-    const mbtiResponse: APIResponseType["SearchResponse"] = {
-        Code: 200,
-        message: "api.common.ok",
-        data: {
-            _id: 4,
-            user_id: 1,
-            ei: "e",
-            ns: "n",
-            tf: "t",
-            pj: "p",
-            ei_like: 7,
-            ns_like: 0,
-            tf_like: 0,
-            pj_like: 0,
-        },
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    const mbtiData = await getMbti();
+    return {
+        props: { mbtiData },
+        revalidate: 1,
     };
-    const mbti = [
+};
+//page 진입 시 getStaticProps로 미리 다 fetching하고 그리기
+const id = ({ mbtiData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const router = useRouter();
+    const { id, mbti } = router.query;
+    useEffect(() => {
+        console.log(mbtiData);
+    });
+    const mbtiLetter = [
         mbtiResponse.data.ei.toUpperCase(),
         mbtiResponse.data.ns.toUpperCase(),
         mbtiResponse.data.tf.toUpperCase(),
@@ -98,7 +48,7 @@ const index = () => {
             ) : null}
             <MbtiContainer>
                 <MbtiButton
-                    mbti={mbti}
+                    mbti={mbtiLetter}
                     setState={setMbtiState}
                     state={mbtiState}
                 />
@@ -106,7 +56,7 @@ const index = () => {
             {mbtiState === null ? (
                 <ResultBox
                     data={mbtiResponse.data}
-                    mbti={mbti}
+                    mbti={mbtiLetter}
                     length={commentResponse.data.length}
                 />
             ) : (
@@ -126,7 +76,7 @@ const index = () => {
     );
 };
 
-export default index;
+export default id;
 const Container = styled.div`
     ${flexBox("column", "center", "center;")}
     width: 100%;

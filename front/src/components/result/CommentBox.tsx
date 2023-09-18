@@ -3,17 +3,7 @@ import styled from "styled-components";
 import Comment from "./Comment";
 import flexBox from "@/styles/utils/flexbox";
 import { CommentResponseType } from "@/types/response";
-import getComment from "@/apis/comment";
 
-export async function getStaticProps() {
-    const comment = await getComment();
-    return {
-        props: {
-            comment,
-        },
-        revalidate: 60,
-    };
-}
 type Props = {
     data: CommentResponseType["SearchResponse"]["data"][];
     mbtistate: string;
@@ -24,9 +14,7 @@ const CommentBox = ({ data, mbtistate, comment }: Props) => {
     useEffect(() => {
         setismore(false);
     }, [mbtistate]);
-    useEffect(() => {
-        console.log(comment);
-    }, []);
+
     //코멘트가 없는 데이터는 제외
     const commentList = data
         .map((e) => e)
