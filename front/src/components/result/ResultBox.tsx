@@ -2,20 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import { Thumbsdown, Thumbsup } from "@/assets/icons";
-type SearchResponseType = {
-    _id: number;
-    user_id: number;
-    ei: string;
-    ns: string;
-    tf: string;
-    pj: string;
-    ei_like: number;
-    ns_like: number;
-    tf_like: number;
-    pj_like: number;
-};
+import { APIResponseType } from "@/types/response";
+
 type Props = {
-    data: SearchResponseType;
+    data: APIResponseType["SearchResponse"]["data"];
     mbti: Array<string>;
     length: number;
 };
@@ -28,6 +18,7 @@ const ResultBox = ({ data, mbti, length }: Props) => {
         data.pj_like,
     ];
     const thumbsDownStats = [thumbsUpStats.map((e) => Math.abs(length - e))];
+    //like와 comment의 총 개수로만 계산해서..
     return (
         <ResultContainer>
             <ImageContainer>
@@ -72,6 +63,7 @@ const Count = styled.div`
     color: #a06868;
     font-family: "HSYuji", sans-serif;
     font-size: ${({ theme }) => theme.typography.m};
+    font-weight: 900;
     margin: 10px;
     margin-top: 15px;
     width: 90%;

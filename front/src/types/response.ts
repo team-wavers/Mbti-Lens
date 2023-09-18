@@ -1,16 +1,16 @@
 interface GeneralResponse<T = void> {
-    code: number;
+    Code: number;
     message: string;
-    result?: T;
+    data: T;
 }
-type APIResponseType = {
+export type APIResponseType = {
     SearchResponse: GeneralResponse<{
         _id: number;
         user_id: number;
-        ei: "e" | "i" | null;
-        ns: "n" | "s" | null;
-        tf: "t" | "f" | null;
-        pj: "p" | "j" | null;
+        ei: "e" | "i";
+        ns: "n" | "s";
+        tf: "t" | "f";
+        pj: "p" | "j";
         ei_like: number;
         ns_like: number;
         tf_like: number;
@@ -19,4 +19,13 @@ type APIResponseType = {
     SubmitResponse?: GeneralResponse;
 };
 
-export default APIResponseType;
+export type CommentResponseType = {
+    SearchResponse: GeneralResponse<{
+        _id: number;
+        host_id: number;
+        mbti: string;
+        like: boolean;
+        comment?: string;
+    }>;
+    SubmitResponse?: GeneralResponse;
+};

@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
 import MbtiButton from "@/components/result/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
+import { APIResponseType } from "@/types/response";
 
 //코멘트 있는지 없는지 확인-> 있으면 띄우고 없으면 없다고 띄우기
 //활용 자료 = mbti, 좋아요 수, 코멘트
@@ -18,20 +19,19 @@ const index = () => {
                 _id: 2,
                 host_id: 1,
                 mbti: "e",
-                like: true,
-                comment: "comment",
+                like: false,
             },
             {
                 _id: 3,
                 host_id: 1,
                 mbti: "e",
-                like: true,
+                like: false,
                 comment: "e2",
             },
             {
                 _id: 4,
                 host_id: 1,
-                mbti: "e",
+                mbti: "n",
                 like: true,
                 comment: "comment",
             },
@@ -66,7 +66,7 @@ const index = () => {
             },
         ],
     };
-    const mbtiResponse = {
+    const mbtiResponse: APIResponseType["SearchResponse"] = {
         Code: 200,
         message: "api.common.ok",
         data: {
@@ -89,11 +89,12 @@ const index = () => {
         mbtiResponse.data.pj.toUpperCase(),
     ];
     const [mbtiState, setMbtiState] = useState<string | null>(null);
-    console.log(commentResponse.data.length);
+    //https://api.mbti-lens.youthwelfare.kr/;
+
     return (
         <Container>
             {mbtiState === null ? (
-                <Title>남이보는 김철수님의 MBTI는?</Title>
+                <Title>남이 보는 김철수님의 MBTI는?</Title>
             ) : null}
             <MbtiContainer>
                 <MbtiButton
@@ -133,10 +134,10 @@ const Container = styled.div`
     height: auto;
     background: #f0e4d8;
 `;
-
 const Title = styled.h1`
     font-size: ${({ theme }) => theme.typography.xl};
     font-family: "HSYuji", sans-serif;
+    font-weight: 1000;
     width: 350px;
     color: #a06868;
     text-align: center;

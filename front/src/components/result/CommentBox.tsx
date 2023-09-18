@@ -2,42 +2,60 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
 import flexBox from "@/styles/utils/flexbox";
+import { CommentResponseType } from "@/types/response";
+import getComment from "@/apis/comment";
 
-type commentDataType = {
-    _id: number;
-    host_id: number;
-    mbti: string;
-    like: boolean;
-    comment: string;
-};
+export async function getStaticProps() {
+    const comment = await getComment();
+    return {
+        props: {
+            comment,
+        },
+        revalidate: 60,
+    };
+}
 type Props = {
-    data: commentDataType[];
+    data: CommentResponseType["SearchResponse"]["data"][];
     mbtistate: string;
+    comment?: any;
 };
-const CommentBox = ({ data, mbtistate }: Props) => {
+const CommentBox = ({ data, mbtistate, comment }: Props) => {
     const [isMore, setismore] = useState<boolean>(false);
     useEffect(() => {
         setismore(false);
     }, [mbtistate]);
+    useEffect(() => {
+        console.log(comment);
+    }, []);
+    //코멘트가 없는 데이터는 제외
+    const commentList = data
+        .map((e) => e)
+        .filter(
+            (e) => e.comment !== undefined && e.mbti == mbtistate.toLowerCase(),
+        );
     return (
         <Container>
-            {data && !isMore && (
+            {data && !isMore ? (
                 <>
-                    <Comment comment={data[0].comment} like={data[0].like} />
-                    <Comment comment={data[1].comment} like={data[1].like} />
-                    <Comment comment={data[2].comment} like={data[2].like} />
+                    {commentList.slice(commentList.length - 3).map((e, i) => (
+                        <Comment
+                            key={e._id}
+                            comment={commentList[i].comment}
+                            like={commentList[i].like}
+                        />
+                    ))}
                     <MoreButtom onClick={() => setismore(true)}>
                         더보기
                     </MoreButtom>
                 </>
-            )}
+            ) : null}
             {data &&
                 isMore &&
-                data.map((e, i) => (
+                commentList.map((e, i) => (
                     <Comment
                         key={e._id}
-                        comment={data[i].comment}
-                        like={data[i].like}
+                        comment={commentList[i].comment}
+                        like={commentList[i].like}
                     />
                 ))}
         </Container>
@@ -52,8 +70,10 @@ const Container = styled.div`
     width: 100%;
 `;
 const MoreButtom = styled.button`
+    font-size: ${({ theme }) => theme.typography.s};
+    font-family: "RixInooAriDuri" sans-serif;
+    font-weight: 500;
+    color: #a06868;
     background-color: #f0e4d8;
-    width: auto;
-    height: auto;
     border: none;
 `;
