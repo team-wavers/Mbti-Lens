@@ -1,14 +1,18 @@
 import { instance } from "./base";
 // userId: number, mbti: string
-export const getComment = async (id: number, mbti: string) => {
-    const response = await instance().get(
-        `/v1/users?userId=${id}/mbtis?mbti=${mbti}/comments`,
-    );
-    return response.data;
+export const getResponse = async (
+    userId?: string | string[] | undefined,
+    mbti?: string | string[] | undefined,
+) => {
+    if (mbti) {
+        const res = await instance().get(``);
+        return res.data;
+    } else {
+        const res = await instance().get(`v1/users?userId=${userId}/mbtis`);
+        return res.data;
+    }
 };
 
-export const getMbti = async () => {
-    const response = await instance().get(``);
-    return response.data;
-};
-//v1/users?userId=${id}/mbtis
+//v1/users?userId=${userId}/mbtis?mbti=${mbti}
+
+//v1/users?userId=${userId}/mbtis

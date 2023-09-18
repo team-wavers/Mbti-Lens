@@ -8,30 +8,34 @@ import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { mbtiResponse, commentResponse } from "@/utils/mokup";
 import { useRouter } from "next/router";
-import { getMbti } from "@/apis/comment";
+import { getResponse } from "@/apis/comment";
 
 export async function getStaticPaths() {
     return {
         //kakao로그인 data에접근하면 가져올 수 있을듯?
-        paths: [{ params: { id: "1" } }],
+        paths: [{ params: { id: "1", mbti: "entp" } }],
         fallback: true,
     };
 }
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-    const mbtiData = await getMbti();
+export const getStaticProps: GetStaticProps = async (context) => {
+    const data = context.params;
+    const userId = context.params?.id;
+    const mbti = context.params?.mbti;
+    const mbtiData = await getResponse(userId, mbti);
     return {
-        props: { mbtiData },
+        props: { mbtiData, data },
         revalidate: 1,
     };
 };
 //page 진입 시 getStaticProps로 미리 다 fetching하고 그리기
-const id = ({ mbtiData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const id = ({
+    mbtiData,
+    data,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
     const router = useRouter();
-    const { id, mbti } = router.query;
-    useEffect(() => {
-        console.log(mbtiData);
-    });
+    console.log(data);
+    console.log(mbtiData);
+
     const mbtiLetter = [
         mbtiResponse.data.ei.toUpperCase(),
         mbtiResponse.data.ns.toUpperCase(),
