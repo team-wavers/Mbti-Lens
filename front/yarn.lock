@@ -1250,24 +1250,6 @@
   dependencies:
     "defer-to-connect" "^2.0.0"
 
-"@tanstack/query-core@5.0.0-alpha.70":
-  "integrity" "sha512-JOq9ciu8647Au8rX0O9737kJ1IBAupLcI77eFc9RaubiZPr6DIurOtI2Lc4hoaJNHIofNBQUnEyifzDIHORsdA=="
-  "resolved" "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.0.0-alpha.70.tgz"
-  "version" "5.0.0-alpha.70"
-
-"@tanstack/react-query-next-experimental@^5.0.0-alpha.80":
-  "integrity" "sha512-J+rHrE+5BVEAoZVlvp5wryBdusKDBRrzysfpgOa4t6vcVRWHgzNlmWJFHelgipdHJrA3/4D6wSir8xmkp8ijtA=="
-  "resolved" "https://registry.npmjs.org/@tanstack/react-query-next-experimental/-/react-query-next-experimental-5.0.0-alpha.80.tgz"
-  "version" "5.0.0-alpha.80"
-
-"@tanstack/react-query@5.0.0-alpha.71":
-  "integrity" "sha512-QwP90/rqxYucCIJ/QAfBpg4ODF4ozKZIp145CElZCBkvvONGxY2Y6Z1mBPQXrync9Nb1fB4DEEVfpxEDcktogg=="
-  "resolved" "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.0.0-alpha.71.tgz"
-  "version" "5.0.0-alpha.71"
-  dependencies:
-    "@tanstack/query-core" "5.0.0-alpha.70"
-    "client-only" "0.0.1"
-
 "@trysound/sax@0.2.0":
   "integrity" "sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA=="
   "resolved" "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
@@ -1282,6 +1264,11 @@
     "@types/keyv" "^3.1.4"
     "@types/node" "*"
     "@types/responselike" "^1.0.0"
+
+"@types/cookie@^0.4.1":
+  "integrity" "sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q=="
+  "resolved" "https://registry.npmjs.org/@types/cookie/-/cookie-0.4.1.tgz"
+  "version" "0.4.1"
 
 "@types/hoist-non-react-statics@*":
   "integrity" "sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA=="
@@ -1317,6 +1304,11 @@
   "integrity" "sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-20.3.1.tgz"
   "version" "20.3.1"
+
+"@types/node@^16.10.2":
+  "integrity" "sha512-sm2aph6cRSsTMFYFgI+RpPLunXO9ClJkpizUVdT7KmGeyfQ14xnjTMT/f3MHcfKqevXqGT6BgVFzW8wcEoDUtA=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-16.18.52.tgz"
+  "version" "16.18.52"
 
 "@types/node@^16.11.26":
   "integrity" "sha512-sm2aph6cRSsTMFYFgI+RpPLunXO9ClJkpizUVdT7KmGeyfQ14xnjTMT/f3MHcfKqevXqGT6BgVFzW8wcEoDUtA=="
@@ -1991,6 +1983,20 @@
   "integrity" "sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A=="
   "resolved" "https://registry.npmjs.org/convert-source-map/-/convert-source-map-1.9.0.tgz"
   "version" "1.9.0"
+
+"cookie@^0.4.0":
+  "integrity" "sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA=="
+  "resolved" "https://registry.npmjs.org/cookie/-/cookie-0.4.2.tgz"
+  "version" "0.4.2"
+
+"cookies-next@^4.0.0":
+  "integrity" "sha512-3TyzeltFCGgdOlVOVTPClSq+YV9ZCdOyA3aHRZv9f5aSgg7EyI4NSvXFOCgzT/xIxeHR4Rz8/z5Tdo9oPqaVpA=="
+  "resolved" "https://registry.npmjs.org/cookies-next/-/cookies-next-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "@types/cookie" "^0.4.1"
+    "@types/node" "^16.10.2"
+    "cookie" "^0.4.0"
 
 "core-js-compat@^3.31.0":
   "integrity" "sha512-GSvKDv4wE0bPnQtjklV101juQ85g6H3rm5PDP20mqlS5j0kXF3pP97YvAu5hl+uFHqMictp3b2VxOHljWMAtuA=="
@@ -3678,7 +3684,7 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"next@^13.0.0", "next@13.4.7":
+"next@13.4.7":
   "integrity" "sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ=="
   "resolved" "https://registry.npmjs.org/next/-/next-13.4.7.tgz"
   "version" "13.4.7"
@@ -4107,7 +4113,7 @@
     "react-devtools-core" "4.28.0"
     "update-notifier" "^2.1.0"
 
-"react-dom@^18.0.0", "react-dom@^18.2.0", "react-dom@>= 16.8.0", "react-dom@18.2.0":
+"react-dom@^18.2.0", "react-dom@>= 16.8.0", "react-dom@18.2.0":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
@@ -4120,7 +4126,7 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
-"react@^18.0.0", "react@^18.2.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.13.1", "react@18.2.0":
+"react@^18.2.0", "react@>= 16.8.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.13.1", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"

@@ -9,6 +9,7 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { mbtiResponse, commentResponse } from "@/utils/mokup";
 import { useRouter } from "next/router";
 import { getResponse } from "@/apis/comment";
+import useCookie from "@/hooks/useCookie";
 
 export async function getStaticPaths() {
     return {
@@ -32,9 +33,9 @@ const id = ({
     mbtiData,
     data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const { cookie } = useCookie();
+    console.log(cookie);
     const router = useRouter();
-    console.log(data);
-    console.log(mbtiData);
 
     const mbtiLetter = [
         mbtiResponse.data.ei.toUpperCase(),
