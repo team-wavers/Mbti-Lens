@@ -7,44 +7,33 @@ import MbtiButton from "@/components/result/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { mbtiResponse, commentResponse } from "@/utils/mokup";
-import { useRouter } from "next/router";
 import { getResponse } from "@/apis/comment";
 import useCookie from "@/hooks/useCookie";
+import useComment from "@/hooks/useComment";
 
-export async function getStaticPaths() {
+export const getStaticProps: GetStaticProps = async () => {
+    const { cookie } = useCookie();
+    const userId = cookie.userid;
+    //path에서 넘겨받은 id로 mbti데이터 SSR하기
+    const mbtiData = await getResponse(userId);
     return {
-        //kakao로그인 data에접근하면 가져올 수 있을듯?
-        paths: [{ params: { id: "1", mbti: "entp" } }],
-        fallback: true,
-    };
-}
-export const getStaticProps: GetStaticProps = async (context) => {
-    const data = context.params;
-    const userId = context.params?.id;
-    const mbti = context.params?.mbti;
-    const mbtiData = await getResponse(userId, mbti);
-    return {
-        props: { mbtiData, data },
+        props: { mbtiData, userId },
         revalidate: 1,
     };
 };
-//page 진입 시 getStaticProps로 미리 다 fetching하고 그리기
-const id = ({
-    mbtiData,
-    data,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-    const { cookie } = useCookie();
-    console.log(cookie);
-    const router = useRouter();
+//https://api.mbti-lens.youthwelfare.kr/;
 
-    const mbtiLetter = [
-        mbtiResponse.data.ei.toUpperCase(),
-        mbtiResponse.data.ns.toUpperCase(),
-        mbtiResponse.data.tf.toUpperCase(),
-        mbtiResponse.data.pj.toUpperCase(),
-    ];
+//page 진입 시 getStaticProps로 미리 다 fetching하고 그리기
+const id = ({ mbtiData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const mbti = mbtiData.data;
+    const mbtiid = mbti.ei + mbti.ns + mbti.tf + mbti.pj;
+    const { cookie } = useCookie();
+    const userid = cookie.userid;
     const [mbtiState, setMbtiState] = useState<string | null>(null);
-    //https://api.mbti-lens.youthwelfare.kr/;
+    const mbtiLetter = [mbtiData.ei, mbtiData.ns, mbtiData.tf, mbtiData.pj];
+
+    const { data, error, isLoading } = useComment(userid, mbtiid);
+    console.log(data);
 
     return (
         <Container>

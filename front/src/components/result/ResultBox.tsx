@@ -6,7 +6,7 @@ import { APIResponseType } from "@/types/response";
 
 type Props = {
     data: APIResponseType["SearchResponse"]["data"];
-    mbti: Array<string>;
+    mbti: string[];
     length: number;
 };
 const ResultBox = ({ data, mbti, length }: Props) => {

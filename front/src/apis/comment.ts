@@ -8,7 +8,7 @@ export const getResponse = async (
         const res = await instance().get(``);
         return res.data;
     } else {
-        const res = await instance().get(`v1/users?userId=${userId}/mbtis`);
+        const res = await instance().get(``);
         return res.data;
     }
 };
