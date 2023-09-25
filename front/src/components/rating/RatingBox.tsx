@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import RatingUpOutlineIcon from "../../assets/icons/thumbs-up.svg";
 import RatingUpSelectedIcon from "../../assets/icons/thumbs-up-selected.svg";
 import RatingDownOutlineIcon from "../../assets/icons/thumbs-down.svg";
 import RatingDownSelectedIcon from "../../assets/icons/thumbs-down-selected.svg";
 import flexBox from "@/styles/utils/flexbox";
+import theme from "@/styles/theme";
 
 type Props = {
-    mbti?: "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
+    mbti?: number;
+    like: boolean;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const RatingBox = ({ mbti }: Props) => {
-    const [like, setLike] = useState<boolean | undefined>(undefined);
+const RatingBox = (props: Props) => {
     return (
-        <Container>
-            <ButtonContainer onClick={() => setLike(true)}>
-                {like ? (
+        <Container $mbti={props.mbti}>
+            <ButtonContainer onClick={(e) => props.onClick(e)}>
+                {props.like ? (
                     <RatingUpSelectedIcon width={30} />
                 ) : (
                     <RatingUpOutlineIcon width={30} />
                 )}
             </ButtonContainer>
-            <ButtonContainer onClick={() => setLike(false)}>
-                {!like ? (
+            <ButtonContainer onClick={(e) => props.onClick(e)}>
+                {!props.like ? (
                     <RatingDownSelectedIcon width={30} />
                 ) : (
                     <RatingDownOutlineIcon width={30} />
@@ -32,11 +34,16 @@ const RatingBox = ({ mbti }: Props) => {
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $mbti?: number }>`
     ${flexBox("row", "center", "center")}
     width: auto;
-    height: auto;
-    background-color: white;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: ${({ $mbti }) =>
+        $mbti === 2 ? "80px" : $mbti === 3 ? "255px" : "0px"};
+    margin-right: ${({ $mbti }) =>
+        $mbti === 0 ? "280px" : $mbti === 1 ? "100px" : "0px"};
+    background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const RadioButton = styled.input`

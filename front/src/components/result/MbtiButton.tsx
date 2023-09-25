@@ -1,29 +1,38 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import flexBox from "@/styles/utils/flexbox";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 type Props = {
-    mbti: string[];
-    setState: Dispatch<SetStateAction<string | null>>;
-    state: string | null;
+    mbtiLetter: string[];
+    setState: Dispatch<SetStateAction<number>>;
+    state: number | null;
 };
-const MbtiButton = ({ mbti, setState, state }: Props) => {
-    const [index, setIndex] = useState<number>();
+const MbtiButton = ({ mbtiLetter, setState, state }: Props) => {
     const handleClick = (i: number) => {
-        setState(mbti[i]);
-        setIndex(i);
+        setState(i);
     };
-    return mbti?.map((e, i) => (
-        <Mbti
-            key={i}
-            $isfocus={index === i || typeof state !== "string"}
-            onMouseDown={() => handleClick(i)}
-        >
-            {mbti[i]}
-        </Mbti>
-    ));
+    return (
+        <ButtonContainer>
+            {mbtiLetter?.map((e, i) => (
+                <Mbti
+                    key={mbtiLetter[i]}
+                    $isfocus={i === state || typeof state !== "number"}
+                    onMouseDown={() => handleClick(i)}
+                >
+                    {mbtiLetter[i]}
+                </Mbti>
+            ))}
+            ;
+        </ButtonContainer>
+    );
 };
 
 export default MbtiButton;
 
+const ButtonContainer = styled.div`
+    ${flexBox("row", "center", "center")}
+    gap: 10px;
+    margin-top: 50px;
+`;
 const Mbti = styled.button<{ $isfocus?: boolean }>`
     width: 80px;
     height: 100px;
@@ -37,8 +46,8 @@ const Mbti = styled.button<{ $isfocus?: boolean }>`
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
     transition: 0.2s ease transform, 0.2s ease box-shadow;
+    box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
     &:focus {
         transform: scale(1.1);
-        box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
     }
 `;
