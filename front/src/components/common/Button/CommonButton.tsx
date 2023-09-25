@@ -21,6 +21,7 @@ const CommonButton = ({ disabled, content, onClick }: Props) => {
 const ButtonContainer = styled.button<{ content: string }>`
     width: 135px;
     height: 43px;
+    margin: 0px 40px;
     outline: none;
     border: none;
     border-radius: 30px;

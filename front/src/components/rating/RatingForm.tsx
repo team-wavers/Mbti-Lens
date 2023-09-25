@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import RatingBox from "./RatingBox";
 import CommentBox from "./CommentBox";
 import styled from "styled-components";
@@ -72,8 +72,4 @@ const FormContainer = styled.form`
     ${flexBox("column", "center", "center")}
     width: 100%;
     height: auto;
-`;
-const ButtonContainer = styled.div`
-    ${flexBox("row", "center", "center")}
-    width: 100%;
 `;

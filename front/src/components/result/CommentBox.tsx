@@ -3,13 +3,11 @@ import styled from "styled-components";
 import Comment from "./Comment";
 import flexBox from "@/styles/utils/flexbox";
 import { CommentResponseType } from "@/types/response";
-import { GetServerSideProps } from "next";
 type Props = {
-    data: CommentResponseType["SearchResponse"]["data"][];
+    data: CommentResponseType["SearchResponse"]["data"][] | undefined;
     mbtistate: string;
-    comment?: any;
 };
-const CommentBox = ({ data, mbtistate, comment }: Props) => {
+const CommentBox = ({ data, mbtistate }: Props) => {
     const [isMore, setismore] = useState<boolean>(false);
     useEffect(() => {
         setismore(false);
@@ -17,7 +15,7 @@ const CommentBox = ({ data, mbtistate, comment }: Props) => {
 
     //코멘트가 없는 데이터는 제외
     const commentList = data
-        .map((e) => e)
+        ?.map((e) => e)
         .filter(
             (e) => e.comment !== undefined && e.mbti == mbtistate.toLowerCase(),
         );
@@ -25,7 +23,7 @@ const CommentBox = ({ data, mbtistate, comment }: Props) => {
         <Container>
             {data && !isMore ? (
                 <>
-                    {commentList.slice(commentList.length - 3).map((e, i) => (
+                    {commentList?.slice(commentList.length - 3).map((e, i) => (
                         <Comment
                             key={e._id}
                             comment={commentList[i].comment}
@@ -39,7 +37,7 @@ const CommentBox = ({ data, mbtistate, comment }: Props) => {
             ) : null}
             {data &&
                 isMore &&
-                commentList.map((e, i) => (
+                commentList?.map((e, i) => (
                     <Comment
                         key={e._id}
                         comment={commentList[i].comment}

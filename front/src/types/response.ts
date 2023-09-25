@@ -29,3 +29,8 @@ export type CommentResponseType = {
     }>;
     SubmitResponse?: GeneralResponse;
 };
+
+export type CommentSearchResponse =
+    CommentResponseType["SearchResponse"]["data"][];
+
+export type MbtiSearchResponse = APIResponseType["SearchResponse"]["data"];

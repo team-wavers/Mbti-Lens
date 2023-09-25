@@ -5,10 +5,12 @@ export const getResponse = async (
     mbti?: string | string[] | undefined,
 ) => {
     if (mbti) {
-        const res = await instance().get(``);
+        const res = await instance().get(
+            `v1/users?userId=${userId}/mbtis?mbti=${mbti}`,
+        );
         return res.data;
     } else {
-        const res = await instance().get(``);
+        const res = await instance().get(`v1/users?userId=${userId}/mbtis`);
         return res.data;
     }
 };

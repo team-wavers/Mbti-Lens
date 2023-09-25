@@ -1,5 +1,5 @@
 import { getResponse } from "@/apis/getResponse";
-import { CommentResponseType, MbtiSearchResponse } from "@/types/response";
+import { MbtiSearchResponse } from "@/types/response";
 import { AxiosError, AxiosResponse } from "axios";
 import useSwr, { SWRConfiguration } from "swr";
 const config: SWRConfiguration = {

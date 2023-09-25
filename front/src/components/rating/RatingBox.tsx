@@ -45,14 +45,6 @@ const Container = styled.div<{ $mbti?: number }>`
         $mbti === 0 ? "280px" : $mbti === 1 ? "100px" : "0px"};
     background-color: ${({ theme }) => theme.colors.background};
 `;
-
-const RadioButton = styled.input`
-    display: none;
-    width: 0px;
-    height: 0px;
-    outline: none;
-`;
-
 const ButtonContainer = styled.button`
     ${flexBox("column", "center", "center")}
     width: 30px;

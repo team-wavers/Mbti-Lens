@@ -18,7 +18,7 @@ const id = () => {
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);
     const confirmEvent = () => {
-        if (formRef.current) console.log("hello");
+        if (formRef.current) console.log(formRef.current);
     };
 
     return (

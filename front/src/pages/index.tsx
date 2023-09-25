@@ -4,14 +4,20 @@ import Image from "next/image";
 import flexBox from "@/styles/utils/flexbox";
 import ServiceLogo from "@/assets/images/logo.png";
 import { useRouter } from "next/router";
+import useCookie from "@/hooks/useCookie";
 
 const Index = () => {
     const router = useRouter();
+    const { cookie } = useCookie();
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
     const loginHandler = () => {
         router.push(`${endpoint}/auth/oauth/kakao`);
     };
+
+    if (router.query.toString() == cookie.userid) {
+        router.push(`${endpoint}/result`);
+    }
 
     return (
         <Container>
