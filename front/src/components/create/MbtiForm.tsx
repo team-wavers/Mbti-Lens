@@ -5,9 +5,11 @@ import flexBox from "@/styles/utils/flexbox";
 import MbtiInput from "./MbtiInput";
 import { useRecoilState } from "recoil";
 import mbtiAtom from "@/recoil/mbti";
+import MbtiType from "@/types/mbti";
 
 type Props = {
-    onSubmit: (e: React.SyntheticEvent) => void;
+    onSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => void;
+    setmbti: React.Dispatch<React.SetStateAction<MbtiType>>;
 };
 
 const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
@@ -25,39 +27,39 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                 (ref) => ref === e.target,
             );
             targetInput.value = e.key.toUpperCase();
-            console.log(inputRefs.current);
-
-            setMbti({ ...mbti, [targetInput.id]: e.key.toUpperCase() });
-            console.log(mbti);
+            setMbti({ ...mbti, [targetInput.id]: e.key.toLowerCase() });
         }
     };
-
     return (
         <Container>
-            <FormContainer method="post" {...props} ref={ref}>
+            <FormContainer method="post" onSubmit={props.onSubmit} ref={ref}>
                 <InputContainer>
                     <MbtiInput
-                        id={`mbti_e_i`}
+                        id={`ei`}
                         onKeyPress={(e) => keyPressHandler(e, ["E", "I"])}
                         ref={(e) => e && (inputRefs.current[0] = e)}
                     />
                     <MbtiInput
-                        id={`mbti_n_s`}
+                        id={`ns`}
                         onKeyPress={(e) => keyPressHandler(e, ["N", "S"])}
                         ref={(e) => e && (inputRefs.current[1] = e)}
                     />
                     <MbtiInput
-                        id={`mbti_t_f`}
+                        id={`tf`}
                         onKeyPress={(e) => keyPressHandler(e, ["T", "F"])}
                         ref={(e) => e && (inputRefs.current[2] = e)}
                     />
                     <MbtiInput
-                        id={`mbti_p_j`}
+                        id={`pj`}
                         onKeyPress={(e) => keyPressHandler(e, ["P", "J"])}
                         ref={(e) => e && (inputRefs.current[3] = e)}
                     />
                 </InputContainer>
-                <CommonButton content={"다음"} disabled={disabled} />
+                <CommonButton
+                    content={"다음"}
+                    disabled={disabled}
+                    onClick={() => props.setmbti(mbti)}
+                />
             </FormContainer>
         </Container>
     );

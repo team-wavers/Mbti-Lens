@@ -6,15 +6,12 @@ export const getResponse = async (
 ) => {
     if (mbti) {
         const res = await instance().get(
-            `v1/users?userId=${userId}/mbtis?mbti=${mbti}`,
+            `/users/${userId}/mbtis/${mbti}/comments`,
         );
+
         return res.data;
     } else {
-        const res = await instance().get(`v1/users?userId=${userId}/mbtis`);
+        const res = await instance().get(`/users/${userId}/mbtis`);
         return res.data;
     }
 };
-
-//v1/users?userId=${userId}/mbtis?mbti=${mbti}
-
-//v1/users?userId=${userId}/mbtis

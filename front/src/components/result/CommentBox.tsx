@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
 import flexBox from "@/styles/utils/flexbox";
-import { CommentResponseType } from "@/types/response";
+import { CommentSearchResponse } from "@/types/response";
 type Props = {
-    data: CommentResponseType["SearchResponse"]["data"][] | undefined;
+    data: CommentSearchResponse | undefined | undefined;
     mbtistate: string;
 };
 const CommentBox = ({ data, mbtistate }: Props) => {
@@ -17,7 +17,8 @@ const CommentBox = ({ data, mbtistate }: Props) => {
     const commentList = data
         ?.map((e) => e)
         .filter(
-            (e) => e.comment !== undefined && e.mbti == mbtistate.toLowerCase(),
+            (e) =>
+                e.comment !== undefined && e.mbti == mbtistate?.toLowerCase(),
         );
     return (
         <Container>
@@ -59,6 +60,7 @@ const MoreButtom = styled.button`
     font-size: ${({ theme }) => theme.typography.s};
     font-family: "RixInooAriDuri" sans-serif;
     font-weight: 500;
+    margin-top: 20px;
     color: #a06868;
     background-color: #f0e4d8;
     border: none;

@@ -30,7 +30,21 @@ export type CommentResponseType = {
     SubmitResponse?: GeneralResponse;
 };
 
-export type CommentSearchResponse =
-    CommentResponseType["SearchResponse"]["data"][];
+export type CommentSearchResponse = (
+    | {
+          _id: number;
+          host_id: number;
+          mbti: string;
+          like: boolean;
+          comment?: undefined;
+      }
+    | {
+          _id: number;
+          host_id: number;
+          mbti: string;
+          like: boolean;
+          comment: string;
+      }
+)[];
 
 export type MbtiSearchResponse = APIResponseType["SearchResponse"]["data"];

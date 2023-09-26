@@ -15,7 +15,7 @@ const MbtiButton = ({ mbtiLetter, setState, state }: Props) => {
             {mbtiLetter?.map((e, i) => (
                 <Mbti
                     key={mbtiLetter[i]}
-                    $isfocus={i === state || typeof state !== "number"}
+                    $isfocus={i === state || state === 5}
                     onMouseDown={() => handleClick(i)}
                 >
                     {mbtiLetter[i]}

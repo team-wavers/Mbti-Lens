@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import flexBox from "@/styles/utils/flexbox";
@@ -7,8 +7,11 @@ import Modal from "@/components/common/Modal/Modal";
 import useModal from "@/hooks/useModal";
 import { useRecoilState } from "recoil";
 import mbtiAtom from "@/recoil/mbti";
+import useCookie from "@/hooks/useCookie";
+import { postMbti } from "@/apis/postData";
 
 const id = () => {
+    const { cookie } = useCookie();
     const router = useRouter();
     // const { id } = router.query;
     // useEffect(() => {
@@ -18,19 +21,24 @@ const id = () => {
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);
     const confirmEvent = () => {
-        if (formRef.current) console.log(formRef.current);
+        console.log(mbti);
+        setVisible((prev) => !prev);
+        postMbti(cookie.userid, mbti)
+            .then((res) => console.log(res.data))
+            .catch((error) => console.log(error));
     };
 
     return (
         <Container>
             <Title>MBTI를 입력해 주세요!</Title>
             <MbtiForm
-                onSubmit={(e: React.SyntheticEvent) => {
+                onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => {
                     e.preventDefault();
                     setVisible((prev) => !prev);
-                    console.log(e.target);
+                    console.log(mbti);
                 }}
                 ref={formRef}
+                setmbti={setMbti}
             />
             {visible && (
                 <Modal

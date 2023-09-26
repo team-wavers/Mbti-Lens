@@ -8,51 +8,68 @@ import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getResponse } from "@/apis/getResponse";
 import useCookie from "@/hooks/useCookie";
-import useComment from "@/hooks/useComment";
-import { MbtiSearchResponse } from "@/types/response";
-import { mbtiResponse } from "@/utils/mokup";
+import { CommentSearchResponse, MbtiSearchResponse } from "@/types/response";
 import { useRouter } from "next/router";
+import axios from "axios";
 
+//SSR로 MBTI데이터, comment데이터 조회
+export const getStaticPaths = async () => {
+    const { cookie } = useCookie();
+    const userid = cookie.userid.toString();
+    const paths = [{ params: { id: userid } }];
+
+    return { paths, fallback: false };
+};
 export const getStaticProps: GetStaticProps = async () => {
     const { cookie } = useCookie();
     const userId = cookie.userid;
-    //path에서 넘겨받은 id로 mbti데이터 SSR하기
-    const mbtiData = await getResponse(userId);
+    const mbtiResponse = await getResponse(userId)
+        .then((res) => res.data)
+        .catch((error) => console.log(error));
+    const mbtiData = mbtiResponse;
+    const commentResponse = await axios
+        .all([
+            getResponse(userId, mbtiData.ei),
+            getResponse(userId, mbtiData.ns),
+            getResponse(userId, mbtiData.tf),
+            getResponse(userId, mbtiData.pj),
+        ])
+        .then(
+            axios.spread((ei, ns, tf, pj) => {
+                const resArray = ei.data.concat(ns.data, tf.data, pj.data);
+                return resArray;
+            }),
+        );
+
     return {
-        props: { mbtiData, userId },
+        props: { mbtiResponse, commentResponse, userId },
         revalidate: 1,
     };
 };
 //https://api.mbti-lens.youthwelfare.kr/;
 
 const Index = ({
-    mbtiData,
+    mbtiResponse,
+    commentResponse,
     userId,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const router = useRouter();
-    const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (userId !== router.query) {
-        router.push(`${endpoint}/raiting/${router.query}`);
-    }
-
-    //mbti구하기
-    const mbti = mbtiData.data as MbtiSearchResponse;
-    const mbtiid = mbti.ei + mbti.ns + mbti.tf + mbti.pj;
-    //id구하기
-    const userid = userId;
-    //mbti,id데이터로 comment fetching 하기
-    const { data, error, isLoading } = useComment(userid, mbtiid);
-    const commentData = data?.data;
-    console.log(data, error, isLoading);
-    const mbtiLetter = [mbtiData.ei, mbtiData.ns, mbtiData.tf, mbtiData.pj];
 
     const [mbtiState, setMbtiState] = useState<number>(0);
+    const [comments, setComments] =
+        useState<CommentSearchResponse>(commentResponse);
+    //mbti구하기
+    const mbtiData: MbtiSearchResponse = mbtiResponse;
+    const mbtiLetter = [mbtiData.ei, mbtiData.ns, mbtiData.tf, mbtiData.pj].map(
+        (e) => e.toUpperCase(),
+    );
+    //const { data, error, isLoading } = useGetComment(userid, mbtiid);
+    //console.log(data, error, isLoading);
 
-    //const mbtiLetter = ["E", "N", "F", "J"];
-    //const data = commentResponse;
+    //const commentData = commentResponse;
     return (
         <Container>
-            {mbtiState === null ? (
+            {mbtiState === 5 ? (
                 <Title>남이 보는 김철수님의 MBTI는?</Title>
             ) : null}
             <MbtiButton
@@ -60,16 +77,16 @@ const Index = ({
                 setState={setMbtiState}
                 state={mbtiState}
             />
-            {mbtiState === null ? (
+            {mbtiState === 5 ? (
                 <ResultBox
                     mbti={mbtiLetter}
-                    data={mbtiResponse.data}
-                    length={commentData?.length}
+                    data={mbtiData}
+                    comment={comments}
                 />
             ) : (
                 <CommentSection>
                     <CommentBox
-                        data={commentData}
+                        data={comments}
                         mbtistate={mbtiLetter[mbtiState]}
                     />
                     <CommonButton

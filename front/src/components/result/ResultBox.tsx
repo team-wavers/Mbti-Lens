@@ -2,28 +2,33 @@ import React from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import { Thumbsdown, Thumbsup } from "@/assets/icons";
-import { APIResponseType } from "@/types/response";
+import { CommentSearchResponse, MbtiSearchResponse } from "@/types/response";
 
 type Props = {
-    data: APIResponseType["SearchResponse"]["data"];
+    data: MbtiSearchResponse;
     mbti: string[];
-    length: number | undefined;
+    comment: CommentSearchResponse;
 };
-const ResultBox = ({ data, mbti, length }: Props) => {
-    const counter = data.ei_like + data.ns_like + data.tf_like + data.pj_like;
+const ResultBox = ({ data, mbti, comment }: Props) => {
     const thumbsUpStats = [
         data.ei_like,
         data.ns_like,
         data.tf_like,
         data.pj_like,
     ];
-    const thumbsDownStats = [
-        thumbsUpStats.map((e) => Math.abs((length as number) - e)),
-    ];
+
+    const thumbsDownStats: Array<number> = [];
+    for (const i in mbti) {
+        thumbsDownStats.push(
+            comment.filter(
+                (e) => e.like === false && e.mbti === mbti[i].toLowerCase(),
+            ).length,
+        );
+    }
     //like와 comment의 총 개수로만 계산해서..
     return (
         <ResultContainer>
-            <Count>{counter}명이 눌러주셨어용</Count>
+            <Count>{comment.length}명이 눌러주셨어용</Count>
             <StatsContainer>
                 <MbtiContainer>{mbti.map((e) => e)} </MbtiContainer>
                 <ThumbsContainer>

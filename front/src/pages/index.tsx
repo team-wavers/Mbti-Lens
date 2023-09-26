@@ -10,14 +10,19 @@ const Index = () => {
     const router = useRouter();
     const { cookie } = useCookie();
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
+    console.log(router.query);
     const loginHandler = () => {
         router.push(`${endpoint}/auth/oauth/kakao`);
     };
 
-    if (router.query.toString() == cookie.userid) {
-        router.push(`${endpoint}/result`);
-    }
+    /*useEffect(() => {
+        if (cookie) {
+            if (cookie.userid !== router.query.toString()) {
+                router.push(`/rating/${router.query}`);
+            }
+            router.push(`/result/${cookie.userid}`);
+        }
+    }, []);*/
 
     return (
         <Container>
