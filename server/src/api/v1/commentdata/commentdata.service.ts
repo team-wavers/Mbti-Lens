@@ -7,6 +7,7 @@ import {
 import { CommentData } from './commentdata.entity';
 import { Repository } from 'typeorm';
 import { MbtiService } from '../mbti/mbti.service';
+import { UsersService } from '../users/users.service';
 import { StandardResponseDto } from 'src/dto/standard-response.dto';
 
 @Injectable()
@@ -15,12 +16,20 @@ export class CommentdataService {
     @Inject('COMMENTDATA_REPOSITORY')
     private commentRepository: Repository<CommentData>,
     private mbtiService: MbtiService,
+    private usersService: UsersService,
   ) {}
   async createNewData(
     paramUserId: number,
     paramMbti: string,
     bodyData: any,
+    public_key: any,
   ): Promise<CommentData> {
+    const check_key = await this.usersService.findOne({
+      where: { _id: paramUserId },
+    });
+    if (check_key?.public_key !== public_key.public_key) {
+      throw new NotFoundException('public_key not found');
+    }
     const newData: CommentData = new CommentData();
     newData.host_id = paramUserId;
     newData.mbti = paramMbti;
@@ -54,7 +63,17 @@ export class CommentdataService {
       'Done Like Update',
     );
   }
-  async findComments(paramUserId: number, paramMbti: string): Promise<any[]> {
+  async findComments(
+    paramUserId: number,
+    paramMbti: string,
+    public_key: any,
+  ): Promise<any[]> {
+    const check_key = await this.usersService.findOne({
+      where: { _id: paramUserId },
+    });
+    if (check_key?.public_key !== public_key.public_key) {
+      throw new NotFoundException('public_key not found');
+    }
     const comments = await this.commentRepository.find({
       where: { host_id: paramUserId, mbti: paramMbti },
     });

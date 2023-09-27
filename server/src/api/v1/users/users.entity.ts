@@ -32,4 +32,7 @@ export class Users {
 
   @Column({ nullable: true })
   gender?: string;
+
+  @Column()
+  public_key!: string;
 }
