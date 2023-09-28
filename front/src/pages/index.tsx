@@ -5,24 +5,40 @@ import flexBox from "@/styles/utils/flexbox";
 import ServiceLogo from "@/assets/images/logo.png";
 import { useRouter } from "next/router";
 import useCookie from "@/hooks/useCookie";
+import theme from "@/styles/theme";
+import { useEffect } from "react";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { getResponse } from "@/apis/getResponse";
 
-const Index = () => {
+export const getStaticProps: GetStaticProps = async () => {
+    const { cookie } = useCookie();
+    const mbtiResponse = await getResponse(cookie.userid)
+        .then((res) => res.data)
+        .catch((error) => console.log(error));
+    return {
+        props: { mbtiResponse },
+        revalidate: 1,
+    };
+};
+const Index = ({
+    mbtiResponse,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
     const router = useRouter();
     const { cookie } = useCookie();
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    console.log(router.query);
     const loginHandler = () => {
         router.push(`${endpoint}/auth/oauth/kakao`);
     };
 
-    /*useEffect(() => {
-        if (cookie) {
-            if (cookie.userid !== router.query.toString()) {
-                router.push(`/rating/${router.query}`);
-            }
+    useEffect(() => {
+        if (mbtiResponse) {
+            console.log(cookie.userid);
             router.push(`/result/${cookie.userid}`);
         }
-    }, []);*/
+        if (!mbtiResponse && cookie.userid) {
+            router.push(`/create`);
+        }
+    }, []);
 
     return (
         <Container>
@@ -48,6 +64,7 @@ const Index = () => {
 
 const Container = styled.div`
     ${flexBox("row", "center", "center")}
+    background-color: ${({ theme }) => theme.colors.background};
     width: 100%;
     height: 100vh;
 `;

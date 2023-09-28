@@ -23,7 +23,7 @@ const InputContainer = styled.input`
     width: 80px;
     height: 100px;
     outline: none;
-    color: ${({ theme }) => theme.colors.primary_1};
+    color: ${({ theme }) => theme.colors.primary_4};
     border: 1px solid ${({ theme }) => theme.colors.gray};
     border-radius: 10px;
     background-color: ${({ theme }) => theme.colors.white};
@@ -36,8 +36,8 @@ const InputContainer = styled.input`
         transform: scale(1.1);
     }
     &:not(:placeholder-shown) {
-        border-color: ${({ theme }) => theme.colors.primary_1};
-        color: ${({ theme }) => theme.colors.primary_1};
+        border-color: ${({ theme }) => theme.colors.primary_4};
+        color: ${({ theme }) => theme.colors.primary_4};
         &:focus {
             box-shadow: 0px 1px 7px 3px rgba(86, 154, 255, 0.2);
         }

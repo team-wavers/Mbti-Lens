@@ -22,7 +22,8 @@ const CommentBox = ({ data, mbtistate }: Props) => {
         );
     return (
         <Container>
-            {data && !isMore ? (
+            {commentList && commentList.length > 3 && !isMore ? (
+                //코멘트 3개이상
                 <>
                     {commentList?.slice(commentList.length - 3).map((e, i) => (
                         <Comment
@@ -31,20 +32,39 @@ const CommentBox = ({ data, mbtistate }: Props) => {
                             like={commentList[i].like}
                         />
                     ))}
-                    <MoreButtom onClick={() => setismore(true)}>
-                        더보기
-                    </MoreButtom>
+                    <MoreButton
+                        content={"더보기"}
+                        onClick={() => setismore(true)}
+                    />
                 </>
             ) : null}
-            {data &&
-                isMore &&
+            {commentList &&
+                commentList.length <= 3 &&
                 commentList?.map((e, i) => (
+                    //코멘트 3개 이하
                     <Comment
                         key={e._id}
                         comment={commentList[i].comment}
                         like={commentList[i].like}
                     />
                 ))}
+            {commentList?.length !== 0 &&
+                isMore &&
+                commentList?.map((e, i) => (
+                    //더보기 눌렀을 때
+                    <Comment
+                        key={e._id}
+                        comment={commentList[i].comment}
+                        like={commentList[i].like}
+                    />
+                ))}
+            {commentList?.length === 0 && (
+                <Nothing
+                    content={
+                        "아직 코멘트가 없어요.공유하기 버튼을 눌러 공유해 보세요 !"
+                    }
+                />
+            )}
         </Container>
     );
 };
@@ -56,12 +76,28 @@ const Container = styled.div`
     margin-bottom: 20px;
     width: 100%;
 `;
-const MoreButtom = styled.button`
-    font-size: ${({ theme }) => theme.typography.s};
+const MoreButton = styled.button<{ content: string }>`
+    width: 100px;
+    height: auto;
     font-family: "RixInooAriDuri" sans-serif;
-    font-weight: 500;
-    margin-top: 20px;
-    color: #a06868;
+    margin-top: 10px;
+    color: ${({ theme }) => theme.colors.primary_5};
     background-color: #f0e4d8;
     border: none;
+    &:before {
+        content: "${({ content }) => content}";
+        font-size: ${({ theme }) => theme.typography.s};
+    }
+`;
+const Nothing = styled.div<{ content: string }>`
+    width: auto;
+    height: auto;
+    color: ${({ theme }) => theme.colors.primary_5};
+    font-family: "HSYuji" sans-serif;
+    text-align: center;
+    margin: 30px 0 10px 0;
+    &:before {
+        content: "${({ content }) => content}";
+        font-size: ${({ theme }) => theme.typography.m};
+    }
 `;

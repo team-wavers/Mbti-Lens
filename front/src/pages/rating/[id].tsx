@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import mbtiAtom from "@/recoil/mbti";
 import flexBox from "@/styles/utils/flexbox";
-import MbtiButton from "@/components/result/MbtiButton";
+import MbtiButton from "@/components/common/Button/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
 import RatingForm from "@/components/rating/RatingForm";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
@@ -20,7 +20,7 @@ import axios from "axios";
 export const getStaticPaths = async () => {
     const { cookie } = useCookie();
     const userid = cookie.userid.toString();
-    const paths = [{ params: { id: userid } }];
+    const paths = [{ params: { userId: userid } }];
     return { paths, fallback: true };
 };
 export const getStaticProps: GetStaticProps = async ({ params }) => {

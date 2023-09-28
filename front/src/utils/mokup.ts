@@ -17,42 +17,6 @@ export const commentResponse = {
             like: false,
             comment: "e2",
         },
-        {
-            _id: 4,
-            host_id: 1,
-            mbti: "n",
-            like: true,
-            comment: "comment",
-        },
-        {
-            _id: 5,
-            host_id: 1,
-            mbti: "e",
-            like: true,
-            comment:
-                "comment comment comment commentcommentcomment comment comment",
-        },
-        {
-            _id: 6,
-            host_id: 1,
-            mbti: "e",
-            like: true,
-            comment: "  comment",
-        },
-        {
-            _id: 7,
-            host_id: 1,
-            mbti: "e",
-            like: true,
-            comment: "comment",
-        },
-        {
-            _id: 8,
-            host_id: 1,
-            mbti: "e",
-            like: true,
-            comment: "comment",
-        },
     ],
 };
 

@@ -3,14 +3,14 @@ import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
-import MbtiButton from "@/components/result/MbtiButton";
+import MbtiButton from "@/components/common/Button/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getResponse } from "@/apis/getResponse";
 import useCookie from "@/hooks/useCookie";
 import { CommentSearchResponse, MbtiSearchResponse } from "@/types/response";
-import { useRouter } from "next/router";
 import axios from "axios";
+import { commentResponse } from "@/utils/mokup";
 
 //SSR로 MBTI데이터, comment데이터 조회
 export const getStaticPaths = async () => {
@@ -18,7 +18,7 @@ export const getStaticPaths = async () => {
     const userid = cookie.userid.toString();
     const paths = [{ params: { id: userid } }];
 
-    return { paths, fallback: false };
+    return { paths, fallback: "blocking" };
 };
 export const getStaticProps: GetStaticProps = async () => {
     const { cookie } = useCookie();
@@ -39,34 +39,26 @@ export const getStaticProps: GetStaticProps = async () => {
                 const resArray = ei.data.concat(ns.data, tf.data, pj.data);
                 return resArray;
             }),
-        );
-
+        )
+        .catch((error) => console.log(error));
     return {
-        props: { mbtiResponse, commentResponse, userId },
+        props: { mbtiResponse, commentResponse },
         revalidate: 1,
     };
 };
-//https://api.mbti-lens.youthwelfare.kr/;
 
 const Index = ({
     mbtiResponse,
     commentResponse,
-    userId,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-    const router = useRouter();
-
-    const [mbtiState, setMbtiState] = useState<number>(0);
-    const [comments, setComments] =
-        useState<CommentSearchResponse>(commentResponse);
+    const [mbtiState, setMbtiState] = useState<number>(5);
+    const comments: CommentSearchResponse = commentResponse;
     //mbti구하기
     const mbtiData: MbtiSearchResponse = mbtiResponse;
     const mbtiLetter = [mbtiData.ei, mbtiData.ns, mbtiData.tf, mbtiData.pj].map(
         (e) => e.toUpperCase(),
     );
-    //const { data, error, isLoading } = useGetComment(userid, mbtiid);
-    //console.log(data, error, isLoading);
 
-    //const commentData = commentResponse;
     return (
         <Container>
             {mbtiState === 5 ? (
@@ -113,9 +105,8 @@ const Title = styled.h1`
     line-height: ${({ theme }) => theme.typography.x2l};
     font-family: "HSYuji", sans-serif;
     margin-bottom: 50px;
-    font-weight: 500;
     width: 350px;
-    color: #a06868;
+    color: ${({ theme }) => theme.colors.primary_4};
     text-align: center;
     margin: 0px;
 `;
