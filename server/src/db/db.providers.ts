@@ -14,7 +14,7 @@ export const dbProviders = [
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_SCHEMA'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: true,
+        synchronize: false,
       });
 
       return postgres.initialize();
