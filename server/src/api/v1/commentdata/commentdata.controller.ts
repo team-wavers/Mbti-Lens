@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CommentdataService } from './commentdata.service';
 import { StandardResponseDto } from 'src/dto/standard-response.dto';
 
@@ -11,11 +19,13 @@ export class CommentdataController {
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
     @Body() bodyData: any,
+    @Query() public_key: any,
   ): Promise<any> {
     const newData = await this.commentdataService.createNewData(
       paramUserId,
       paramMbti,
       bodyData,
+      public_key,
     );
     return await this.commentdataService.createComment(newData);
   }
@@ -24,11 +34,16 @@ export class CommentdataController {
   async showComments(
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
+    @Query() public_key: any,
   ): Promise<any> {
     return new StandardResponseDto(
       200,
       'api.common.ok',
-      await this.commentdataService.findComments(paramUserId, paramMbti),
+      await this.commentdataService.findComments(
+        paramUserId,
+        paramMbti,
+        public_key,
+      ),
     );
   }
 }
