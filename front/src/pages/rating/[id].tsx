@@ -1,16 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil";
 import RatingForm from "@/components/rating/RatingForm";
-import mbtiAtom from "@/recoil/mbti";
 import flexBox from "@/styles/utils/flexbox";
-import {
-    GetServerSideProps,
-    GetServerSidePropsContext,
-    GetServerSidePropsResult,
-    GetStaticProps,
-} from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import searchMbti from "@/apis/create/searchMbti";
 
 type Props = {
