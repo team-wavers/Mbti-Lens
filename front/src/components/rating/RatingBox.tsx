@@ -12,6 +12,7 @@ import flexBox from "@/styles/utils/flexbox";
 import theme from "@/styles/theme";
 
 type Props = {
+<<<<<<< HEAD
     mbti?: number;
     like: boolean;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -31,13 +32,29 @@ const RatingBox = (props: Props) => {
         <Container $mbti={props.mbti}>
             <ButtonContainer onClick={(e) => props.onClick(e)}>
                 {props.like ? (
+=======
+    like: boolean | undefined;
+    onDislike: () => void;
+    onLike: () => void;
+};
+
+const RatingBox = ({ onDislike, onLike, like }: Props) => {
+    return (
+        <Container>
+            <ButtonContainer type="button" onClick={onLike}>
+                {like ? (
+>>>>>>> 46d4a3ad1c50d83685188ae66c97dfe354fdd0dd
                     <RatingUpSelectedIcon width={30} />
                 ) : (
                     <RatingUpOutlineIcon width={30} />
                 )}
             </ButtonContainer>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <ButtonContainer onClick={() => setLike(false)}>
+=======
+            <ButtonContainer type="button" onClick={onDislike}>
+>>>>>>> 46d4a3ad1c50d83685188ae66c97dfe354fdd0dd
                 {like === undefined ? (
                     <RatingDownOutlineIcon width={30} />
                 ) : !like ? (
@@ -57,6 +74,7 @@ const RatingBox = (props: Props) => {
 const Container = styled.div<{ $mbti?: number }>`
     ${flexBox("row", "center", "center")}
     width: auto;
+<<<<<<< HEAD
     height: 40px;
     margin-top: 5px;
     margin-left: ${({ $mbti }) =>
@@ -64,6 +82,9 @@ const Container = styled.div<{ $mbti?: number }>`
     margin-right: ${({ $mbti }) =>
         $mbti === 0 ? "280px" : $mbti === 1 ? "100px" : "0px"};
     background-color: ${({ theme }) => theme.colors.background};
+=======
+    height: auto;
+>>>>>>> 46d4a3ad1c50d83685188ae66c97dfe354fdd0dd
 `;
 <<<<<<< HEAD
 

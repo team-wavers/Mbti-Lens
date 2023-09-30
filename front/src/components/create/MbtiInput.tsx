@@ -2,8 +2,10 @@ import React, { forwardRef } from "react";
 import styled from "styled-components";
 
 type Props = {
-    onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
     id: string;
+    value?: "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
 };
 
 const MbtiInput = (props: Props, ref: React.ForwardedRef<HTMLInputElement>) => {

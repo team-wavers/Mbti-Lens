@@ -6,16 +6,14 @@ import styled from "styled-components";
 type Props = {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    id: string;
 };
 
-const CommentBox = (
-    props: Props,
-    ref: React.ForwardedRef<HTMLTextAreaElement>,
-) => {
+const CommentBox = ({ value, onChange, id }: Props) => {
     return (
         <Container>
-            <Title>왜 그렇게 생각하시나요?</Title>
-            <CommentInput {...props} ref={ref} />
+            <Title>왜 그렇게 생각하시나요? (선택)</Title>
+            <CommentInput id={id} onChange={onChange} value={value} />
         </Container>
     );
 };

@@ -11,9 +11,9 @@ type Props = {
 const CommonButton = ({ disabled, content, onClick }: Props) => {
     return (
         <ButtonContainer
+            onClick={onClick}
             content={content}
             disabled={disabled}
-            onClick={onClick}
         ></ButtonContainer>
     );
 };
