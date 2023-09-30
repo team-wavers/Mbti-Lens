@@ -8,20 +8,17 @@ import useModal from "@/hooks/useModal";
 import { useRecoilState } from "recoil";
 import mbtiAtom from "@/recoil/mbti";
 
-const CreateMBTI = () => {
+const id = () => {
     const router = useRouter();
     // const { id } = router.query;
     // useEffect(() => {
     //     console.log(id);
     // }, [id]);
-
+    const [mbti, setMbti] = useRecoilState(mbtiAtom);
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);
-
     const confirmEvent = () => {
-        if (formRef.current) {
-            console.log(formRef.current);
-        }
+        if (formRef.current) console.log(formRef.current);
     };
 
     return (
@@ -31,6 +28,7 @@ const CreateMBTI = () => {
                 onSubmit={(e: React.SyntheticEvent) => {
                     e.preventDefault();
                     setVisible((prev) => !prev);
+                    console.log(e.target);
                 }}
                 ref={formRef}
             />
@@ -51,17 +49,16 @@ const CreateMBTI = () => {
 };
 
 const Container = styled.div`
-    ${flexBox("column", "center", "center")}
+    ${flexBox("column", "center", "center;")}
     width: 100%;
     height: 100vh;
 `;
 
 const Title = styled.h1`
-    color: ${({ theme }) => theme.colors.primary};
     font-size: ${({ theme }) => theme.typography.xl};
     font-weight: 500;
     text-align: center;
     margin-bottom: 30px;
 `;
 
-export default CreateMBTI;
+export default id;

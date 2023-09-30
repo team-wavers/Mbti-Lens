@@ -25,7 +25,10 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                 (ref) => ref === e.target,
             );
             targetInput.value = e.key.toUpperCase();
+            console.log(inputRefs.current);
+
             setMbti({ ...mbti, [targetInput.id]: e.key.toUpperCase() });
+            console.log(mbti);
         }
     };
 

@@ -3,17 +3,22 @@ import KakaoLogin from "@/assets/images/kakaologin.png";
 import Image from "next/image";
 import flexBox from "@/styles/utils/flexbox";
 import ServiceLogo from "@/assets/images/logo.png";
-import getAccessToken from "@/apis/oauth/kakao";
 import { useRouter } from "next/router";
+import useCookie from "@/hooks/useCookie";
 
 const Index = () => {
     const router = useRouter();
-    // const clientId = process.env.NEXT_PUBLIC_KAKAO_OAUTH_CLIENT_ID;
+    const { cookie } = useCookie();
+    const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
     const loginHandler = () => {
-        getAccessToken().then((res) => {
-            console.log(res);
-        });
+        router.push(`${endpoint}/auth/oauth/kakao`);
     };
+
+    if (router.query.toString() == cookie.userid) {
+        router.push(`${endpoint}/result`);
+    }
+
     return (
         <Container>
             <Information>
