@@ -58,6 +58,3 @@ export const CONFIG_VALIDATOR: ConfigModuleOptions = {
   cache: true,
   envFilePath: envFilePath,
 };
-
-// dev, develop, development = .env.dev로 실행되게끔
-// prod, production = .env.prod로 실행되게끔
