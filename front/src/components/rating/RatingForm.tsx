@@ -1,17 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import MbtiInput from "./MbtiInput";
 import RatingBox from "./RatingBox";
 import CommentBox from "./CommentBox";
 import { CommonButton } from "../common/Button";
+import SearchResponse from "@/types/response";
 
 type MbtiType<T> = Map<string, T> | undefined;
+type Props = {
+    res: SearchResponse;
+};
 
-const RatingForm = () => {
+const RatingForm = (
+    { res }: Props,
+    ref: React.ForwardedRef<HTMLFormElement>,
+) => {
+    const { data } = res;
     const [current, setCurrent] = useState<string>(`mbti_e_i`);
     const inputRefs = useRef<Array<any>>([]);
-    const formRef = useRef<HTMLFormElement | null>(null);
+    // const formRef = useRef<HTMLFormElement | null>(null);
     const [likes, setLikes] = useState<MbtiType<boolean>>(undefined);
     const [comments, setComments] = useState<MbtiType<string>>(undefined);
     const mbtiArray = ["mbti_e_i", "mbti_n_s", "mbti_t_f", "mbti_p_j"];
@@ -29,16 +37,16 @@ const RatingForm = () => {
     };
 
     const submitHandler = () => {
-        console.log("test");
+        console.log(data);
     };
 
     return (
-        <Container onSubmit={(e: any) => e.preventDefault()} ref={formRef}>
+        <Container onSubmit={(e: any) => e.preventDefault()} ref={ref}>
             <MbtiContainer>
                 <RatingContainer>
                     <MbtiInput
                         id={`mbti_e_i`}
-                        value={`a`}
+                        value={data.ei || undefined}
                         onClick={(e: any) => setCurrent(e.target.id)}
                         ref={(e) => e && (inputRefs.current[0] = e)}
                         selected={
@@ -57,7 +65,7 @@ const RatingForm = () => {
                 <RatingContainer>
                     <MbtiInput
                         id={`mbti_n_s`}
-                        value={`a`}
+                        value={data.ns || undefined}
                         onClick={(e: any) => setCurrent(e.target.id)}
                         ref={(e) => e && (inputRefs.current[1] = e)}
                         selected={
@@ -76,7 +84,7 @@ const RatingForm = () => {
                 <RatingContainer>
                     <MbtiInput
                         id={`mbti_t_f`}
-                        value={`a`}
+                        value={data.tf || undefined}
                         onClick={(e: any) => setCurrent(e.target.id)}
                         ref={(e) => e && (inputRefs.current[2] = e)}
                         selected={
@@ -95,7 +103,7 @@ const RatingForm = () => {
                 <RatingContainer>
                     <MbtiInput
                         id={`mbti_p_j`}
-                        value={`a`}
+                        value={data.pj || undefined}
                         onClick={(e: any) => setCurrent(e.target.id)}
                         ref={(e) => e && (inputRefs.current[3] = e)}
                         selected={
@@ -191,4 +199,4 @@ const ButtonDivider = styled.div`
     height: auto;
 `;
 
-export default RatingForm;
+export default forwardRef(RatingForm);
