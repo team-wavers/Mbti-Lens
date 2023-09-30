@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RatingUpOutlineIcon from "../../assets/icons/thumbs-up.svg";
 import RatingUpSelectedIcon from "../../assets/icons/thumbs-up-selected.svg";
@@ -7,22 +7,25 @@ import RatingDownSelectedIcon from "../../assets/icons/thumbs-down-selected.svg"
 import flexBox from "@/styles/utils/flexbox";
 
 type Props = {
-    mbti?: "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
+    like: boolean | undefined;
+    onDislike: () => void;
+    onLike: () => void;
 };
 
-const RatingBox = ({ mbti }: Props) => {
-    const [like, setLike] = useState<boolean | undefined>(undefined);
+const RatingBox = ({ onDislike, onLike, like }: Props) => {
     return (
         <Container>
-            <ButtonContainer onClick={() => setLike(true)}>
+            <ButtonContainer type="button" onClick={onLike}>
                 {like ? (
                     <RatingUpSelectedIcon width={30} />
                 ) : (
                     <RatingUpOutlineIcon width={30} />
                 )}
             </ButtonContainer>
-            <ButtonContainer onClick={() => setLike(false)}>
-                {!like ? (
+            <ButtonContainer type="button" onClick={onDislike}>
+                {like === undefined ? (
+                    <RatingDownOutlineIcon width={30} />
+                ) : !like ? (
                     <RatingDownSelectedIcon width={30} />
                 ) : (
                     <RatingDownOutlineIcon width={30} />
@@ -36,14 +39,6 @@ const Container = styled.div`
     ${flexBox("row", "center", "center")}
     width: auto;
     height: auto;
-    background-color: white;
-`;
-
-const RadioButton = styled.input`
-    display: none;
-    width: 0px;
-    height: 0px;
-    outline: none;
 `;
 
 const ButtonContainer = styled.button`

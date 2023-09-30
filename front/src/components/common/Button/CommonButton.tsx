@@ -5,11 +5,13 @@ import { styled } from "styled-components";
 type Props = {
     disabled: boolean;
     content: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const CommonButton = ({ disabled, content }: Props) => {
+const CommonButton = ({ disabled, content, onClick }: Props) => {
     return (
         <ButtonContainer
+            onClick={onClick}
             content={content}
             disabled={disabled}
         ></ButtonContainer>
