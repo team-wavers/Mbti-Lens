@@ -72,7 +72,7 @@ export class CommentdataService {
     const check_key = await this.usersService.findOne({
       where: { _id: paramUserId },
     });
-    if (check_key?.public_key !== public_key.public_key) {
+    if (!check_key || check_key?.public_key !== public_key.public_key) {
       throw new NotFoundException('public_key not found');
     }
     const comments = await this.commentRepository.find({
