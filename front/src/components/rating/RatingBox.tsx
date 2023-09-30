@@ -7,25 +7,22 @@ import RatingDownSelectedIcon from "../../assets/icons/thumbs-down-selected.svg"
 import flexBox from "@/styles/utils/flexbox";
 
 type Props = {
-    mbti?: "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
+    like: boolean | undefined;
+    onDislike: () => void;
+    onLike: () => void;
 };
 
-const RatingBox = ({ mbti }: Props) => {
-    const [like, setLike] = useState<boolean | undefined>(undefined);
-
-    useEffect(() => {
-        console.log(like);
-    }, [like]);
+const RatingBox = ({ onDislike, onLike, like }: Props) => {
     return (
         <Container>
-            <ButtonContainer onClick={() => setLike(true)}>
+            <ButtonContainer type="button" onClick={onLike}>
                 {like ? (
                     <RatingUpSelectedIcon width={30} />
                 ) : (
                     <RatingUpOutlineIcon width={30} />
                 )}
             </ButtonContainer>
-            <ButtonContainer onClick={() => setLike(false)}>
+            <ButtonContainer type="button" onClick={onDislike}>
                 {like === undefined ? (
                     <RatingDownOutlineIcon width={30} />
                 ) : !like ? (
@@ -42,7 +39,6 @@ const Container = styled.div`
     ${flexBox("row", "center", "center")}
     width: auto;
     height: auto;
-    background-color: white;
 `;
 
 const ButtonContainer = styled.button`

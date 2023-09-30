@@ -2,11 +2,17 @@ import flexBox from "@/styles/utils/flexbox";
 import React from "react";
 import styled from "styled-components";
 
-const CommentBox = () => {
+type Props = {
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    id: string;
+};
+
+const CommentBox = ({ value, onChange, id }: Props) => {
     return (
         <Container>
-            <Title>왜 그렇게 생각하시나요?</Title>
-            <CommentInput />
+            <Title>왜 그렇게 생각하시나요? (선택)</Title>
+            <CommentInput id={id} onChange={onChange} value={value} />
         </Container>
     );
 };
