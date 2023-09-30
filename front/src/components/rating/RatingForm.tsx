@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import MbtiInput from "./MbtiInput";
