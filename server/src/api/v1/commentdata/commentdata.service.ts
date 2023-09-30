@@ -24,10 +24,11 @@ export class CommentdataService {
     bodyData: any,
     public_key: any,
   ): Promise<CommentData> {
+    //check_key를 통해 public_key가 유효한지 확인
     const check_key = await this.usersService.findOne({
       where: { _id: paramUserId },
     });
-    if (check_key?.public_key !== public_key.public_key) {
+    if (!check_key || check_key?.public_key !== public_key.public_key) {
       throw new NotFoundException('public_key not found');
     }
     const newData: CommentData = new CommentData();
