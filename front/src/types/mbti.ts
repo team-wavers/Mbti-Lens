@@ -5,4 +5,6 @@ type MbtiType = {
     pj: "P" | "J" | null;
 };
 
+type AllMbtiType = "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
+
 export default MbtiType;

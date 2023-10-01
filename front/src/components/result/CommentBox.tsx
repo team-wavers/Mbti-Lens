@@ -80,7 +80,7 @@ const MoreButton = styled.button<{ content: string }>`
     width: 100px;
     height: auto;
     font-family: "RixInooAriDuri" sans-serif;
-    margin-top: 10px;
+    margin-top: 1 0px;
     color: ${({ theme }) => theme.colors.primary_5};
     background-color: #f0e4d8;
     border: none;

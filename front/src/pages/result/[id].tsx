@@ -3,16 +3,16 @@ import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import CommentBox from "@/components/result/CommentBox";
 import ResultBox from "@/components/result/ResultBox";
-import MbtiButton from "@/components/common/Button/MbtiButton";
+import MbtiButton from "@/components/result/MbtiButton";
 import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getResponse } from "@/apis/getResponse";
 import useCookie from "@/hooks/useCookie";
 import { CommentSearchResponse, MbtiSearchResponse } from "@/types/response";
 import axios from "axios";
-import { commentResponse } from "@/utils/mokup";
 
 //SSR로 MBTI데이터, comment데이터 조회
+//getServerSide로 바꾸는게 나으려나
 export const getStaticPaths = async () => {
     const { cookie } = useCookie();
     const userid = cookie.userid.toString();
@@ -23,6 +23,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async () => {
     const { cookie } = useCookie();
     const userId = cookie.userid;
+
     const mbtiResponse = await getResponse(userId)
         .then((res) => res.data)
         .catch((error) => console.log(error));
@@ -40,7 +41,7 @@ export const getStaticProps: GetStaticProps = async () => {
                 return resArray;
             }),
         )
-        .catch((error) => console.log(error));
+        .catch((error) => null);
     return {
         props: { mbtiResponse, commentResponse },
         revalidate: 1,
@@ -51,6 +52,7 @@ const Index = ({
     mbtiResponse,
     commentResponse,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    const { cookie } = useCookie();
     const [mbtiState, setMbtiState] = useState<number>(5);
     const comments: CommentSearchResponse = commentResponse;
     //mbti구하기
@@ -62,7 +64,10 @@ const Index = ({
     return (
         <Container>
             {mbtiState === 5 ? (
-                <Title>남이 보는 김철수님의 MBTI는?</Title>
+                <Title>
+                    남이 보는 {cookie.username}님의 <br />
+                    MBTI는??
+                </Title>
             ) : null}
             <MbtiButton
                 mbtiLetter={mbtiLetter}

@@ -27,11 +27,13 @@ export class AuthService {
     });
 
     const redirectUrl = this.configService.get('REDIRECT_URL');
+    const rootUrl = this.configService.get('ROOT_URL');
 
     if (redirectUrl) {
       res
         .cookie('user', usercookie, {
           expires: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 만료기간 5일
+          domain: rootUrl,
         })
         .redirect(redirectUrl);
     } else {

@@ -5,15 +5,15 @@ import { styled } from "styled-components";
 type Props = {
     disabled: boolean;
     content: string;
-    onClick?: () => void;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const CommonButton = ({ disabled, content, onClick }: Props) => {
     return (
         <ButtonContainer
+            onClick={onClick}
             content={content}
             disabled={disabled}
-            onClick={onClick}
         ></ButtonContainer>
     );
 };
@@ -21,7 +21,6 @@ const CommonButton = ({ disabled, content, onClick }: Props) => {
 const ButtonContainer = styled.button<{ content: string }>`
     width: 135px;
     height: 43px;
-    margin: 0px 40px;
     outline: none;
     border: none;
     border-radius: 30px;

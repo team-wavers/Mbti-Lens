@@ -10,6 +10,7 @@ type Props = {
     comment: CommentSearchResponse;
 };
 const ResultBox = ({ data, mbti, comment }: Props) => {
+    const counter = comment ? comment.length : 0;
     const thumbsUpStats = [
         data.ei_like,
         data.ns_like,
@@ -17,18 +18,20 @@ const ResultBox = ({ data, mbti, comment }: Props) => {
         data.pj_like,
     ];
 
-    const thumbsDownStats: Array<number> = [];
-    for (const i in mbti) {
-        thumbsDownStats.push(
-            comment.filter(
+    const thumbsDownStats: Array<number> = [0, 0, 0, 0];
+
+    if (comment || comment !== null) {
+        for (const i in mbti) {
+            thumbsDownStats[i] = comment.filter(
                 (e) => e.like === false && e.mbti === mbti[i].toLowerCase(),
-            ).length,
-        );
+            ).length;
+        }
     }
+
     //like와 comment의 총 개수로만 계산해서..
     return (
         <ResultContainer>
-            <Count>{comment.length}명이 눌러주셨어용</Count>
+            <Count>{counter}명이 눌러주셨어용</Count>
             <StatsContainer>
                 <MbtiContainer>{mbti.map((e) => e)} </MbtiContainer>
                 <ThumbsContainer>
@@ -98,13 +101,13 @@ const MbtiContainer = styled.div`
 const ThumbsContainer = styled.div`
     ${flexBox("row", "center", "left")}
     color: rgba(0, 0, 0, 0.5);
-    letter-spacing: 57px;
     margin-left: 15px;
     width: 100%;
     height: 100px;
 `;
 const Text = styled.div`
-    width: 1px;
+    width: auto;
+    letter-spacing: 56px;
     padding-left: 20px;
     font-size: ${({ theme }) => theme.typography.m};
     font-family: "RixInooAriDuri", sans-serif;

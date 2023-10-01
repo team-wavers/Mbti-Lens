@@ -30,6 +30,11 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
             setMbti({ ...mbti, [targetInput.id]: e.key.toLowerCase() });
         }
     };
+
+    const nextHandler = () => {
+        return;
+    };
+
     return (
         <Container>
             <FormContainer method="post" onSubmit={props.onSubmit} ref={ref}>
@@ -56,9 +61,9 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                     />
                 </InputContainer>
                 <CommonButton
+                    onClick={nextHandler}
                     content={"다음"}
                     disabled={disabled}
-                    onClick={() => props.setmbti(mbti)}
                 />
             </FormContainer>
         </Container>

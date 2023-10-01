@@ -1,10 +1,10 @@
-interface GeneralResponse<T = void> {
+interface Response<T = void> {
     Code: number;
     message: string;
     data: T;
 }
 export type APIResponseType = {
-    SearchResponse: GeneralResponse<{
+    SearchResponse: Response<{
         _id: number;
         user_id: number;
         ei: "e" | "i";
@@ -16,18 +16,18 @@ export type APIResponseType = {
         tf_like: number;
         pj_like: number;
     }>;
-    SubmitResponse?: GeneralResponse;
+    SubmitResponse?: Response;
 };
 
 export type CommentResponseType = {
-    SearchResponse: GeneralResponse<{
+    SearchResponse: Response<{
         _id: number;
         host_id: number;
         mbti: string;
         like: boolean;
         comment?: string;
     }>;
-    SubmitResponse?: GeneralResponse;
+    SubmitResponse?: Response;
 };
 
 export type CommentSearchResponse = (
@@ -48,3 +48,24 @@ export type CommentSearchResponse = (
 )[];
 
 export type MbtiSearchResponse = APIResponseType["SearchResponse"]["data"];
+
+interface GenaralResponse {
+    statusCode: number;
+    message: string;
+}
+interface SearchResponse extends GenaralResponse {
+    data: {
+        _id: number;
+        user_id: number;
+        ei: "e" | "i" | " ";
+        ns: "n" | "s" | " ";
+        tf: "t" | "f" | " ";
+        pj: "p" | "j" | " ";
+        ei_like: number;
+        ns_like: number;
+        tf_like: number;
+        pj_like: number;
+    };
+}
+
+export default SearchResponse;

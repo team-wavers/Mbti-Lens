@@ -29,17 +29,6 @@ const Index = ({
     const loginHandler = () => {
         router.push(`${endpoint}/auth/oauth/kakao`);
     };
-
-    useEffect(() => {
-        if (mbtiResponse) {
-            console.log(cookie.userid);
-            router.push(`/result/${cookie.userid}`);
-        }
-        if (!mbtiResponse && cookie.userid) {
-            router.push(`/create`);
-        }
-    }, []);
-
     return (
         <Container>
             <Information>

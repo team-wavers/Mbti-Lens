@@ -30,22 +30,23 @@ const id = ({
     userId,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const router = useRouter();
-    useEffect(() => {
-        if (mbtiResponse) {
-            router.push(`/result/${userId}`);
-        }
-    }, [userId]);
+    // useEffect(() => {
+    //     if (mbtiResponse) {
+    //         router.push(`/result/${userId}`);
+    //     }
+    // }, [userId]);
+    console.log(userId);
+    const { cookie } = useCookie();
+    console.log(cookie.userid);
     const [mbti, setMbti] = useRecoilState(mbtiAtom);
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);
+
     const confirmEvent = () => {
         setVisible((prev) => !prev);
         postMbti(userId, mbti)
-            .then((res) => res.data)
+            .then((res) => console.log(res))
             .catch((error) => console.log(error));
-        if (mbtiResponse) {
-            router.push(`/result/${userId}`);
-        }
     };
 
     return (

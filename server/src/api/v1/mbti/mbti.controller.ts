@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -23,21 +22,15 @@ export class MbtiController {
     const mbtiTableCheck = await this.mbtiService.findOne({
       where: { user_id: paramUserId },
     });
-    // MBTI 정보가 없으면 생성, 있으면 업데이트
+    // MBTI 정보가 없으면 생성, 있다면 에러 처리
     if (!mbtiTableCheck) {
-      await this.mbtiService.createMbti(paramUserId, bodyData);
-      return new StandardResponseDto(
-        201,
-        'api.common.created',
-        'new data create success',
+      const public_key = await this.mbtiService.createMbti(
+        paramUserId,
+        bodyData,
       );
+      return new StandardResponseDto(201, 'api.common.created', public_key);
     } else {
-      await this.mbtiService.updateMbti(paramUserId, bodyData);
-      return new StandardResponseDto(
-        201,
-        'api.common.created',
-        'data update success',
-      );
+      return new StandardResponseDto(400, 'Bad Request', 'data already exists');
     }
   }
 
