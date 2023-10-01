@@ -45,6 +45,10 @@ export class MbtiService {
     const mbti = await this.mbtiRepository.findOne(options);
     return mbti;
   }
+  async findUser(options: any): Promise<any> {
+    const userdata = await this.usersService.findOne(options);
+    return userdata?.nickname;
+  }
   async updateLikes(
     user_id: number,
     mbti: string,
