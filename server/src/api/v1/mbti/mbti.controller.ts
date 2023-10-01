@@ -39,9 +39,16 @@ export class MbtiController {
     const result = await this.mbtiService.findOne({
       where: { user_id: paramUserId },
     });
-    if (result === null) {
+    const resultNickName = await this.mbtiService.findUser({
+      where: { _id: paramUserId },
+    });
+    if (!result || !resultNickName) {
       throw new NotFoundException('mbti data not found');
     }
-    return new StandardResponseDto(200, 'api.common.ok', result);
+    const resultWithNickname = {
+      ...result,
+      nickname: resultNickName,
+    };
+    return new StandardResponseDto(200, 'api.common.ok', resultWithNickname);
   }
 }
