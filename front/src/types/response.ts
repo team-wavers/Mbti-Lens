@@ -22,10 +22,10 @@ export interface SearchResponse extends Omit<GeneralResponse, "data"> {
 
 export interface SearchCommentResponse extends Omit<GeneralResponse, "data"> {
     data: {
-              _id: number;
-              host_id: number;
-              mbti: string;
-              like: boolean;
-              comment: string;
-          }[];
+        _id: number;
+        host_id: number;
+        mbti: string;
+        like: boolean;
+        comment: string;
+    }[];
 }
