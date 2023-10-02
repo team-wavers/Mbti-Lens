@@ -5,6 +5,4 @@ type MbtiType = {
     mbti_p_j: "P" | "J" | null;
 };
 
-type AllMbtiType = "E" | "I" | "N" | "S" | "F" | "T" | "P" | "J";
-
 export default MbtiType;

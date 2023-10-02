@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 
 const useModal = () => {
     const [visible, setVisible] = useState<boolean>(false);

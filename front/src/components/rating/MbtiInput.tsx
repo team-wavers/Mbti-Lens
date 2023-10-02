@@ -1,5 +1,4 @@
-import flexBox from "@/styles/utils/flexbox";
-import React, { useState, forwardRef } from "react";
+import React from "react";
 import styled from "styled-components";
 // rating domain에서 mbtiinput 별도로 구현해야함
 
@@ -10,10 +9,7 @@ type Props = {
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const MbtiInput = (
-    { id, value, selected, onClick }: Props,
-    ref: React.ForwardedRef<HTMLButtonElement>,
-) => {
+const MbtiInput = ({ id, value, selected, onClick }: Props) => {
     return (
         <InputContainer
             type="button"
@@ -21,7 +17,6 @@ const MbtiInput = (
             placeholder=""
             selected={selected ? selected : false}
             onClick={onClick}
-            ref={ref}
         >
             {value?.toUpperCase()}
         </InputContainer>
@@ -50,4 +45,4 @@ const InputContainer = styled.button<{ selected: boolean }>`
     `}
 `;
 
-export default forwardRef(MbtiInput);
+export default MbtiInput;

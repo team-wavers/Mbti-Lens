@@ -10,10 +10,6 @@ import mbtiAtom from "@/recoil/mbti";
 
 const CreateMBTI = () => {
     const router = useRouter();
-    // const { id } = router.query;
-    // useEffect(() => {
-    //     console.log(id);
-    // }, [id]);
 
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);

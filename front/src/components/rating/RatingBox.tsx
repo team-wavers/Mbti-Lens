@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import RatingUpOutlineIcon from "../../assets/icons/thumbs-up.svg";
 import RatingUpSelectedIcon from "../../assets/icons/thumbs-up-selected.svg";
