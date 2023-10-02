@@ -1,17 +1,16 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RatingForm from "@/components/rating/RatingForm";
 import flexBox from "@/styles/utils/flexbox";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import searchMbti from "@/apis/create/searchMbti";
-import { SearchResponse } from "@/types/response";
+import { GeneralResponse, SearchResponse } from "@/types/response";
 import { CommentForm } from "@/components/rating";
 import { CommonButton } from "@/components/common/Button";
 import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
-
-type MbtiType<T> = Map<string, T> | undefined;
+import { AxiosResponse } from "axios";
 
 type Props = {
     res: SearchResponse;
@@ -20,6 +19,8 @@ type Props = {
 const id = ({ res }: Props) => {
     const router = useRouter();
     const { id, public_key } = router.query;
+    const { nickname } = res.data;
+    const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
     const {
         current,
         setCurrent,
@@ -41,14 +42,30 @@ const id = ({ res }: Props) => {
     };
 
     const submitHandler = () => {
-        const res = fetch();
-        console.log(res);
+        setDisableSubmit(true);
+        fetch().then((res: AxiosResponse<GeneralResponse>[]) => {
+            const errValidate = res.some(
+                (e: AxiosResponse<GeneralResponse>) => {
+                    e.data.statusCode !== 201;
+                },
+            );
+            if (errValidate) {
+                alert("유효하지 않은 Request가 존재합니다.");
+                router.push("/");
+            } else {
+                router.push("/finish");
+            }
+        });
     };
+
+    useEffect(() => {
+        Array.from(likes || []).length === 4 && setDisableSubmit(false);
+    }, [likes]);
 
     return (
         <Container>
             <Title>
-                김철수 님의
+                {nickname} 님의
                 <br /> MBTI 평가하기
             </Title>
             <RatingForm
@@ -86,7 +103,7 @@ const id = ({ res }: Props) => {
                         <CommonButton
                             content="제출"
                             onClick={submitHandler}
-                            disabled={Array.from(likes || []).length !== 4}
+                            disabled={disableSubmit}
                         />
                     )}
                 </ButtonDivider>

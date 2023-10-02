@@ -1,9 +1,10 @@
 // 댓글 데이터 종합 및 생성 custom hook
 
 import { addComment } from "@/apis/rating";
-import { SearchResponse } from "@/types/response";
+import { GeneralResponse, SearchResponse } from "@/types/response";
 import { useState } from "react";
 import { mbtiArray } from "@/constants/mbti";
+import axios, { AxiosResponse } from "axios";
 
 type MbtiType<T> = Map<string, T> | undefined;
 
@@ -16,7 +17,6 @@ const useComment = (
     const [current, setCurrent] = useState<string>("mbti_e_i");
     const [likes, setLikes] = useState<MbtiType<boolean>>(undefined);
     const [comments, setComments] = useState<MbtiType<string>>(undefined);
-    const [response, setResponse] = useState<[]>([]);
     const mbtiData: { [key: string]: string } = {
         mbti_e_i: ei,
         mbti_n_s: ns,
@@ -36,19 +36,36 @@ const useComment = (
         setComments((prev) => new Map(prev).set(key, content));
     };
 
-    const fetch = () => {
-        mbtiArray.map(async (value) => {
-            const request = await addComment({
-                userId,
-                mbti: mbtiData[value],
-                public_key,
-                like: likes?.get(value) || false,
-                comment: comments?.get(value) || "",
-            })
-                .then()
-                .catch();
-        });
-        return response;
+    const fetch = async () => {
+        return await axios
+            .all(
+                mbtiArray.map((value) =>
+                    addComment({
+                        userId,
+                        mbti: mbtiData[value],
+                        public_key,
+                        like: likes?.get(value) || false,
+                        comment: comments?.get(value) || "",
+                    }),
+                ),
+            )
+            .then(
+                axios.spread<AxiosResponse<GeneralResponse>, any>(
+                    (
+                        mbti_e_i_res,
+                        mbti_n_s_res,
+                        mbti_t_f_res,
+                        mbti_p_j_res,
+                    ) => {
+                        return [
+                            mbti_e_i_res,
+                            mbti_n_s_res,
+                            mbti_t_f_res,
+                            mbti_p_j_res,
+                        ];
+                    },
+                ),
+            );
     };
 
     return {
