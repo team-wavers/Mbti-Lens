@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { getCookie } from "cookies-next";
 import { LoginCookieType } from "@/types/cookie";
 
