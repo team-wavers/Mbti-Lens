@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -43,7 +44,7 @@ export class MbtiController {
       where: { _id: paramUserId },
     });
     if (!result || !resultNickName) {
-      throw new NotFoundException('mbti data not found');
+      throw new BadRequestException('mbti data not found');
     }
     const resultWithNickname = {
       ...result,
