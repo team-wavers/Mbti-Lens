@@ -1,4 +1,9 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Mbti } from './mbti.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
@@ -25,7 +30,7 @@ export class MbtiService {
       bodyData.tf === undefined ||
       bodyData.pj === undefined
     ) {
-      throw new NotFoundException('mbti data not found');
+      throw new BadRequestException('mbti data not found');
     }
     newData.ei = bodyData.ei;
     newData.ns = bodyData.ns;
@@ -36,7 +41,7 @@ export class MbtiService {
       where: { _id: paramUserId },
     }); // 유저 검색 실패시 에러 처리
     if (!public_key) {
-      throw new NotFoundException('user data not found');
+      throw new BadRequestException('user data not found');
     }
     await this.mbtiRepository.save(newData);
     return public_key?.public_key;
@@ -72,7 +77,7 @@ export class MbtiService {
       );
       return updateData.raw[0];
     } else {
-      throw new NotFoundException('mbti data is not correct');
+      throw new BadRequestException('mbti data is not correct');
     }
   }
 }
