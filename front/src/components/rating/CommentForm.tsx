@@ -8,7 +8,7 @@ type Props = {
     id: string;
 };
 
-const CommentBox = ({ value, onChange, id }: Props) => {
+const CommentForm = ({ value, onChange, id }: Props) => {
     return (
         <Container>
             <Title>왜 그렇게 생각하시나요? (선택)</Title>
@@ -57,4 +57,4 @@ const CommentInput = styled.textarea`
     resize: none;
 `;
 
-export default CommentBox;
+export default CommentForm;

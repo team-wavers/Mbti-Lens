@@ -1,4 +1,4 @@
-interface GeneralResponse {
+export interface GeneralResponse {
     statusCode: number;
     message: string;
 }
@@ -19,7 +19,7 @@ interface GeneralResponse {
 //     SubmitResponse: GeneralResponse;
 // };
 
-interface SearchResponse extends GeneralResponse {
+export interface SearchResponse extends GeneralResponse {
     data: {
         _id: number;
         user_id: number;
@@ -33,5 +33,3 @@ interface SearchResponse extends GeneralResponse {
         pj_like: number;
     };
 }
-
-export default SearchResponse;

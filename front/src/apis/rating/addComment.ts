@@ -2,7 +2,8 @@ import { instance } from "../base";
 
 type Props = {
     userId: number;
-    mbti: "E" | "I" | "N" | "S" | "T" | "F" | "P" | "J";
+    // mbti: "E" | "I" | "N" | "S" | "T" | "F" | "P" | "J";
+    mbti: string;
     public_key: string;
     like: boolean;
     comment: string | undefined;
