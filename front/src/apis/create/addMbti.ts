@@ -1,7 +1,7 @@
 import { instance } from "../base";
 
 type Props = {
-    userId: number;
+    userId: string;
     ei: "e" | "i";
     ns: "n" | "s";
     tf: "t" | "f";

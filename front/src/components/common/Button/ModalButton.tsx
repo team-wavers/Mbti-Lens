@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 type Props = {
     children: React.ReactNode;
@@ -27,7 +27,7 @@ const ButtonContainer = styled.button<{ type: string }>`
     ${({ theme, type }) =>
         type === "ok" &&
         `
-        background-color: ${theme.colors.primary_1};
+        background-color: ${theme.colors.primary};
         color: ${theme.colors.white};
     `}
     font-weight: 700;

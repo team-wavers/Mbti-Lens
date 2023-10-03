@@ -4,7 +4,7 @@ import flexBox from "@/styles/utils/flexbox";
 import Thumbsup from "../../assets/icons/thumbs-up-selected.svg";
 import Thumbsdown from "../../assets/icons/thumbs-down-selected.svg";
 import { SearchCommentResponse } from "@/types/response";
-import SearchResponse from "@/types/response";
+import { SearchResponse } from "@/types/response";
 
 type Props = {
     data: SearchResponse["data"];
@@ -33,7 +33,7 @@ const ResultBox = ({ data, mbti, comment }: Props) => {
     //like와 comment의 총 개수로만 계산해서..
     return (
         <ResultContainer>
-            <Count>{counter}명이 눌러주셨어용</Count>
+            <Count>{counter}명이 눌러주셨어요!</Count>
             <StatsContainer>
                 <MbtiContainer>{mbti.map((e) => e)} </MbtiContainer>
                 <ThumbsContainer>
@@ -53,7 +53,7 @@ export default ResultBox;
 const ResultContainer = styled.div`
     ${flexBox("column", "center", "center")}
     width: 360px;
-    height: 230px;
+    height: 250px;
     padding: 5px;
     border-radius: 24px;
     background: #dfb8b2;
@@ -62,7 +62,7 @@ const ResultContainer = styled.div`
     &:before {
         content: "";
         width: 340px;
-        height: 210px;
+        height: 230px;
         position: absolute;
         background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='white' stroke-width='4' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
         border-radius: 10px;
@@ -80,21 +80,22 @@ const Count = styled.div`
 const StatsContainer = styled.div`
     ${flexBox("column", "center", "center")}
     width: 90%;
-    height: 160px;
-    border-radius: 10px;
+    height: 170px;
+    border-radius: 16px;
     background: rgba(255, 255, 255, 0.3);
+    margin-bottom: 10px;
 `;
 const MbtiContainer = styled.div`
     ${flexBox("column", "center", "center")}
     width: 100%;
     height: 100%;
     outline: none;
-    color: ${({ theme }) => theme.colors.primary_4};
+    color: ${({ theme }) => theme.colors.primary2};
     border-radius: 10px;
     font-size: ${({ theme }) => theme.typography.x3l};
     font-family: "RixInooAriDuri", sans-serif;
     outline: none;
-    font-weight: 900;
+    font-weight: 500;
     text-align: center;
     letter-spacing: 25px;
     padding-left: 30px;
