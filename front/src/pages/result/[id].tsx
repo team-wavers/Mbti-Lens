@@ -8,20 +8,20 @@ import { CommonButton } from "@/components/common/Button";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getResponse } from "@/apis/result/getResponse";
 import useCookie from "@/hooks/useCookie";
-import { SearchCommentResponse } from "@/types/response";
-import SearchResponse from "@/types/response";
+import { SearchCommentResponse, SearchResponse } from "@/types/response";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export const getStaticPaths = async () => {
     const { cookie } = useCookie();
-    const userid = cookie.userid.toString();
+    const userid = cookie?.userid.toString() || "-1";
     const paths = [{ params: { id: userid } }];
 
     return { paths, fallback: "blocking" };
 };
 export const getStaticProps: GetStaticProps = async () => {
     const { cookie } = useCookie();
-    const userId = cookie.userid;
+    const userId = cookie?.userid || "-1";
 
     const mbtiResponse = await getResponse(userId)
         .then((res) => res.data)
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
                 return resArray;
             }),
         )
-        .catch((error) => null);
+        .catch((error) => console.log(error));
     return {
         props: { mbtiResponse, commentResponse },
         revalidate: 1,
@@ -52,6 +52,7 @@ const Index = ({
     commentResponse,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const { cookie } = useCookie();
+    const router = useRouter();
     const [mbtiState, setMbtiState] = useState<number>(5);
     const comments: SearchCommentResponse["data"] = commentResponse;
     //mbti구하기
@@ -60,43 +61,46 @@ const Index = ({
         (e) => e.toUpperCase(),
     );
 
-    return (
-        <Container>
-            {mbtiState === 5 ? (
-                <Title>
-                    남이 보는 {cookie.username}님의 <br />
-                    MBTI는??
-                </Title>
-            ) : null}
-            <MbtiInput
-                mbtiLetter={mbtiLetter}
-                setState={setMbtiState}
-                state={mbtiState}
-            />
-            {mbtiState === 5 ? (
-                <ResultBox
-                    mbti={mbtiLetter}
-                    data={mbtiData}
-                    comment={comments}
+    if (!cookie) {
+        router.push("/");
+    } else {
+        return (
+            <Container>
+                {mbtiState === 5 ? (
+                    <Title>
+                        남이 보는 {cookie.username}님의 <br />
+                        MBTI는?
+                    </Title>
+                ) : null}
+                <MbtiInput
+                    mbtiLetter={mbtiLetter}
+                    setState={setMbtiState}
+                    state={mbtiState}
                 />
-            ) : (
-                <CommentSection>
-                    <CommentBox
-                        data={comments}
-                        mbtistate={mbtiLetter[mbtiState]}
+                {mbtiState === 5 ? (
+                    <ResultBox
+                        mbti={mbtiLetter}
+                        data={mbtiData}
+                        comment={comments}
                     />
-                    <CommonButton
-                        disabled={false}
-                        content={"결과보기"}
-                        onClick={() => setMbtiState(5)}
-                    />
-                </CommentSection>
-            )}
-        </Container>
-    );
+                ) : (
+                    <CommentSection>
+                        <CommentBox
+                            data={comments}
+                            mbtistate={mbtiLetter[mbtiState]}
+                        />
+                        <CommonButton
+                            disabled={false}
+                            content={"결과보기"}
+                            onClick={() => setMbtiState(5)}
+                        />
+                    </CommentSection>
+                )}
+            </Container>
+        );
+    }
 };
 
-export default Index;
 const Container = styled.div`
     ${flexBox("column", "center", "center;")}
     width: 100%;
@@ -110,12 +114,14 @@ const Title = styled.h1`
     font-family: "HSYuji", sans-serif;
     margin-bottom: 50px;
     width: 350px;
-    color: ${({ theme }) => theme.colors.primary_4};
+    color: ${({ theme }) => theme.colors.primary};
     text-align: center;
     margin: 0px;
 `;
 const CommentSection = styled.div`
-    ${flexBox("column", "center", "center;")}
+    ${flexBox("column", "center", "center")}
     width: 100%;
     margin-bottom: 20px;
 `;
+
+export default Index;
