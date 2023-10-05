@@ -31,6 +31,8 @@ const CreateMBTI = () => {
                     setMounted(true);
                 }
             });
+        } else {
+            router.push("/");
         }
     }, []);
 
