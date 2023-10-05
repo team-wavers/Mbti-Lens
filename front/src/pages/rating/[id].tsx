@@ -11,6 +11,7 @@ import { CommonButton } from "@/components/common/Button";
 import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
 import { AxiosResponse } from "axios";
+import useCookie from "@/hooks/useCookie";
 
 type Props = {
     res: SearchResponse;
@@ -18,6 +19,7 @@ type Props = {
 
 const id = ({ res }: Props) => {
     const router = useRouter();
+    const { cookie } = useCookie();
     const { id, public_key } = router.query;
     const { nickname } = res.data;
     const [disableSubmit, setDisableSubmit] = useState<boolean>(true);
@@ -30,8 +32,9 @@ const id = ({ res }: Props) => {
         currentHandler,
         likeHandler,
         commentHandler,
-        fetch,
+        postComment,
     } = useComment(res, Number(id || -1), String(public_key));
+    const [mounted, setMounted] = useState<boolean>(false);
 
     const prevHandler = () => {
         setCurrent(mbtiArray[mbtiArray.indexOf(current) - 1]);
@@ -43,7 +46,7 @@ const id = ({ res }: Props) => {
 
     const submitHandler = () => {
         setDisableSubmit(true);
-        fetch().then((res: AxiosResponse<GeneralResponse>[]) => {
+        postComment().then((res: AxiosResponse<GeneralResponse>[]) => {
             const errValidate = res.some(
                 (e: AxiosResponse<GeneralResponse>) => {
                     e.data.statusCode !== 201;
@@ -62,53 +65,63 @@ const id = ({ res }: Props) => {
         Array.from(likes || []).length === 4 && setDisableSubmit(false);
     }, [likes]);
 
+    useEffect(() => {
+        if (cookie) {
+            cookie.userid == id
+                ? router.push(`/result/${id}`)
+                : setMounted(true);
+        }
+    }, []);
+
     return (
-        <Container>
-            <Title>
-                {nickname} 님의
-                <br /> MBTI 평가하기
-            </Title>
-            <RatingForm
-                current={current}
-                like={likes?.get(current)}
-                currentHandler={currentHandler}
-                likeHandler={likeHandler}
-                mbtiData={mbtiData}
-            />
-            <CommentForm
-                id={current}
-                value={comments?.get(current) || ""}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    commentHandler(current, e.currentTarget.value)
-                }
-            />
-            <ButtonContainer>
-                <ButtonDivider>
-                    {current !== "mbti_e_i" && (
-                        <CommonButton
-                            content="이전"
-                            onClick={prevHandler}
-                            disabled={false}
-                        />
-                    )}
-                </ButtonDivider>
-                <ButtonDivider>
-                    {current !== "mbti_p_j" ? (
-                        <CommonButton
-                            content="다음"
-                            onClick={nextHandler}
-                            disabled={likes?.get(current) === undefined}
-                        />
-                    ) : (
-                        <CommonButton
-                            content="제출"
-                            onClick={submitHandler}
-                            disabled={disableSubmit}
-                        />
-                    )}
-                </ButtonDivider>
-            </ButtonContainer>
-        </Container>
+        mounted && (
+            <Container>
+                <Title>
+                    {nickname} 님의
+                    <br /> MBTI 평가하기
+                </Title>
+                <RatingForm
+                    current={current}
+                    like={likes?.get(current)}
+                    currentHandler={currentHandler}
+                    likeHandler={likeHandler}
+                    mbtiData={mbtiData}
+                />
+                <CommentForm
+                    id={current}
+                    value={comments?.get(current) || ""}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                        commentHandler(current, e.currentTarget.value)
+                    }
+                />
+                <ButtonContainer>
+                    <ButtonDivider>
+                        {current !== "mbti_e_i" && (
+                            <CommonButton
+                                content="이전"
+                                onClick={prevHandler}
+                                disabled={false}
+                            />
+                        )}
+                    </ButtonDivider>
+                    <ButtonDivider>
+                        {current !== "mbti_p_j" ? (
+                            <CommonButton
+                                content="다음"
+                                onClick={nextHandler}
+                                disabled={likes?.get(current) === undefined}
+                            />
+                        ) : (
+                            <CommonButton
+                                content="제출"
+                                onClick={submitHandler}
+                                disabled={disableSubmit}
+                            />
+                        )}
+                    </ButtonDivider>
+                </ButtonContainer>
+            </Container>
+        )
     );
 };
 

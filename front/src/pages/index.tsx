@@ -4,12 +4,14 @@ import Image from "next/image";
 import flexBox from "@/styles/utils/flexbox";
 import ServiceLogo from "@/assets/images/logo.png";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import useCookie from "@/hooks/useCookie";
 
 const Index = () => {
     const router = useRouter();
     const { cookie } = useCookie();
     const endpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    const [isClient, setIsClient] = useState<boolean>(false);
 
     const loginHandler = () => {
         router.push(`${endpoint}/auth/oauth/kakao`);
@@ -18,33 +20,42 @@ const Index = () => {
     const buttonHandler = () => {
         if (cookie) router.push(`/result/${cookie.userid}`);
     };
+    useEffect(() => {
+        if (cookie) {
+            router.push(`/result/${cookie.userid}`);
+        } else {
+            setIsClient(true);
+        }
+    }, []);
 
     return (
-        <Container>
-            <Information>
-                <LogoContainer>
-                    <Image
-                        src={ServiceLogo}
-                        alt="남이보는 내  MBTI는? MBTI LENS"
-                        layout="responsive"
-                    />
-                </LogoContainer>
-                {!cookie && (
-                    <LoginWithKakao onClick={() => loginHandler()}>
+        isClient && (
+            <Container>
+                <Information>
+                    <LogoContainer>
                         <Image
-                            src={KakaoLogin}
-                            alt="Login With KaKao"
+                            src={ServiceLogo}
+                            alt="남이보는 내  MBTI는? MBTI LENS"
                             layout="responsive"
                         />
-                    </LoginWithKakao>
-                )}
-                {cookie && (
-                    <ButtonContainer>
-                        <GotoResult onClick={buttonHandler} />
-                    </ButtonContainer>
-                )}
-            </Information>
-        </Container>
+                    </LogoContainer>
+                    {!cookie && (
+                        <LoginWithKakao onClick={() => loginHandler()}>
+                            <Image
+                                src={KakaoLogin}
+                                alt="Login With KaKao"
+                                layout="responsive"
+                            />
+                        </LoginWithKakao>
+                    )}
+                    {cookie && (
+                        <ButtonContainer>
+                            <GotoResult onClick={buttonHandler} />
+                        </ButtonContainer>
+                    )}
+                </Information>
+            </Container>
+        )
     );
 };
 

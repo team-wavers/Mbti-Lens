@@ -17,6 +17,10 @@ export interface SearchResponse extends Omit<GeneralResponse, "data"> {
         ns_like: number;
         tf_like: number;
         pj_like: number;
+        ei_dislike: number;
+        ns_dislike: number;
+        tf_dislike: number;
+        pj_dislike: number;
     };
 }
 

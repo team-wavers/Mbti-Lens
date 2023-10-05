@@ -1,48 +1,43 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router";
 import flexBox from "@/styles/utils/flexbox";
 import { MbtiForm } from "@/components/create";
 import Modal from "@/components/common/Modal/Modal";
 import useModal from "@/hooks/useModal";
 import useCookie from "@/hooks/useCookie";
 import addMbti from "@/apis/create/addMbti";
-import { GetServerSideProps } from "next";
 import searchMbti from "@/apis/create/searchMbti";
-import { SearchResponse } from "@/types/response";
+import { CommonButton } from "@/components/common/Button";
+import { useRouter } from "next/router";
 
-type Props = {
-    res: SearchResponse;
-};
-
-const CreateMBTI = ({ res }: Props) => {
+const CreateMBTI = () => {
     const router = useRouter();
     const { cookie } = useCookie();
-
     const { visible, setVisible } = useModal();
     const formRef = useRef<HTMLFormElement>(null);
+    const linkRef = useRef<HTMLInputElement>(null);
     const [mounted, setMounted] = useState<boolean>(false);
-    console.log(res);
+    const [created, setCreated] = useState<boolean>(false);
+    const [publicKey, setPublicKey] = useState<string>("");
+    const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
     useEffect(() => {
-        if (typeof window !== "undefined" && !cookie) {
-            router.push("/");
-            return;
-        } else if (
-            typeof window !== "undefined" &&
-            res.statusCode === 200 &&
-            cookie
-        ) {
-            router.push(`/result/${cookie.userid}`);
-            return;
+        if (cookie) {
+            searchMbti({ userId: Number(cookie.userid) }).then((res) => {
+                if (res.data.statusCode === 200) {
+                    setCreated(true);
+                    setPublicKey(localStorage.getItem("public_key") || "null");
+                } else {
+                    setMounted(true);
+                }
+            });
         }
-        setMounted(true);
     }, []);
 
     const confirmEvent = async () => {
         if (formRef.current && cookie) {
             const { mbti_e_i, mbti_n_s, mbti_t_f, mbti_p_j } = formRef.current;
-            const res = await addMbti({
+            await addMbti({
                 userId: cookie.userid,
                 ei: mbti_e_i.value,
                 ns: mbti_n_s.value,
@@ -51,15 +46,49 @@ const CreateMBTI = ({ res }: Props) => {
             }).then((e) => {
                 if (e.data.statusCode !== 201) {
                     alert("유효하지 않은 Request 입니다.");
+                    setCreated(true);
                     return;
                 }
-                router.push(`/result/${cookie.userid}`);
+                setCreated(true);
+                setPublicKey(e.data.data);
+                localStorage.setItem("public_key", e.data.data);
             });
         }
     };
 
+    const copyHandler = () => {
+        if (linkRef.current) {
+            linkRef.current.select();
+            document.execCommand("copy");
+            alert("링크가 복사되었습니다!");
+        }
+    };
+
+    if (created && cookie)
+        return (
+            <Container>
+                <Title>성공적으로 생성했습니다!</Title>
+                <LinkInput
+                    value={`${fe_endpoint}/rating/${cookie.userid}?public_key=${publicKey}`}
+                    ref={linkRef}
+                />
+                <ButtonContainer>
+                    <CommonButton
+                        content={`링크 복사하기`}
+                        disabled={false}
+                        onClick={copyHandler}
+                    />
+                    <CommonButton
+                        content={`결과 보러가기`}
+                        disabled={false}
+                        onClick={() => router.push(`/result/${cookie.userid}`)}
+                    />
+                </ButtonContainer>
+            </Container>
+        );
     return (
-        mounted && (
+        mounted &&
+        !created && (
             <Container>
                 <Title>MBTI를 입력해 주세요!</Title>
                 <MbtiForm
@@ -91,18 +120,6 @@ const CreateMBTI = ({ res }: Props) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    const { cookie } = useCookie();
-    const req = await searchMbti({
-        userId: Number((cookie && cookie.userid) || -1),
-    })
-        .then((res) => {
-            return res.data;
-        })
-        .catch((e) => console.log(e));
-    return { props: { res: req } };
-};
-
 const Container = styled.div`
     ${flexBox("column", "center", "center")}
     width: 100%;
@@ -115,6 +132,27 @@ const Title = styled.h1`
     font-weight: 500;
     text-align: center;
     margin-bottom: 30px;
+`;
+
+const LinkInput = styled.input`
+    width: 300px;
+    height: 50px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border-radius: 20px;
+    background-color: ${({ theme }) => theme.colors.primary2};
+    outline: none;
+    font-size: ${({ theme }) => theme.typography.l};
+    color: ${({ theme }) => theme.colors.primary};
+    font-family: "HSYuji", sans-serif;
+`;
+
+const ButtonContainer = styled.div`
+    ${flexBox("column", "center", "center")}
+    width: 100%;
+    height: auto;
+    gap: 20px;
 `;
 
 export default CreateMBTI;

@@ -1,57 +1,33 @@
 import React from "react";
 import styled from "styled-components";
+import ThumbsUpIcon from "../../assets/icons/thumbs-up-selected.svg";
+import ThumbsDownIcon from "../../assets/icons/thumbs-down-selected.svg";
 import flexBox from "@/styles/utils/flexbox";
-import Thumbsup from "../../assets/icons/thumbs-up-selected.svg";
-import Thumbsdown from "../../assets/icons/thumbs-down-selected.svg";
+
 type Props = {
-    comment: React.ReactNode;
     like: boolean;
+    children: React.ReactNode;
 };
-const Comment = ({ comment, like }: Props) => {
+
+const Comment = ({ like, children }: Props) => {
     return (
-        <CommentContainer>
-            <Dashed>
-                <Content>
-                    {like ? <Thumbsup width={30} /> : <Thumbsdown />}
-                    <Text>{comment}</Text>
-                </Content>
-            </Dashed>
-        </CommentContainer>
+        <Container>
+            {like ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
+            {children}
+        </Container>
     );
 };
 
-export default Comment;
-
-const CommentContainer = styled.div`
-    font-size: ${({ theme }) => theme.typography.m};
-    font-family: "RixInooAriDuri", sans-serif;
-    color: rgba(0, 0, 0, 0.5);
-    ${flexBox("row", "center", "center;")};
-    border-radius: 20px;
-    background-color: #dfb8b2;
-    box-shadow: 0px 8px 0px -3px rgba(160, 104, 104, 0.63);
-    margin: 20px;
-    width: 350px;
-    height: 70px;
-`;
-const Dashed = styled.div`
-    ${flexBox("row", "center", "center;")};
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='white' stroke-width='2' stroke-dasharray='3%2c 7' stroke-dashoffset='42' stroke-linecap='square'/%3e%3c/svg%3e");
-    width: 340%;
-    height: 60px;
-    margin: 10px;
-`;
-const Content = styled.div`
-    ${flexBox("row", "center", "center;")};
-    width: 90%;
-    height: 70%;
-    color: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    background-color: #dfb8b2;
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.3);
-`;
-const Text = styled.div`
-    margin-left: 20px;
+const Container = styled.div`
+    ${flexBox("row", "center", "flex-start")}
     width: 100%;
+    min-height: 70px;
+    background-color: ${({ theme }) => theme.colors.primary2};
+    color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 0 20px;
+    gap: 20px;
+    font-size: ${({ theme }) => theme.typography.m};
 `;
+
+export default Comment;

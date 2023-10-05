@@ -42,6 +42,7 @@ const InputContainer = styled.button<{ selected: boolean }>`
         background: rgba(207, 144, 144, 0.53);
         box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
         color: ${theme.colors.primary};
+        transform: scale(1.1);
     `}
 `;
 

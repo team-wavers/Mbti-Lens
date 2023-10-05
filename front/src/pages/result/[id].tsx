@@ -1,127 +1,260 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import flexBox from "@/styles/utils/flexbox";
-import CommentBox from "@/components/result/CommentBox";
-import ResultBox from "@/components/result/ResultBox";
 import MbtiInput from "@/components/result/MbtiInput";
-import { CommonButton } from "@/components/common/Button";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { getResponse } from "@/apis/result/getResponse";
+import StatBox from "@/components/result/StatBox";
 import useCookie from "@/hooks/useCookie";
-import { SearchCommentResponse, SearchResponse } from "@/types/response";
-import axios from "axios";
-import { useRouter } from "next/router";
+import flexBox from "@/styles/utils/flexbox";
+import React, { useEffect, useState } from "react";
+import { styled } from "styled-components";
+import ThumbsUpIcon from "../../assets/icons/thumbs-up-selected.svg";
+import ThumbsDownIcon from "../../assets/icons/thumbs-down-selected.svg";
+import { SearchResponse } from "@/types/response";
+import Comment from "@/components/result/Comment";
+import searchMbti from "@/apis/create/searchMbti";
+import CommentType from "@/types/comment";
+import { searchComment } from "@/apis/rating";
+import { CommonButton } from "@/components/common/Button";
 
-export const getStaticPaths = async () => {
+const ResultPage = () => {
     const { cookie } = useCookie();
-    const userid = cookie?.userid.toString() || "-1";
-    const paths = [{ params: { id: userid } }];
-
-    return { paths, fallback: "blocking" };
-};
-export const getStaticProps: GetStaticProps = async () => {
-    const { cookie } = useCookie();
-    const userId = cookie?.userid || "-1";
-
-    const mbtiResponse = await getResponse(userId)
-        .then((res) => res.data)
-        .catch((error) => console.log(error));
-    const mbtiData = mbtiResponse;
-    const commentResponse = await axios
-        .all([
-            getResponse(userId, mbtiData.ei),
-            getResponse(userId, mbtiData.ns),
-            getResponse(userId, mbtiData.tf),
-            getResponse(userId, mbtiData.pj),
-        ])
-        .then(
-            axios.spread((ei, ns, tf, pj) => {
-                const resArray = ei.data.concat(ns.data, tf.data, pj.data);
-                return resArray;
-            }),
-        )
-        .catch((error) => console.log(error));
-    return {
-        props: { mbtiResponse, commentResponse },
-        revalidate: 1,
-    };
-};
-
-const Index = ({
-    mbtiResponse,
-    commentResponse,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-    const { cookie } = useCookie();
-    const router = useRouter();
-    const [mbtiState, setMbtiState] = useState<number>(5);
-    const comments: SearchCommentResponse["data"] = commentResponse;
-    //mbti구하기
-    const mbtiData: SearchResponse["data"] = mbtiResponse;
-    const mbtiLetter = [mbtiData.ei, mbtiData.ns, mbtiData.tf, mbtiData.pj].map(
-        (e) => e.toUpperCase(),
+    const [current, setCurrent] = useState<string | null>(null);
+    const [response, setResponse] = useState<SearchResponse["data"] | null>(
+        null,
     );
+    const [mounted, setMounted] = useState<boolean>(false);
+    const [comments, setComments] = useState<CommentType[]>([]);
 
-    if (!cookie) {
-        router.push("/");
-    } else {
-        return (
+    useEffect(() => {
+        cookie &&
+            searchMbti({ userId: Number(cookie.userid) || -1 })
+                .then((res) => {
+                    setResponse(res.data.data);
+                    setMounted(true);
+                })
+                .catch((e) => console.log(e));
+    }, []);
+
+    useEffect(() => {
+        if (current !== null) {
+            if (cookie && response) {
+                const selectedMbti =
+                    current === "mbti_e_i"
+                        ? response.ei
+                        : current === "mbti_n_s"
+                        ? response.ns
+                        : current === "mbti_t_f"
+                        ? response.tf
+                        : current === "mbti_p_j"
+                        ? response.pj
+                        : "";
+                searchComment({
+                    userId: Number(cookie.userid) || -1,
+                    mbti: selectedMbti,
+                    public_key: localStorage.getItem("public_key") || "",
+                }).then((res) => {
+                    res.data.data.map((e: CommentType) => {
+                        if (e.comment) {
+                            setComments([...comments, e]);
+                        }
+                    });
+                });
+            }
+        }
+    }, [current]);
+
+    return (
+        mounted &&
+        response && (
             <Container>
-                {mbtiState === 5 ? (
+                <TopContainer>
                     <Title>
-                        남이 보는 {cookie.username}님의 <br />
-                        MBTI는?
+                        남이보는 {cookie?.username || undefined}님의 MBTI는?
                     </Title>
-                ) : null}
-                <MbtiInput
-                    mbtiLetter={mbtiLetter}
-                    setState={setMbtiState}
-                    state={mbtiState}
-                />
-                {mbtiState === 5 ? (
-                    <ResultBox
-                        mbti={mbtiLetter}
-                        data={mbtiData}
-                        comment={comments}
-                    />
-                ) : (
-                    <CommentSection>
-                        <CommentBox
-                            data={comments}
-                            mbtistate={mbtiLetter[mbtiState]}
+                    <MbtiInputContainer>
+                        <MbtiInput
+                            value={response.ei}
+                            selected={current ? current === "mbti_e_i" : true}
+                            onClick={() => setCurrent("mbti_e_i")}
                         />
+                        <MbtiInput
+                            value={response.ns}
+                            selected={current ? current === "mbti_n_s" : true}
+                            onClick={() => setCurrent("mbti_n_s")}
+                        />
+                        <MbtiInput
+                            value={response.tf}
+                            selected={current ? current === "mbti_t_f" : true}
+                            onClick={() => setCurrent("mbti_t_f")}
+                        />
+                        <MbtiInput
+                            value={response.pj}
+                            selected={current ? current === "mbti_p_j" : true}
+                            onClick={() => setCurrent("mbti_p_j")}
+                        />
+                    </MbtiInputContainer>
+                </TopContainer>
+                {current === null && (
+                    <StatBox>
+                        <CountInformation>
+                            {response.ei_like +
+                                response.ns_like +
+                                response.tf_like +
+                                response.pj_like}
+                            명이 눌러주셨어요!
+                        </CountInformation>
+                        <CountContainer>
+                            <MbtiTextContainer>
+                                <MbtiText>{response.ei.toUpperCase()}</MbtiText>
+                                <MbtiText>{response.ns.toUpperCase()}</MbtiText>
+                                <MbtiText>{response.tf.toUpperCase()}</MbtiText>
+                                <MbtiText>{response.pj.toUpperCase()}</MbtiText>
+                            </MbtiTextContainer>
+                            <StatContainer>
+                                <ThumbsUpIcon />
+                                <StatTextContainer>
+                                    <StatText>{response.ei_like}</StatText>
+                                    <StatText>{response.ns_like}</StatText>
+                                    <StatText>{response.tf_like}</StatText>
+                                    <StatText>{response.pj_like}</StatText>
+                                </StatTextContainer>
+                            </StatContainer>
+                            <StatContainer>
+                                <ThumbsDownIcon />
+                                <StatTextContainer>
+                                    <StatText>{response.ei_dislike}</StatText>
+                                    <StatText>{response.ns_dislike}</StatText>
+                                    <StatText>{response.tf_dislike}</StatText>
+                                    <StatText>{response.pj_dislike}</StatText>
+                                </StatTextContainer>
+                            </StatContainer>
+                        </CountContainer>
+                    </StatBox>
+                )}
+                {current !== null && (
+                    <>
+                        <CommentContainer>
+                            {comments &&
+                                comments.map((e) => {
+                                    if (e.comment) {
+                                        return (
+                                            <Comment key={e._id} like={e.like}>
+                                                {e.comment}
+                                            </Comment>
+                                        );
+                                    }
+                                })}
+                            {comments.length <= 0 && (
+                                <NoCommentText>
+                                    등록된 코멘트가 없습니다.
+                                </NoCommentText>
+                            )}
+                        </CommentContainer>
                         <CommonButton
+                            content={`뒤로가기`}
                             disabled={false}
-                            content={"결과보기"}
-                            onClick={() => setMbtiState(5)}
+                            onClick={() => setCurrent(null)}
                         />
-                    </CommentSection>
+                    </>
                 )}
             </Container>
-        );
-    }
+        )
+    );
 };
 
 const Container = styled.div`
-    ${flexBox("column", "center", "center;")}
+    position: relative;
+    ${flexBox("column", "center", "flex-start")}
     width: 100%;
     min-height: 100vh;
-    height: auto;
-    background: #f0e4d8;
-`;
-const Title = styled.h1`
-    font-size: ${({ theme }) => theme.typography.xl};
-    line-height: ${({ theme }) => theme.typography.x2l};
-    font-family: "HSYuji", sans-serif;
-    margin-bottom: 50px;
-    width: 350px;
-    color: ${({ theme }) => theme.colors.primary};
-    text-align: center;
-    margin: 0px;
-`;
-const CommentSection = styled.div`
-    ${flexBox("column", "center", "center")}
-    width: 100%;
-    margin-bottom: 20px;
+    padding: 150px 0;
 `;
 
-export default Index;
+const TopContainer = styled.div`
+    width: 100%;
+    height: auto;
+`;
+
+const Title = styled.h1`
+    width: 300px;
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.typography.x2l};
+    font-weight: 500;
+    line-height: ${({ theme }) => theme.typography.x2l};
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 50px;
+`;
+
+const MbtiInputContainer = styled.div`
+    ${flexBox("row", "center", "center")};
+    width: 100%;
+    height: auto;
+    gap: 12px;
+`;
+
+const CountInformation = styled.h2`
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.typography.m};
+    font-family: "HSYuji", sans-serif;
+    font-weight: 600;
+    padding-bottom: 14px;
+`;
+
+const CountContainer = styled.div`
+    width: 100%;
+    height: 180px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 20px 0;
+    padding-bottom: 0;
+`;
+
+const MbtiTextContainer = styled.div`
+    ${flexBox("row", "center", "center")}
+    width: 100%;
+    height: auto;
+    gap: 20px;
+    margin-bottom: 10px;
+`;
+
+const MbtiText = styled.span`
+    font-size: ${({ theme }) => theme.typography.x3l};
+    font-family: "RixInooAriDuri", sans-serif;
+    color: ${({ theme }) => theme.colors.primary2};
+`;
+
+const StatContainer = styled.div`
+    ${flexBox("row", "center", "flex-start")}
+    width: 100%;
+    height: auto;
+    padding: 0 5px;
+`;
+
+const StatTextContainer = styled.div`
+    ${flexBox("row", "center", "flex-start")}
+    width: 100%;
+    height: auto;
+    padding-left: 20px;
+    gap: 45px;
+`;
+
+const StatText = styled.span`
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.typography.l};
+    font-family: "RixInooAriDuri", sans-serif;
+`;
+
+const CommentContainer = styled.div`
+    ${flexBox("column", "center", "center")}
+    width: 100%;
+    min-height: auto;
+    padding: 30px 20px;
+    gap: 20px;
+`;
+
+const NoCommentText = styled.h2`
+    font-size: ${({ theme }) => theme.typography.l};
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.3);
+    padding: 30px 0;
+`;
+
+export default ResultPage;
