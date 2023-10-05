@@ -6,6 +6,7 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
+    distDir: process.env.BUILD_DIR,
 };
 
 module.exports = nextConfig;
