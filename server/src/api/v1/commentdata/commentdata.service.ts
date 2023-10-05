@@ -57,7 +57,13 @@ export class CommentdataService {
         like: newData.like,
       },
     });
-    await this.mbtiService.updateLikes(newData.host_id, newData.mbti, count);
+    const islike = newData.like;
+    await this.mbtiService.updateLikes(
+      newData.host_id,
+      newData.mbti,
+      count,
+      islike,
+    );
     return new StandardResponseDto(
       201,
       'api.common.created',

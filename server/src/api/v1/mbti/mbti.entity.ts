@@ -31,4 +31,16 @@ export class Mbti {
 
   @Column({ default: 0 })
   pj_like?: number;
+
+  @Column({ default: 0 })
+  ei_dislike?: number;
+
+  @Column({ default: 0 })
+  ns_dislike?: number;
+
+  @Column({ default: 0 })
+  tf_dislike?: number;
+
+  @Column({ default: 0 })
+  pj_dislike?: number;
 }
