@@ -12,8 +12,10 @@ import searchMbti from "@/apis/create/searchMbti";
 import CommentType from "@/types/comment";
 import { searchComment } from "@/apis/rating";
 import { CommonButton } from "@/components/common/Button";
+import { useRouter } from "next/router";
 
 const ResultPage = () => {
+    const router = useRouter();
     const { cookie } = useCookie();
     const [current, setCurrent] = useState<string | null>(null);
     const [response, setResponse] = useState<SearchResponse["data"] | null>(
@@ -23,13 +25,16 @@ const ResultPage = () => {
     const [comments, setComments] = useState<CommentType[]>([]);
 
     useEffect(() => {
-        cookie &&
+        if (cookie) {
             searchMbti({ userId: Number(cookie.userid) || -1 })
                 .then((res) => {
                     setResponse(res.data.data);
                     setMounted(true);
                 })
                 .catch((e) => console.log(e));
+        } else {
+            router.push("/");
+        }
     }, []);
 
     useEffect(() => {
