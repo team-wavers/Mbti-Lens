@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "mbti-lens.front",
-            script: "next",
+            script: "node_modules/next/dist/bin/next",
             args: "start",
             cwd: "./",
             exec_mode: "cluster",
