@@ -58,16 +58,22 @@ export class MbtiService {
     user_id: number,
     mbti: string,
     count: number,
+    islike: boolean,
   ): Promise<Mbti | undefined> {
     let updateField = '';
+    if (islike) {
+      updateField = '_like';
+    } else {
+      updateField = '_dislike';
+    }
     if (mbti === 'e' || mbti === 'i') {
-      updateField = 'ei_like';
+      updateField = 'ei' + updateField;
     } else if (mbti === 'n' || mbti === 's') {
-      updateField = 'ns_like';
+      updateField = 'ns' + updateField;
     } else if (mbti === 't' || mbti === 'f') {
-      updateField = 'tf_like';
+      updateField = 'tf' + updateField;
     } else if (mbti === 'p' || mbti === 'j') {
-      updateField = 'pj_like';
+      updateField = 'pj' + updateField;
     }
 
     if (updateField) {
