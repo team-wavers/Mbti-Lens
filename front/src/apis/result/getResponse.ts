@@ -1,17 +1,15 @@
 import { instance } from "../base";
 // userId: number, mbti: string
 export const getResponse = async (
-    userId?: string | string[] | undefined,
+    userId: string | string[] | undefined,
     mbti?: string | string[] | undefined,
+    public_key?: string,
 ) => {
     if (mbti) {
-        const res = await instance().get(
-            `/users/${userId}/mbtis/${mbti}/comments`,
+        return await instance().get(
+            `/users/${userId}/mbtis/${mbti}/comments?public_key=${public_key}`,
         );
-
-        return res.data;
     } else {
-        const res = await instance().get(`/users/${userId}/mbtis`);
-        return res.data;
+        return await instance().get(`/users/${userId}/mbtis`);
     }
 };

@@ -5,6 +5,7 @@ import { GeneralResponse, SearchResponse } from "@/types/response";
 import { useState } from "react";
 import { mbtiArray } from "@/constants/mbti";
 import axios, { AxiosResponse } from "axios";
+import { getResponse } from "@/apis/result/getResponse";
 
 type MbtiType<T> = Map<string, T> | undefined;
 
@@ -36,7 +37,7 @@ const useComment = (
         setComments((prev) => new Map(prev).set(key, content));
     };
 
-    const fetch = async () => {
+    const postComment = async () => {
         return await axios
             .all(
                 mbtiArray.map((value) =>
@@ -68,6 +69,21 @@ const useComment = (
             );
     };
 
+    const fetchComment = async () => {
+        return await axios
+            .all(
+                mbtiArray.map((value) =>
+                    getResponse(String(userId), mbtiData[value], public_key),
+                ),
+            )
+            .then(
+                axios.spread<AxiosResponse<any>, any>((ei, ns, tf, pj) => {
+                    const resArray = ei.data.concat(ns.data, tf.data, pj.data);
+                    return resArray;
+                }),
+            );
+    };
+
     return {
         current,
         likes,
@@ -77,8 +93,8 @@ const useComment = (
         currentHandler,
         likeHandler,
         commentHandler,
-        addComment,
-        fetch,
+        postComment,
+        fetchComment,
     };
 };
 
