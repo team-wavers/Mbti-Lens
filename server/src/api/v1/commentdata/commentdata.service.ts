@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpStatus,
   Inject,
   Injectable,
@@ -29,14 +30,14 @@ export class CommentdataService {
       where: { _id: paramUserId },
     });
     if (!check_key || check_key?.public_key !== public_key.public_key) {
-      throw new NotFoundException('public_key not found');
+      throw new BadRequestException('public_key not found');
     }
     const newData: CommentData = new CommentData();
     newData.host_id = paramUserId;
     newData.mbti = paramMbti;
     newData.like = bodyData.like;
     if (bodyData.like === undefined || null) {
-      throw new NotFoundException(' like data not found');
+      throw new BadRequestException(' like data not found');
     }
     newData.comment = '';
     if (bodyData.comment !== undefined) {
@@ -79,13 +80,13 @@ export class CommentdataService {
       where: { _id: paramUserId },
     });
     if (!check_key || check_key?.public_key !== public_key.public_key) {
-      throw new NotFoundException('public_key not found');
+      throw new BadRequestException('public_key not found');
     }
     const comments = await this.commentRepository.find({
       where: { host_id: paramUserId, mbti: paramMbti },
     });
     if (comments === null) {
-      throw new NotFoundException('comment data not found');
+      throw new BadRequestException('comment data not found');
     }
     // 빈 문자열인 comment 속성을 제거하고 반환
     const filteredComments = comments.map((commentObject) => {
