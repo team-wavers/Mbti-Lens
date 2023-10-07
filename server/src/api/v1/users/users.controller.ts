@@ -8,15 +8,14 @@ export class UsersController {
 
   @Get(':userId/public_key')
   async findPublickey(@Param('userId') paramUserId: number): Promise<any> {
-    const user = await this.usersService.findOne({
+    const result = await this.usersService.findOne({
+      select: ['public_key'],
       where: { _id: paramUserId },
     });
 
-    if (!user) {
+    if (!result) {
       throw new BadRequestException('user not found');
     }
-
-    const result = user.public_key;
 
     return new StandardResponseDto(200, 'api.common.ok', result);
   }
