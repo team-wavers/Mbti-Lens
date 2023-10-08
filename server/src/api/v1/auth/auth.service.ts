@@ -24,6 +24,7 @@ export class AuthService {
     const usercookie = JSON.stringify({
       userid: user._id,
       username: user.nickname,
+      public_key: user.public_key,
     });
 
     const redirectUrl = this.configService.get('REDIRECT_URL');
