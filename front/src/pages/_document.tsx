@@ -41,6 +41,7 @@ export default class MyDocument extends Document {
                     <meta property="og:type" content="website" />
                     <meta property="og:site_name" content="website-name" />
                     <meta property="og:title" content="website-name" />
+                    <link rel="stylesheet" href="../fonts.css" />
                 </Head>
                 <body>
                     <Main />

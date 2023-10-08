@@ -25,6 +25,7 @@ const InputContainer = styled.input<{ selected: boolean }>`
     background: transparent;
     border-radius: 20px;
     border: 1px dashed rgba(0, 0, 0, 0.3);
+    cursor: pointer;
     color: ${({ theme }) => theme.colors.primary};
     font-size: ${({ theme }) => theme.typography.x3l};
     font-family: "RixInooAriDuri", sans-serif;

@@ -48,6 +48,7 @@ const DrawerButton = styled.button`
     border: none;
     background-color: transparent;
     outline: none;
+    z-index: 999;
 `;
 
 export default CommonLayout;
