@@ -1,0 +1,41 @@
+@font-face {
+    font-family: HSYuji;
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/HS_YUJI.woff") format(woff);
+    src: url("../fonts/HS_YUJI.otf") format(otf);
+}
+
+@font-face {
+    font-family: RixInooAriDuri;
+    font-weight: 500;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/RixInooAriDuri.woff") format(woff);
+    src: url("../fonts/RixInooAriDuri.ttf") format(ttf);
+}
+
+@font-face {
+    font-family: "LINE Seed Sans", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LINESeedKR-Th.woff") format(woff);
+}
+
+@font-face {
+    font-family: "LINE Seed Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LINESeedKR-Rg.woff") format(woff);
+}
+
+@font-face {
+    font-family: "LINE Seed Sans", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+    src: url("../fonts/LINESeedKR-Bd.woff") format(woff);
+}

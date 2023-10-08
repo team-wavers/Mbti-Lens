@@ -6,6 +6,7 @@ import ServiceLogo from "@/assets/images/logo.png";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useCookie from "@/hooks/useCookie";
+import searchMbti from "@/apis/create/searchMbti";
 
 const Index = () => {
     const router = useRouter();
@@ -22,7 +23,13 @@ const Index = () => {
     };
     useEffect(() => {
         if (cookie) {
-            router.push(`/result/${cookie.userid}`);
+            searchMbti({ userId: Number(cookie.userid) }).then((res) => {
+                if (res.data.statusCode === 400 && res.data.data === null) {
+                    router.push(`/create`);
+                } else {
+                    router.push(`/result/${cookie.userid}`);
+                }
+            });
         } else {
             setIsClient(true);
         }

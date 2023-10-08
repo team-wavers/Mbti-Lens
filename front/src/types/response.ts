@@ -33,3 +33,9 @@ export interface SearchCommentResponse extends Omit<GeneralResponse, "data"> {
         comment: string;
     }[];
 }
+
+export interface PublicKeyResponse extends Omit<GeneralResponse, "data"> {
+    data: {
+        public_key: string;
+    };
+}

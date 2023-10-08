@@ -23,6 +23,9 @@ const ResultPage = () => {
     );
     const [mounted, setMounted] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
+    const [publicKey, setPublicKey] = useState<string>(
+        cookie?.public_key || "",
+    );
 
     useEffect(() => {
         if (cookie) {
@@ -36,6 +39,12 @@ const ResultPage = () => {
             router.push("/");
         }
     }, []);
+
+    useEffect(() => {
+        if (!cookie) {
+            router.push("/");
+        }
+    }, [cookie]);
 
     useEffect(() => {
         if (current !== null) {
@@ -53,7 +62,7 @@ const ResultPage = () => {
                 searchComment({
                     userId: Number(cookie.userid) || -1,
                     mbti: selectedMbti,
-                    public_key: localStorage.getItem("public_key") || "",
+                    public_key: publicKey,
                 }).then((res) => {
                     res.data.data.map((e: CommentType) => {
                         if (e.comment) {
