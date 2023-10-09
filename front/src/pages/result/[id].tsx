@@ -82,7 +82,7 @@ const ResultPage = () => {
                 }).then((res) => {
                     res.data.data.map((e: CommentType) => {
                         if (e.comment) {
-                            setComments([...comments, e]);
+                            setComments([e]);
                         }
                     });
                 });
