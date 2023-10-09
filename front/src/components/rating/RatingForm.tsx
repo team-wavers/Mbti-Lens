@@ -70,7 +70,7 @@ const MbtiContainer = styled.div`
 const RatingContainer = styled.div`
     ${flexBox("column", "center", "flex-start")}
     width: 80px;
-    height: 150px;
+    height: auto;
 `;
 
 export default RatingForm;

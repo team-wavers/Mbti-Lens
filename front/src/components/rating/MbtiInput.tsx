@@ -33,6 +33,7 @@ const InputContainer = styled.button<{ selected: boolean }>`
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
     color: rgba(0, 0, 0, 0.09);
+    padding: 0;
     ${({ theme, selected }) =>
         selected &&
         `

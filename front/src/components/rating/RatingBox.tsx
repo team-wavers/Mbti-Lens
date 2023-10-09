@@ -39,6 +39,7 @@ const Container = styled.div`
     ${flexBox("row", "center", "center")}
     width: auto;
     height: auto;
+    padding: 10px 0;
 `;
 
 const ButtonContainer = styled.button`
