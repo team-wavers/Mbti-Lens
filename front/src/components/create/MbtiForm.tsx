@@ -58,11 +58,9 @@ const MbtiForm = (props: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
                         ref={(e) => e && (inputRefs.current[3] = e)}
                     />
                 </InputContainer>
-                <CommonButton
-                    onClick={nextHandler}
-                    content={"다음"}
-                    disabled={disabled}
-                />
+                <CommonButton onClick={nextHandler} disabled={disabled}>
+                    다음
+                </CommonButton>
             </FormContainer>
         </Container>
     );
