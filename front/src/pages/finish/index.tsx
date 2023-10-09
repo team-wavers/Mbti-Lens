@@ -12,11 +12,9 @@ const FinishPage = () => {
     return (
         <Container>
             <Title>평가가 완료되었습니다!</Title>
-            <CommonButton
-                content={"나도 해보기"}
-                disabled={false}
-                onClick={clickHandler}
-            />
+            <CommonButton disabled={false} onClick={clickHandler}>
+                나도해보기
+            </CommonButton>
         </Container>
     );
 };

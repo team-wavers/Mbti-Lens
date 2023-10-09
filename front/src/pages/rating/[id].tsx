@@ -100,25 +100,28 @@ const id = ({ res }: Props) => {
                     <ButtonDivider>
                         {current !== "mbti_e_i" && (
                             <CommonButton
-                                content="이전"
                                 onClick={prevHandler}
                                 disabled={false}
-                            />
+                            >
+                                이전
+                            </CommonButton>
                         )}
                     </ButtonDivider>
                     <ButtonDivider>
                         {current !== "mbti_p_j" ? (
                             <CommonButton
-                                content="다음"
                                 onClick={nextHandler}
                                 disabled={likes?.get(current) === undefined}
-                            />
+                            >
+                                다음
+                            </CommonButton>
                         ) : (
                             <CommonButton
-                                content="제출"
                                 onClick={submitHandler}
                                 disabled={disableSubmit}
-                            />
+                            >
+                                제출
+                            </CommonButton>
                         )}
                     </ButtonDivider>
                 </ButtonContainer>

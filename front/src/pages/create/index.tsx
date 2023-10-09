@@ -73,16 +73,15 @@ const CreateMBTI = () => {
                     ref={linkRef}
                 />
                 <ButtonContainer>
+                    <CommonButton disabled={false} onClick={copyHandler}>
+                        링크 복사하기
+                    </CommonButton>
                     <CommonButton
-                        content={`링크 복사하기`}
-                        disabled={false}
-                        onClick={copyHandler}
-                    />
-                    <CommonButton
-                        content={`결과 보러가기`}
                         disabled={false}
                         onClick={() => router.push(`/result/${cookie.userid}`)}
-                    />
+                    >
+                        결과 보러가기
+                    </CommonButton>
                 </ButtonContainer>
             </Container>
         );

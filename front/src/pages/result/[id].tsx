@@ -210,10 +210,11 @@ const ResultPage = () => {
                                 )}
                             </CommentContainer>
                             <CommonButton
-                                content={`뒤로가기`}
                                 disabled={false}
                                 onClick={() => setCurrent(null)}
-                            />
+                            >
+                                뒤로가기
+                            </CommonButton>
                         </>
                     )}
                 </Container>
