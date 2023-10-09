@@ -46,7 +46,6 @@ const CreateMBTI = () => {
             }).then((e) => {
                 if (e.data.statusCode !== 201) {
                     alert("유효하지 않은 Request 입니다.");
-                    setCreated(true);
                     return;
                 }
                 setCreated(true);
