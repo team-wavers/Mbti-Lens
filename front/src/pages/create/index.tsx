@@ -22,13 +22,20 @@ const CreateMBTI = () => {
 
     useEffect(() => {
         if (cookie) {
-            searchMbti({ userId: Number(cookie.userid) }).then((res) => {
-                if (res.data.statusCode === 200) {
-                    setCreated(true);
-                } else {
-                    setMounted(true);
-                }
-            });
+            searchMbti({ userId: Number(cookie.userid) })
+                .then((res) => {
+                    if (res.data.statusCode === 200) {
+                        setCreated(true);
+                    }
+                })
+                .catch((e) => {
+                    if (
+                        e.response.data.statusCode === 400 &&
+                        e.response.data.data === null
+                    ) {
+                        setMounted(true);
+                    }
+                });
         } else {
             router.push("/");
         }

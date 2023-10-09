@@ -65,6 +65,7 @@ const ResultPage = () => {
     useEffect(() => {
         if (current !== null) {
             if (cookie && response) {
+                setComments([]);
                 const selectedMbti =
                     current === "mbti_e_i"
                         ? response.ei
@@ -82,7 +83,7 @@ const ResultPage = () => {
                 }).then((res) => {
                     res.data.data.map((e: CommentType) => {
                         if (e.comment) {
-                            setComments([e]);
+                            setComments([...comments, e]);
                         }
                     });
                 });
