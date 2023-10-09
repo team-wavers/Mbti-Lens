@@ -30,6 +30,7 @@ const InputContainer = styled.input<{ selected: boolean }>`
     font-size: ${({ theme }) => theme.typography.x3l};
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
+    padding: 0;
     ${({ selected }) =>
         selected &&
         `
