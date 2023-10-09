@@ -68,10 +68,10 @@ const id = ({ res }: Props) => {
     useEffect(() => {
         if (cookie) {
             cookie.userid == id && router.push(`/result/${id}`);
-        }
-
-        if (!public_key || !id) {
+        } else if (!public_key || !id) {
             router.push("/");
+        } else {
+            setMounted(true);
         }
     }, []);
 

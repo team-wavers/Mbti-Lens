@@ -3,7 +3,7 @@ module.exports = {
         {
             name: "mbti.lens.front",
             script: "node_modules/next/dist/bin/next",
-            args: "start -p 80",
+            args: "start -p 3000",
             cwd: "./",
             instances: 0,
             autorestart: true,
