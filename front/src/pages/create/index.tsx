@@ -18,7 +18,6 @@ const CreateMBTI = () => {
     const linkRef = useRef<HTMLInputElement>(null);
     const [mounted, setMounted] = useState<boolean>(false);
     const [created, setCreated] = useState<boolean>(false);
-    const [publicKey, setPublicKey] = useState<string>("");
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
     useEffect(() => {
@@ -26,7 +25,6 @@ const CreateMBTI = () => {
             searchMbti({ userId: Number(cookie.userid) }).then((res) => {
                 if (res.data.statusCode === 200) {
                     setCreated(true);
-                    setPublicKey(localStorage.getItem("public_key") || "null");
                 } else {
                     setMounted(true);
                 }
@@ -52,8 +50,6 @@ const CreateMBTI = () => {
                     return;
                 }
                 setCreated(true);
-                setPublicKey(e.data.data);
-                localStorage.setItem("public_key", e.data.data);
             });
         }
     };
@@ -71,7 +67,9 @@ const CreateMBTI = () => {
             <Container>
                 <Title>성공적으로 생성했습니다!</Title>
                 <LinkInput
-                    value={`${fe_endpoint}/rating/${cookie.userid}?public_key=${publicKey}`}
+                    value={`${fe_endpoint}/rating/${cookie.userid}?public_key=${
+                        cookie.public_key || ""
+                    }`}
                     ref={linkRef}
                 />
                 <ButtonContainer>

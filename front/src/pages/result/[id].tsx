@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import ThumbsUpIcon from "../../assets/icons/thumbs-up-selected.svg";
 import ThumbsDownIcon from "../../assets/icons/thumbs-down-selected.svg";
+import LinkIcon from "../../assets/icons/link.svg";
 import { SearchResponse } from "@/types/response";
 import Comment from "@/components/result/Comment";
 import searchMbti from "@/apis/create/searchMbti";
@@ -26,6 +27,21 @@ const ResultPage = () => {
     const [publicKey, setPublicKey] = useState<string>(
         cookie?.public_key || "",
     );
+    const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
+
+    const shareHandler = () => {
+        if (cookie && cookie.public_key) {
+            window.navigator.clipboard
+                .writeText(
+                    `${fe_endpoint}/rating/${cookie?.userid}?public_key=${
+                        cookie?.public_key || ""
+                    }`,
+                )
+                .then(() => {
+                    alert("링크가 클립보드에 복사되었습니다!");
+                });
+        }
+    };
 
     useEffect(() => {
         if (cookie) {
@@ -77,98 +93,131 @@ const ResultPage = () => {
     return (
         mounted &&
         response && (
-            <Container>
-                <TopContainer>
-                    <Title>
-                        남이보는 {cookie?.username || undefined}님의 MBTI는?
-                    </Title>
-                    <MbtiInputContainer>
-                        <MbtiInput
-                            value={response.ei}
-                            selected={current ? current === "mbti_e_i" : true}
-                            onClick={() => setCurrent("mbti_e_i")}
-                        />
-                        <MbtiInput
-                            value={response.ns}
-                            selected={current ? current === "mbti_n_s" : true}
-                            onClick={() => setCurrent("mbti_n_s")}
-                        />
-                        <MbtiInput
-                            value={response.tf}
-                            selected={current ? current === "mbti_t_f" : true}
-                            onClick={() => setCurrent("mbti_t_f")}
-                        />
-                        <MbtiInput
-                            value={response.pj}
-                            selected={current ? current === "mbti_p_j" : true}
-                            onClick={() => setCurrent("mbti_p_j")}
-                        />
-                    </MbtiInputContainer>
-                </TopContainer>
-                {current === null && (
-                    <StatBox>
-                        <CountInformation>
-                            {response.ei_like +
-                                response.ns_like +
-                                response.tf_like +
-                                response.pj_like}
-                            명이 눌러주셨어요!
-                        </CountInformation>
-                        <CountContainer>
-                            <MbtiTextContainer>
-                                <MbtiText>{response.ei.toUpperCase()}</MbtiText>
-                                <MbtiText>{response.ns.toUpperCase()}</MbtiText>
-                                <MbtiText>{response.tf.toUpperCase()}</MbtiText>
-                                <MbtiText>{response.pj.toUpperCase()}</MbtiText>
-                            </MbtiTextContainer>
-                            <StatContainer>
-                                <ThumbsUpIcon />
-                                <StatTextContainer>
-                                    <StatText>{response.ei_like}</StatText>
-                                    <StatText>{response.ns_like}</StatText>
-                                    <StatText>{response.tf_like}</StatText>
-                                    <StatText>{response.pj_like}</StatText>
-                                </StatTextContainer>
-                            </StatContainer>
-                            <StatContainer>
-                                <ThumbsDownIcon />
-                                <StatTextContainer>
-                                    <StatText>{response.ei_dislike}</StatText>
-                                    <StatText>{response.ns_dislike}</StatText>
-                                    <StatText>{response.tf_dislike}</StatText>
-                                    <StatText>{response.pj_dislike}</StatText>
-                                </StatTextContainer>
-                            </StatContainer>
-                        </CountContainer>
-                    </StatBox>
-                )}
-                {current !== null && (
-                    <>
-                        <CommentContainer>
-                            {comments &&
-                                comments.map((e) => {
-                                    if (e.comment) {
-                                        return (
-                                            <Comment key={e._id} like={e.like}>
-                                                {e.comment}
-                                            </Comment>
-                                        );
-                                    }
-                                })}
-                            {comments.length <= 0 && (
-                                <NoCommentText>
-                                    등록된 코멘트가 없습니다.
-                                </NoCommentText>
-                            )}
-                        </CommentContainer>
-                        <CommonButton
-                            content={`뒤로가기`}
-                            disabled={false}
-                            onClick={() => setCurrent(null)}
-                        />
-                    </>
-                )}
-            </Container>
+            <>
+                <ShareButton onClick={shareHandler}>
+                    <LinkIcon fill="#A06868" />
+                    평가링크 복사하기
+                </ShareButton>
+                <Container>
+                    <TopContainer>
+                        <Title>
+                            남이보는 {cookie?.username || undefined}님의 MBTI는?
+                        </Title>
+                        <MbtiInputContainer>
+                            <MbtiInput
+                                value={response.ei}
+                                selected={
+                                    current ? current === "mbti_e_i" : true
+                                }
+                                onClick={() => setCurrent("mbti_e_i")}
+                            />
+                            <MbtiInput
+                                value={response.ns}
+                                selected={
+                                    current ? current === "mbti_n_s" : true
+                                }
+                                onClick={() => setCurrent("mbti_n_s")}
+                            />
+                            <MbtiInput
+                                value={response.tf}
+                                selected={
+                                    current ? current === "mbti_t_f" : true
+                                }
+                                onClick={() => setCurrent("mbti_t_f")}
+                            />
+                            <MbtiInput
+                                value={response.pj}
+                                selected={
+                                    current ? current === "mbti_p_j" : true
+                                }
+                                onClick={() => setCurrent("mbti_p_j")}
+                            />
+                        </MbtiInputContainer>
+                    </TopContainer>
+                    {current === null && (
+                        <StatBox>
+                            <CountInformation>
+                                {response.ei_like +
+                                    response.ns_like +
+                                    response.tf_like +
+                                    response.pj_like}
+                                명이 눌러주셨어요!
+                            </CountInformation>
+                            <CountContainer>
+                                <MbtiTextContainer>
+                                    <MbtiText>
+                                        {response.ei.toUpperCase()}
+                                    </MbtiText>
+                                    <MbtiText>
+                                        {response.ns.toUpperCase()}
+                                    </MbtiText>
+                                    <MbtiText>
+                                        {response.tf.toUpperCase()}
+                                    </MbtiText>
+                                    <MbtiText>
+                                        {response.pj.toUpperCase()}
+                                    </MbtiText>
+                                </MbtiTextContainer>
+                                <StatContainer>
+                                    <ThumbsUpIcon />
+                                    <StatTextContainer>
+                                        <StatText>{response.ei_like}</StatText>
+                                        <StatText>{response.ns_like}</StatText>
+                                        <StatText>{response.tf_like}</StatText>
+                                        <StatText>{response.pj_like}</StatText>
+                                    </StatTextContainer>
+                                </StatContainer>
+                                <StatContainer>
+                                    <ThumbsDownIcon />
+                                    <StatTextContainer>
+                                        <StatText>
+                                            {response.ei_dislike}
+                                        </StatText>
+                                        <StatText>
+                                            {response.ns_dislike}
+                                        </StatText>
+                                        <StatText>
+                                            {response.tf_dislike}
+                                        </StatText>
+                                        <StatText>
+                                            {response.pj_dislike}
+                                        </StatText>
+                                    </StatTextContainer>
+                                </StatContainer>
+                            </CountContainer>
+                        </StatBox>
+                    )}
+                    {current !== null && (
+                        <>
+                            <CommentContainer>
+                                {comments &&
+                                    comments.map((e) => {
+                                        if (e.comment) {
+                                            return (
+                                                <Comment
+                                                    key={e._id}
+                                                    like={e.like}
+                                                >
+                                                    {e.comment}
+                                                </Comment>
+                                            );
+                                        }
+                                    })}
+                                {comments.length <= 0 && (
+                                    <NoCommentText>
+                                        등록된 코멘트가 없습니다.
+                                    </NoCommentText>
+                                )}
+                            </CommentContainer>
+                            <CommonButton
+                                content={`뒤로가기`}
+                                disabled={false}
+                                onClick={() => setCurrent(null)}
+                            />
+                        </>
+                    )}
+                </Container>
+            </>
         )
     );
 };
@@ -179,6 +228,22 @@ const Container = styled.div`
     width: 100%;
     min-height: 100vh;
     padding: 150px 0;
+`;
+
+const ShareButton = styled.button`
+    ${flexBox("row", "center", "center")}
+    position: absolute;
+    width: auto;
+    height: 50px;
+    gap: 10px;
+    border: none;
+    outline: none;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+    background-color: transparent;
+    font-family: HSYuji, sans-serif;
+    color: ${({ theme }) => theme.colors.primary};
 `;
 
 const TopContainer = styled.div`
