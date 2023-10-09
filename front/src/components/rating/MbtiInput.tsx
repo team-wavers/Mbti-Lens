@@ -12,7 +12,6 @@ type Props = {
 const MbtiInput = ({ id, value, selected, onClick }: Props) => {
     return (
         <InputContainer
-            type="button"
             id={id}
             placeholder=""
             selected={selected ? selected : false}

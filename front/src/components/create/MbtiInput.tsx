@@ -32,6 +32,7 @@ const InputContainer = styled.input`
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
     color: ${({ theme }) => theme.colors.primary};
+    padding: 0;
     &:focus {
         transform: scale(1.1);
     }
