@@ -16,7 +16,6 @@ const MbtiInput = (props: Props, ref: React.ForwardedRef<HTMLInputElement>) => {
             maxLength={1}
             ref={ref}
             autoComplete="off"
-            readOnly
         />
     );
 };

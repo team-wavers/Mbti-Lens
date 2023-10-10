@@ -16,7 +16,7 @@ const addComment = async ({
     comment,
 }: Props) => {
     return await instance().post(
-        `/users/${userId}/mbtis/${mbti}/comments?public_key=${public_key}`,
+        `/users/${userId}/mbtis/${mbti.toLowerCase()}/comments?public_key=${public_key}`,
         { like: like, comment: comment },
     );
 };

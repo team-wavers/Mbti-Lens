@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 
 const ResultPage = () => {
     const router = useRouter();
+    const { id } = router.query;
     const { cookie } = useCookie();
     const [current, setCurrent] = useState<string | null>(null);
     const [response, setResponse] = useState<SearchResponse["data"] | null>(
@@ -45,6 +46,7 @@ const ResultPage = () => {
 
     useEffect(() => {
         if (cookie) {
+            if (cookie.userid !== id) router.push("/");
             searchMbti({ userId: Number(cookie.userid) || -1 })
                 .then((res) => {
                     setResponse(res.data.data);
@@ -65,7 +67,6 @@ const ResultPage = () => {
     useEffect(() => {
         if (current !== null) {
             if (cookie && response) {
-                setComments([]);
                 const selectedMbti =
                     current === "mbti_e_i"
                         ? response.ei
@@ -78,14 +79,13 @@ const ResultPage = () => {
                         : "";
                 searchComment({
                     userId: Number(cookie.userid) || -1,
-                    mbti: selectedMbti,
+                    mbti: selectedMbti.toLowerCase(),
                     public_key: publicKey,
                 }).then((res) => {
-                    res.data.data.map((e: CommentType) => {
-                        if (e.comment) {
-                            setComments([...comments, e]);
-                        }
-                    });
+                    const array = res.data.data.filter(
+                        (item: CommentType) => item.comment !== undefined,
+                    );
+                    setComments(array);
                 });
             }
         }

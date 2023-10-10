@@ -70,9 +70,8 @@ const id = ({ res }: Props) => {
             cookie.userid == id && router.push(`/result/${id}`);
         } else if (!public_key || !id) {
             router.push("/");
-        } else {
-            setMounted(true);
         }
+        setMounted(true);
     }, []);
 
     return (

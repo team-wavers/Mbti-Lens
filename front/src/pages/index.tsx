@@ -23,9 +23,13 @@ const Index = () => {
     };
     useEffect(() => {
         if (cookie) {
-            searchMbti({ userId: 11 })
-                .then(() => {
-                    router.push(`/result/${cookie.userid}`);
+            searchMbti({ userId: Number(cookie.userid) })
+                .then((res) => {
+                    if (res.data.data.statusCode === 400) {
+                        router.push(`/create`);
+                    } else {
+                        router.push(`/result/${cookie.userid}`);
+                    }
                 })
                 .catch((e) => {
                     if (
