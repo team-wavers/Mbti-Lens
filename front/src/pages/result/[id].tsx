@@ -140,10 +140,7 @@ const ResultPage = () => {
                     {current === null && (
                         <StatBox>
                             <CountInformation>
-                                {response.ei_like +
-                                    response.ns_like +
-                                    response.tf_like +
-                                    response.pj_like}
+                                {response.ei_like + response.ei_dislike}
                                 명이 눌러주셨어요!
                             </CountInformation>
                             <CountContainer>
@@ -260,7 +257,7 @@ const Title = styled.h1`
     color: ${({ theme }) => theme.colors.primary};
     font-size: ${({ theme }) => theme.typography.x2l};
     font-weight: 500;
-    line-height: ${({ theme }) => theme.typography.x2l};
+    line-height: ${({ theme }) => theme.typography.x3l};
     text-align: center;
     margin: 0 auto;
     margin-bottom: 50px;

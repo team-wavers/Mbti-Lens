@@ -12,7 +12,6 @@ import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
 import { AxiosResponse } from "axios";
 import useCookie from "@/hooks/useCookie";
-import Spinner from "@/components/common/Spinner/Spinner";
 
 type Props = {
     res: SearchResponse;
@@ -75,7 +74,6 @@ const id = ({ res }: Props) => {
         setMounted(true);
     }, []);
 
-    if (!mounted) return <Spinner />;
     return (
         mounted && (
             <Container>
@@ -155,7 +153,7 @@ const Title = styled.h1`
     color: ${({ theme }) => theme.colors.primary};
     font-size: ${({ theme }) => theme.typography.xl};
     font-weight: 500;
-    line-height: ${({ theme }) => theme.typography.x2l};
+    line-height: ${({ theme }) => theme.typography.x3l};
     text-align: center;
     margin-bottom: 30px;
 `;

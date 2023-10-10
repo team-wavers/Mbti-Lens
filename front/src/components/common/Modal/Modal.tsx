@@ -75,7 +75,7 @@ const ContentContainer = styled.div`
     font-size: ${({ theme }) => theme.typography.m};
     padding: 10px 20px;
     padding-top: 0;
-    line-height: ${({ theme }) => theme.typography.xl};
+    line-height: ${({ theme }) => theme.typography.x2l};
 `;
 
 const ButtonContainer = styled.div`
