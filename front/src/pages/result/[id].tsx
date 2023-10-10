@@ -14,6 +14,7 @@ import CommentType from "@/types/comment";
 import { searchComment } from "@/apis/rating";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 const ResultPage = () => {
     const router = useRouter();
@@ -46,7 +47,7 @@ const ResultPage = () => {
 
     useEffect(() => {
         if (cookie) {
-            if (cookie.userid !== id) router.push("/");
+            if (cookie.userid !== id) router.push(`/result/${cookie.userid}`);
             searchMbti({ userId: Number(cookie.userid) || -1 })
                 .then((res) => {
                     setResponse(res.data.data);
@@ -91,6 +92,7 @@ const ResultPage = () => {
         }
     }, [current]);
 
+    if (!mounted) return <Spinner />;
     return (
         mounted &&
         response && (

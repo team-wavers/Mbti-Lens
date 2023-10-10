@@ -12,6 +12,7 @@ import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
 import { AxiosResponse } from "axios";
 import useCookie from "@/hooks/useCookie";
+import Spinner from "@/components/common/Spinner/Spinner";
 
 type Props = {
     res: SearchResponse;
@@ -74,6 +75,7 @@ const id = ({ res }: Props) => {
         setMounted(true);
     }, []);
 
+    if (!mounted) return <Spinner />;
     return (
         mounted && (
             <Container>
