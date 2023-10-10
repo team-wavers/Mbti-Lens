@@ -33,6 +33,7 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
+                    <title>MBTI Lens</title>
                     <meta charSet="utf-8" />
                     <meta
                         name="viewport"
@@ -47,7 +48,7 @@ export default class MyDocument extends Document {
                         property="og:title"
                         content="남이보는 당신의 MBTI는? MBTI Lens"
                     />
-                    <meta property="og:image" content="./thumbnail.png" />
+                    <meta property="og:image" content="" />
                     <meta property="og:image:type" content="image/png" />
                     <meta
                         property="og:description"
