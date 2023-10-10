@@ -29,7 +29,7 @@ export class CommentdataService {
       if (!item.mbti || typeof item.mbti !== 'string') {
         throw new BadRequestException('mbti data not found');
       }
-      if (!item.like || typeof item.like !== 'boolean') {
+      if (item.like === undefined || typeof item.like !== 'boolean') {
         throw new BadRequestException('like data not found');
       }
       const mbti = item.mbti;
