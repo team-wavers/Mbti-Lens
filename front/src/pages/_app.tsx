@@ -3,7 +3,7 @@ import GlobalStyle from "@/styles/GlobalStyles";
 import theme from "@/styles/theme";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
-import "@/assets/fonts/fonts.css";
+import { RecoilRoot } from "recoil";
 
 const App = ({ Component, pageProps }: AppProps) => {
     return (
