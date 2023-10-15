@@ -10,6 +10,7 @@ import searchMbti from "@/apis/create/searchMbti";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
 import Spinner from "@/components/common/Spinner/Spinner";
+import * as Sentry from "@sentry/nextjs";
 
 const CreateMBTI = () => {
     const router = useRouter();
@@ -35,6 +36,8 @@ const CreateMBTI = () => {
                         e.response.data.data === null
                     ) {
                         setMounted(true);
+                    } else {
+                        Sentry.captureException(e);
                     }
                 });
         } else {
@@ -51,13 +54,18 @@ const CreateMBTI = () => {
                 ns: mbti_n_s.value,
                 tf: mbti_t_f.value,
                 pj: mbti_p_j.value,
-            }).then((e) => {
-                if (e.data.statusCode !== 201) {
-                    alert("유효하지 않은 Request 입니다.");
-                    return;
-                }
-                setCreated(true);
-            });
+            })
+                .then((e) => {
+                    if (e.data.statusCode !== 201) {
+                        alert("유효하지 않은 Request 입니다.");
+                        return;
+                    }
+                    setCreated(true);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    Sentry.captureException(e);
+                });
         }
     };
 

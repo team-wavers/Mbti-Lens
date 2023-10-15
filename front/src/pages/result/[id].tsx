@@ -15,6 +15,7 @@ import { searchComment } from "@/apis/rating";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
 import Spinner from "@/components/common/Spinner/Spinner";
+import * as Sentry from "@sentry/nextjs";
 
 const ResultPage = () => {
     const router = useRouter();
@@ -53,7 +54,10 @@ const ResultPage = () => {
                     setResponse(res.data.data);
                     setMounted(true);
                 })
-                .catch((e) => console.log(e));
+                .catch((e) => {
+                    console.log(e);
+                    Sentry.captureException(e);
+                });
         } else {
             router.push("/");
         }
@@ -82,12 +86,17 @@ const ResultPage = () => {
                     userId: Number(cookie.userid) || -1,
                     mbti: selectedMbti.toLowerCase(),
                     public_key: publicKey,
-                }).then((res) => {
-                    const array = res.data.data.filter(
-                        (item: CommentType) => item.comment !== undefined,
-                    );
-                    setComments(array);
-                });
+                })
+                    .then((res) => {
+                        const array = res.data.data.filter(
+                            (item: CommentType) => item.comment !== undefined,
+                        );
+                        setComments(array);
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        Sentry.captureException(e);
+                    });
             }
         }
     }, [current]);

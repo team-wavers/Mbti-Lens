@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useCookie from "@/hooks/useCookie";
 import searchMbti from "@/apis/create/searchMbti";
+import * as Sentry from "@sentry/nextjs";
 
 const Index = () => {
     const router = useRouter();
@@ -37,6 +38,8 @@ const Index = () => {
                         e.response.data.data === null
                     ) {
                         router.push(`/create`);
+                    } else {
+                        Sentry.captureException(e);
                     }
                 });
         } else {
