@@ -36,8 +36,9 @@ const CreateMBTI = () => {
                         e.response.data.data === null
                     ) {
                         setMounted(true);
+                        Sentry.captureMessage(e, "log");
                     } else {
-                        Sentry.captureException(e);
+                        Sentry.captureMessage(e, "error");
                     }
                 });
         } else {
@@ -64,7 +65,7 @@ const CreateMBTI = () => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    Sentry.captureException(e);
+                    Sentry.captureMessage(e, "fatal");
                 });
         }
     };

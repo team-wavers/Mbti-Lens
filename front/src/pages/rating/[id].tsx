@@ -58,7 +58,7 @@ const id = ({ res }: Props) => {
             })
             .catch((e) => {
                 console.log(e);
-                Sentry.captureException(e);
+                Sentry.captureMessage(e, "error");
             });
     };
 

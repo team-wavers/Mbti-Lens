@@ -37,9 +37,10 @@ const Index = () => {
                         e.response.data.statusCode === 400 &&
                         e.response.data.data === null
                     ) {
+                        Sentry.captureMessage(e, "log");
                         router.push(`/create`);
                     } else {
-                        Sentry.captureException(e);
+                        Sentry.captureMessage(e, "error");
                     }
                 });
         } else {

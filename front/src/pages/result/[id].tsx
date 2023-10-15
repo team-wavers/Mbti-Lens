@@ -27,9 +27,7 @@ const ResultPage = () => {
     );
     const [mounted, setMounted] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
-    const [publicKey, setPublicKey] = useState<string>(
-        cookie?.public_key || "",
-    );
+    const [publicKey, _] = useState<string>(cookie?.public_key || "");
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
     const shareHandler = () => {
@@ -56,7 +54,7 @@ const ResultPage = () => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    Sentry.captureException(e);
+                    Sentry.captureMessage(e, "error");
                 });
         } else {
             router.push("/");
@@ -95,7 +93,7 @@ const ResultPage = () => {
                     })
                     .catch((e) => {
                         console.log(e);
-                        Sentry.captureException(e);
+                        Sentry.captureMessage(e, "error");
                     });
             }
         }
