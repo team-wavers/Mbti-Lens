@@ -202,6 +202,7 @@ const ResultPage = () => {
                             <CommentContainer>
                                 {loading && <Spinner type="default" />}
                                 {comments &&
+                                    !loading &&
                                     comments.map((e) => {
                                         if (e.comment) {
                                             return (
