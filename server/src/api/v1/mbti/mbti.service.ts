@@ -7,7 +7,6 @@ import {
 import { Mbti } from './mbti.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
-import { StandardResponseDto } from 'src/dto/standard-response.dto';
 
 @Injectable()
 export class MbtiService {
@@ -58,8 +57,9 @@ export class MbtiService {
   async updateLikes(
     user_id: number,
     mbti: string,
+    count: number,
     islike: boolean,
-  ): Promise<any> {
+  ): Promise<Mbti | undefined> {
     let updateField = '';
     if (islike) {
       updateField = '_like';
@@ -75,13 +75,13 @@ export class MbtiService {
     } else if (mbti === 'p' || mbti === 'j') {
       updateField = 'pj' + updateField;
     }
+
     if (updateField) {
-      await this.mbtiRepository.increment({ user_id: user_id }, updateField, 1);
-      return new StandardResponseDto(
-        201,
-        'api.common.created',
-        'Done Like Update',
+      const updateData = await this.mbtiRepository.update(
+        { user_id: user_id },
+        { [updateField]: count },
       );
+      return updateData.raw[0];
     } else {
       throw new BadRequestException('mbti data is not correct');
     }
