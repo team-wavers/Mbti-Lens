@@ -14,7 +14,7 @@ import CommentType from "@/types/comment";
 import { searchComment } from "@/apis/rating";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
-import Spinner from "@/components/common/Spinner/Spinner";
+import { Spinner } from "@/components/common/Spinner";
 import * as Sentry from "@sentry/nextjs";
 
 const ResultPage = () => {
@@ -26,6 +26,7 @@ const ResultPage = () => {
         null,
     );
     const [mounted, setMounted] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
     const [publicKey, _] = useState<string>(cookie?.public_key || "");
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
@@ -70,6 +71,7 @@ const ResultPage = () => {
     useEffect(() => {
         if (current !== null) {
             if (cookie && response) {
+                setLoading(true);
                 const selectedMbti =
                     current === "mbti_e_i"
                         ? response.ei
@@ -90,6 +92,7 @@ const ResultPage = () => {
                             (item: CommentType) => item.comment !== undefined,
                         );
                         setComments(array);
+                        setLoading(false);
                     })
                     .catch((e) => {
                         console.log(e);
@@ -99,7 +102,7 @@ const ResultPage = () => {
         }
     }, [current]);
 
-    if (!mounted) return <Spinner />;
+    if (!mounted) return <Spinner type="full" />;
     return (
         mounted &&
         response && (
@@ -197,6 +200,7 @@ const ResultPage = () => {
                     {current !== null && (
                         <>
                             <CommentContainer>
+                                {loading && <Spinner type="default" />}
                                 {comments &&
                                     comments.map((e) => {
                                         if (e.comment) {

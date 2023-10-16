@@ -80,6 +80,7 @@ const Container = styled.div`
     background-color: white;
     box-shadow: -3px 0px 12px 2px rgba(0, 0, 0, 0.05);
     z-index: 999;
+    font-family: "LINE Seed Sans", sans-serif;
 `;
 
 const MenuItemContainer = styled.div`
