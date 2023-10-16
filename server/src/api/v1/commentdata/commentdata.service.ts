@@ -1,4 +1,10 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CommentData } from './commentdata.entity';
 import { Repository } from 'typeorm';
 import { MbtiService } from '../mbti/mbti.service';
@@ -15,9 +21,10 @@ export class CommentdataService {
   ) {}
   async createNewData(
     paramUserId: number,
+    paramMbti: string,
     bodyData: any,
     public_key: any,
-  ): Promise<any> {
+  ): Promise<CommentData> {
     //check_key를 통해 public_key가 유효한지 확인
     const check_key = await this.usersService.findOne({
       where: { _id: paramUserId },
@@ -25,29 +32,39 @@ export class CommentdataService {
     if (!check_key || check_key?.public_key !== public_key.public_key) {
       throw new BadRequestException('public_key not found');
     }
-    for (const item of bodyData) {
-      if (!item.mbti || typeof item.mbti !== 'string') {
-        throw new BadRequestException('mbti data not found');
-      }
-      if (item.like === undefined || typeof item.like !== 'boolean') {
-        throw new BadRequestException('like data not found');
-      }
-      const mbti = item.mbti;
-      const like = item.like;
-      const comment = item.comment;
-
-      const newData: CommentData = new CommentData();
-      newData.host_id = paramUserId;
-      newData.mbti = mbti;
-      newData.like = like;
-      //댓글이 존재하는지 확인
-      if (comment !== undefined && comment !== null && comment !== '') {
-        newData.comment = comment;
-        await this.commentRepository.save(newData);
-      }
-      //좋아요 수 증가
-      await this.mbtiService.updateLikes(newData.host_id, newData.mbti, like);
+    const newData: CommentData = new CommentData();
+    newData.host_id = paramUserId;
+    newData.mbti = paramMbti;
+    newData.like = bodyData.like;
+    if (bodyData.like === undefined || null) {
+      throw new BadRequestException(' like data not found');
     }
+    newData.comment = '';
+    if (bodyData.comment !== undefined) {
+      newData.comment = bodyData.comment;
+    }
+    return newData;
+  }
+  async countLikes(options: any): Promise<number> {
+    const count = await this.commentRepository.count(options);
+    return count;
+  }
+  async createComment(newData: CommentData): Promise<any> {
+    await this.commentRepository.save(newData);
+    const count = await this.countLikes({
+      where: {
+        host_id: newData.host_id,
+        mbti: newData.mbti,
+        like: newData.like,
+      },
+    });
+    const islike = newData.like;
+    await this.mbtiService.updateLikes(
+      newData.host_id,
+      newData.mbti,
+      count,
+      islike,
+    );
     return new StandardResponseDto(
       201,
       'api.common.created',

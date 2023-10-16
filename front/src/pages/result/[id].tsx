@@ -15,7 +15,6 @@ import { searchComment } from "@/apis/rating";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
 import Spinner from "@/components/common/Spinner/Spinner";
-import * as Sentry from "@sentry/nextjs";
 
 const ResultPage = () => {
     const router = useRouter();
@@ -27,7 +26,9 @@ const ResultPage = () => {
     );
     const [mounted, setMounted] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
-    const [publicKey, _] = useState<string>(cookie?.public_key || "");
+    const [publicKey, setPublicKey] = useState<string>(
+        cookie?.public_key || "",
+    );
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
     const shareHandler = () => {
@@ -52,10 +53,7 @@ const ResultPage = () => {
                     setResponse(res.data.data);
                     setMounted(true);
                 })
-                .catch((e) => {
-                    console.log(e);
-                    Sentry.captureMessage(e, "error");
-                });
+                .catch((e) => console.log(e));
         } else {
             router.push("/");
         }
@@ -84,17 +82,12 @@ const ResultPage = () => {
                     userId: Number(cookie.userid) || -1,
                     mbti: selectedMbti.toLowerCase(),
                     public_key: publicKey,
-                })
-                    .then((res) => {
-                        const array = res.data.data.filter(
-                            (item: CommentType) => item.comment !== undefined,
-                        );
-                        setComments(array);
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        Sentry.captureMessage(e, "error");
-                    });
+                }).then((res) => {
+                    const array = res.data.data.filter(
+                        (item: CommentType) => item.comment !== undefined,
+                    );
+                    setComments(array);
+                });
             }
         }
     }, [current]);

@@ -6,14 +6,9 @@ import MenuCloseIcon from "../../assets/icons/menu-close.svg";
 
 const menuItemList: Array<{ name: string; link: string }> = [
     { name: "홈", link: "/" },
-    {
-        name: "팀 소개",
-        link: "https://team-culfare.notion.site/team-culfare-e0ea18de8d854b8d9d8ba6516c957826?pvs=4",
-    },
-    {
-        name: "자주 묻는 질문",
-        link: "https://team-culfare.notion.site/MBTI-Lens-9fd15b6437474370b710eb687508853c?pvs=4",
-    },
+    { name: "소개", link: "/about" },
+    { name: "자주 묻는 질문", link: "/faq" },
+    { name: "개발자들", link: "/makers" },
 ];
 
 type Props = {
