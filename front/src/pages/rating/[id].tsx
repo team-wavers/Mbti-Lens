@@ -12,6 +12,7 @@ import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
 import { AxiosResponse } from "axios";
 import useCookie from "@/hooks/useCookie";
+import * as Sentry from "@sentry/nextjs";
 
 type Props = {
     res: SearchResponse;
@@ -55,7 +56,10 @@ const id = ({ res }: Props) => {
                     router.push("/finish");
                 }
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+                console.log(e);
+                Sentry.captureMessage(e, "error");
+            });
     };
 
     useEffect(() => {
