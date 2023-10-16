@@ -12,6 +12,7 @@ import { mbtiArray } from "@/constants/mbti";
 import useComment from "@/hooks/useComment";
 import { AxiosResponse } from "axios";
 import useCookie from "@/hooks/useCookie";
+import * as Sentry from "@sentry/nextjs";
 
 type Props = {
     res: SearchResponse;
@@ -46,19 +47,19 @@ const id = ({ res }: Props) => {
 
     const submitHandler = () => {
         setDisableSubmit(true);
-        postComment().then((res: AxiosResponse<GeneralResponse>[]) => {
-            const errValidate = res.some(
-                (e: AxiosResponse<GeneralResponse>) => {
-                    e.data.statusCode !== 201;
-                },
-            );
-            if (errValidate) {
-                alert("유효하지 않은 Request가 존재합니다.");
-                router.push("/");
-            } else {
-                router.push("/finish");
-            }
-        });
+        postComment()
+            .then((res: AxiosResponse<GeneralResponse>) => {
+                if (res.data.statusCode !== 201) {
+                    alert("유효하지 않은 Request가 존재합니다.");
+                    router.push("/");
+                } else {
+                    router.push("/finish");
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+                Sentry.captureMessage(e, "error");
+            });
     };
 
     useEffect(() => {

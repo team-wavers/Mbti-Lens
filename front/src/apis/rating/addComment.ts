@@ -2,22 +2,14 @@ import { instance } from "../base";
 
 type Props = {
     userId: number;
-    mbti: string;
+    mbtiData: { mbti: string; like: boolean; comment?: string }[];
     public_key: string;
-    like: boolean;
-    comment: string | undefined;
 };
 
-const addComment = async ({
-    userId,
-    mbti,
-    public_key,
-    like,
-    comment,
-}: Props) => {
+const addComment = async ({ userId, mbtiData, public_key }: Props) => {
     return await instance().post(
-        `/users/${userId}/mbtis/${mbti.toLowerCase()}/comments?public_key=${public_key}`,
-        { like: like, comment: comment },
+        `/users/${userId}/mbtis/comments?public_key=${public_key}`,
+        mbtiData,
     );
 };
 

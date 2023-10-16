@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useCookie from "@/hooks/useCookie";
 import searchMbti from "@/apis/create/searchMbti";
+import * as Sentry from "@sentry/nextjs";
 
 const Index = () => {
     const router = useRouter();
@@ -28,7 +29,7 @@ const Index = () => {
                     if (res.data.data.statusCode === 400) {
                         router.push(`/create`);
                     } else {
-                        router.push(`/result/${cookie.userid}`);
+                        setIsClient(true);
                     }
                 })
                 .catch((e) => {
@@ -36,7 +37,10 @@ const Index = () => {
                         e.response.data.statusCode === 400 &&
                         e.response.data.data === null
                     ) {
+                        Sentry.captureMessage(e, "log");
                         router.push(`/create`);
+                    } else {
+                        Sentry.captureMessage(e, "error");
                     }
                 });
         } else {
@@ -130,19 +134,8 @@ const GotoResult = styled.button`
         width: 294px;
         height: 44px;
         border-radius: 24px;
-        background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='white' stroke-width='3' stroke-dasharray='3%2c 7' stroke-dashoffset='42' stroke-linecap='square'/%3e%3c/svg%3e");
         font-size: ${({ theme }) => theme.typography.m};
         color: ${({ theme }) => theme.colors.white};
-    }
-    &[disabled] {
-        border-radius: 30px;
-        background: #eae5e0;
-        box-shadow: 0px 2px 0px 0px #c9c4c0;
-        &:before {
-            color: ${({ theme }) => theme.colors.disabled_1};
-            border-radius: 24px;
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='%23CDC5BD' stroke-width='2' stroke-dasharray='3%2c 7' stroke-dashoffset='42' stroke-linecap='square'/%3e%3c/svg%3e");
-        }
     }
 `;
 
