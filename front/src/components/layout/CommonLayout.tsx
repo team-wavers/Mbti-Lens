@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import MenuOpenIcon from "../../assets/icons/menu-open.svg";
 import Drawer from "./Drawer";
+import Footer from "./Footer";
 
 type Props = {
     children: React.ReactNode;
@@ -19,6 +20,7 @@ const CommonLayout = ({ children }: Props) => {
                 closeEvent={() => setIsOpen((prev) => !prev)}
             />
             <Main>{children}</Main>
+            <Footer />
         </Container>
     );
 };
