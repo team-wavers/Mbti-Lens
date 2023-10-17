@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <title>MBTI Lens</title>
+                    <title>남이보는 당신의 MBTI는? MBTI Lens</title>
                     <meta charSet="utf-8" />
                     <meta
                         name="viewport"
