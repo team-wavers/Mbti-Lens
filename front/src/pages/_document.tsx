@@ -57,6 +57,7 @@ export default class MyDocument extends Document {
                         property="og:description"
                         content="남이 보는 내 MBTI는 어떨까? 쉽게 평가받아 보세요!"
                     />
+                    <link rel="icon" href="/favicon.ico" sizes="any" />
                     <link rel="stylesheet" href="../fonts.css" />
                 </Head>
                 <body>
