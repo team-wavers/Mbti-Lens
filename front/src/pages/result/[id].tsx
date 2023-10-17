@@ -28,7 +28,8 @@ const ResultPage = () => {
     const [mounted, setMounted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
-    const [publicKey, _] = useState<string>(cookie?.public_key || "");
+    // const [publicKey, _] = useState<string>(cookie?.public_key || "");
+    const publicKey = cookie?.public_key || "";
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
     const shareHandler = () => {
