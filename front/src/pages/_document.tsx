@@ -48,7 +48,10 @@ export default class MyDocument extends Document {
                         property="og:title"
                         content="남이보는 당신의 MBTI는? MBTI Lens"
                     />
-                    <meta property="og:image" content="" />
+                    <meta
+                        property="og:image"
+                        content="https://youthwelfare.kr/mbti-lens.thumbnail.png"
+                    />
                     <meta property="og:image:type" content="image/png" />
                     <meta
                         property="og:description"
