@@ -12,22 +12,34 @@ type Props = {
 const Comment = ({ like, children }: Props) => {
     return (
         <Container>
-            {like ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
-            {children}
+            <DashedBorder>
+                {like ? <ThumbsUpIcon /> : <ThumbsDownIcon />}
+                {children}
+            </DashedBorder>
         </Container>
     );
 };
 
 const Container = styled.div`
-    ${flexBox("row", "center", "flex-start")}
     width: 100%;
     min-height: 70px;
     background-color: ${({ theme }) => theme.colors.primary2};
-    color: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
+    gap: 20px;
+    padding: 10px;
+    box-shadow: 0px 4px 0px 0px ${({ theme }) => theme.colors.primary};
+`;
+
+const DashedBorder = styled.div`
+    ${flexBox("row", "center", "flex-start")}
+    width: 100%;
+    min-height: 70px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
     padding: 0 20px;
     gap: 20px;
     font-size: ${({ theme }) => theme.typography.m};
+    color: ${({ theme }) => theme.colors.primary};
 `;
 
 export default Comment;

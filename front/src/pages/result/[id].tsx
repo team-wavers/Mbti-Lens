@@ -4,8 +4,6 @@ import useCookie from "@/hooks/useCookie";
 import flexBox from "@/styles/utils/flexbox";
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import ThumbsUpIcon from "../../assets/icons/thumbs-up-selected.svg";
-import ThumbsDownIcon from "../../assets/icons/thumbs-down-selected.svg";
 import LinkIcon from "../../assets/icons/link.svg";
 import { SearchResponse } from "@/types/response";
 import Comment from "@/components/result/Comment";
@@ -147,56 +145,7 @@ const ResultPage = () => {
                             />
                         </MbtiInputContainer>
                     </TopContainer>
-                    {current === null && (
-                        <StatBox>
-                            <CountInformation>
-                                {response.ei_like + response.ei_dislike}
-                                명이 눌러주셨어요!
-                            </CountInformation>
-                            <CountContainer>
-                                <MbtiTextContainer>
-                                    <MbtiText>
-                                        {response.ei.toUpperCase()}
-                                    </MbtiText>
-                                    <MbtiText>
-                                        {response.ns.toUpperCase()}
-                                    </MbtiText>
-                                    <MbtiText>
-                                        {response.tf.toUpperCase()}
-                                    </MbtiText>
-                                    <MbtiText>
-                                        {response.pj.toUpperCase()}
-                                    </MbtiText>
-                                </MbtiTextContainer>
-                                <StatContainer>
-                                    <ThumbsUpIcon />
-                                    <StatTextContainer>
-                                        <StatText>{response.ei_like}</StatText>
-                                        <StatText>{response.ns_like}</StatText>
-                                        <StatText>{response.tf_like}</StatText>
-                                        <StatText>{response.pj_like}</StatText>
-                                    </StatTextContainer>
-                                </StatContainer>
-                                <StatContainer>
-                                    <ThumbsDownIcon />
-                                    <StatTextContainer>
-                                        <StatText>
-                                            {response.ei_dislike}
-                                        </StatText>
-                                        <StatText>
-                                            {response.ns_dislike}
-                                        </StatText>
-                                        <StatText>
-                                            {response.tf_dislike}
-                                        </StatText>
-                                        <StatText>
-                                            {response.pj_dislike}
-                                        </StatText>
-                                    </StatTextContainer>
-                                </StatContainer>
-                            </CountContainer>
-                        </StatBox>
-                    )}
+                    {current === null && <StatBox response={response} />}
                     {current !== null && (
                         <>
                             <CommentContainer>
