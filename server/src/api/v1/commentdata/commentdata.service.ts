@@ -16,13 +16,14 @@ export class CommentdataService {
   async createNewData(
     paramUserId: number,
     bodyData: any,
-    public_key: any,
+    public_key: string,
   ): Promise<any> {
     //check_key를 통해 public_key가 유효한지 확인
     const check_key = await this.usersService.findOne({
+      select: ['public_key'],
       where: { _id: paramUserId },
     });
-    if (!check_key || check_key?.public_key !== public_key.public_key) {
+    if (check_key?.public_key !== public_key) {
       throw new BadRequestException('public_key not found');
     }
     for (const item of bodyData) {
@@ -57,16 +58,22 @@ export class CommentdataService {
   async findComments(
     paramUserId: number,
     paramMbti: string,
-    public_key: any,
-  ): Promise<any[]> {
+    public_key: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
     const check_key = await this.usersService.findOne({
+      select: ['public_key'],
       where: { _id: paramUserId },
     });
-    if (!check_key || check_key?.public_key !== public_key.public_key) {
+
+    if (check_key.public_key !== public_key) {
       throw new BadRequestException('public_key not found');
     }
-    const comments = await this.commentRepository.find({
+    const [comments, total] = await this.commentRepository.findAndCount({
       where: { host_id: paramUserId, mbti: paramMbti },
+      take: size,
+      skip: (page - 1) * size,
     });
     if (comments === null) {
       throw new BadRequestException('comment data not found');
@@ -80,6 +87,11 @@ export class CommentdataService {
       return commentObject;
     });
 
-    return filteredComments;
+    const result = {
+      total: total,
+      result: filteredComments,
+    };
+
+    return result;
   }
 }
