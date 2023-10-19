@@ -23,7 +23,7 @@ export class CommentdataController {
   async showComments(
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
-    @Query('public_key') public_key: string,
+    @Query('public_key') publicKey: string,
     @Query('page') page: number = 1,
     @Query('size') size: number = 10,
   ): Promise<any> {
@@ -33,7 +33,7 @@ export class CommentdataController {
       await this.commentdataService.findComments(
         paramUserId,
         paramMbti,
-        public_key,
+        publicKey,
         page,
         size,
       ),
