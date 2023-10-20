@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Users } from './users.entity';
 
@@ -19,6 +19,11 @@ export class UsersService {
 
   async findOne(options: any): Promise<Users | undefined> {
     const user = await this.usersRepository.findOne(options);
-    return user || undefined;
+
+    if (!user) {
+      throw new BadRequestException('user data not found');
+    }
+
+    return user;
   }
 }

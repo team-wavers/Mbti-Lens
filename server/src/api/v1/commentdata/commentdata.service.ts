@@ -16,13 +16,14 @@ export class CommentdataService {
   async createNewData(
     paramUserId: number,
     bodyData: any,
-    public_key: any,
+    public_key: string,
   ): Promise<any> {
     //check_key를 통해 public_key가 유효한지 확인
     const check_key = await this.usersService.findOne({
+      select: ['public_key'],
       where: { _id: paramUserId },
     });
-    if (!check_key || check_key?.public_key !== public_key.public_key) {
+    if (check_key?.public_key !== public_key) {
       throw new BadRequestException('public_key not found');
     }
     for (const item of bodyData) {
@@ -57,29 +58,29 @@ export class CommentdataService {
   async findComments(
     paramUserId: number,
     paramMbti: string,
-    public_key: any,
-  ): Promise<any[]> {
-    const check_key = await this.usersService.findOne({
+    publicKey: string,
+    page: number,
+    size: number,
+  ): Promise<any> {
+    const user = await this.usersService.findOne({
+      select: ['public_key'],
       where: { _id: paramUserId },
     });
-    if (!check_key || check_key?.public_key !== public_key.public_key) {
+
+    if (user.public_key !== publicKey) {
       throw new BadRequestException('public_key not found');
     }
-    const comments = await this.commentRepository.find({
+    const [comments, total] = await this.commentRepository.findAndCount({
       where: { host_id: paramUserId, mbti: paramMbti },
-    });
-    if (comments === null) {
-      throw new BadRequestException('comment data not found');
-    }
-    // 빈 문자열인 comment 속성을 제거하고 반환
-    const filteredComments = comments.map((commentObject) => {
-      if (commentObject.comment === '') {
-        const { comment, ...rest } = commentObject;
-        return rest;
-      }
-      return commentObject;
+      take: size,
+      skip: (page - 1) * size,
     });
 
-    return filteredComments;
+    const commentsData = {
+      total,
+      comments,
+    };
+
+    return commentsData;
   }
 }
