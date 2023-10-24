@@ -7,8 +7,16 @@ const useCookie = () => {
         ? JSON.parse(raw.toString())
         : undefined;
 
-    // return { cookie };
-    return { cookie };
+    if (process.env.NODE_ENV == "development") {
+        const cookie: LoginCookieType = {
+            userid: "1",
+            username: "용원",
+            public_key: "CULKpgPKlQKDZnV6dRLYg",
+        };
+        return { cookie };
+    } else {
+        return { cookie };
+    }
 };
 
 export default useCookie;
