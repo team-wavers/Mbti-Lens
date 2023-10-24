@@ -10,7 +10,7 @@ export class CommentdataController {
   async createComment(
     @Param('userId') paramUserId: number,
     @Body() bodyData: any,
-    @Query() public_key: any,
+    @Query('public_key') public_key: string,
   ): Promise<any> {
     return await this.commentdataService.createNewData(
       paramUserId,
@@ -23,7 +23,9 @@ export class CommentdataController {
   async showComments(
     @Param('userId') paramUserId: number,
     @Param('mbti') paramMbti: string,
-    @Query() public_key: any,
+    @Query('public_key') publicKey: string,
+    @Query('page') page: number = 1,
+    @Query('size') size: number = 10,
   ): Promise<any> {
     return new StandardResponseDto(
       200,
@@ -31,7 +33,9 @@ export class CommentdataController {
       await this.commentdataService.findComments(
         paramUserId,
         paramMbti,
-        public_key,
+        publicKey,
+        page,
+        size,
       ),
     );
   }
