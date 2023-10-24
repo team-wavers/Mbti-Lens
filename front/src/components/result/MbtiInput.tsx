@@ -1,5 +1,5 @@
 import React from "react";
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 
 type Props = {
     selected: boolean;
@@ -17,6 +17,15 @@ const MbtiInput = ({ selected, value, onClick }: Props) => {
         />
     );
 };
+
+const InputKeyframe = keyframes`
+    0%{
+        transform: translateZ(+5%);
+    }
+    100%{
+        transform: translateZ(5%);
+    }
+`;
 
 const InputContainer = styled.input<{ selected: boolean }>`
     width: 80px;
@@ -39,6 +48,7 @@ const InputContainer = styled.input<{ selected: boolean }>`
         box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
         transform: scale(1.1);
     `}
+    animation: ${InputKeyframe} 1s linear 0.05s 2 alternate forwards;
 `;
 
 export default MbtiInput;
