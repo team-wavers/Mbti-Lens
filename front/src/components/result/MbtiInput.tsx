@@ -49,6 +49,10 @@ const InputContainer = styled.input<{ selected: boolean }>`
         transform: scale(1.1);
     `}
     animation: ${InputKeyframe} 1s linear 0.05s 2 alternate forwards;
+    &:active {
+        transform: translateY(-20px);
+        transition: all 0.05s ease-in;
+    }
 `;
 
 export default MbtiInput;
