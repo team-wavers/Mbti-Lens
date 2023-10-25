@@ -25,28 +25,24 @@ const dailyOptions = (level: string) => {
     json: false,
   };
 };
-const env = process.env.NODE_ENV;
 // 로거 설정
 export const winstonLogger = WinstonModule.createLogger({
   transports: [
     // 콘솔 출력 옵션 지정
     new winston.transports.Console({
-      level: env === 'prod' || 'dev' ? 'http' : 'silly',
-      format:
-        env === 'prod' || env === 'dev'
-          ? winston.format.simple()
-          : winston.format.combine(
-              winston.format.timestamp(),
-              winston.format.colorize(),
-              utilities.format.nestLike('MBTI_LENS', {
-                prettyPrint: true, // 로그를 예쁘게 출력해줌
-              }),
-            ),
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.colorize(),
+        utilities.format.nestLike('MBTI_LENS', {
+          prettyPrint: true, // 로그를 예쁘게 출력해줌
+        }),
+      ),
     }),
 
     // info, error 로그는 파일로 관리
     new winstonDaily(dailyOptions('info')),
     new winstonDaily(dailyOptions('error')),
+    new winstonDaily(dailyOptions('fatal')),
   ],
   // 포멧 지정
   format: winston.format.combine(

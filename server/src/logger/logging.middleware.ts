@@ -19,7 +19,11 @@ export class LoggerMiddleware implements NestMiddleware {
     // 응답이 끝나는 이벤트가 발생하면 로그를 찍는다.
     res.on('finish', () => {
       const { statusCode, statusMessage } = res;
-      if (statusCode >= 400) {
+      if (statusCode >= 500) {
+        this.logger.fatal(
+          `${method} ${originalUrl} ${ip} ${userAgent} ${statusCode} ${statusMessage}`,
+        );
+      } else if (statusCode >= 400) {
         this.logger.error(
           `${method} ${originalUrl} ${ip} ${userAgent} ${statusCode} ${statusMessage}`,
         );
