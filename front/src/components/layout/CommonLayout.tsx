@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import MenuOpenIcon from "../../assets/icons/menu-open.svg";
 import Drawer from "./Drawer";
@@ -10,6 +10,14 @@ type Props = {
 
 const CommonLayout = ({ children }: Props) => {
     const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.cssText =
+                "overflow: hidden; touch-action: none;";
+        } else {
+            document.body.style.cssText = "";
+        }
+    }, [isOpen]);
     return (
         <Container>
             <DrawerButton onClick={() => setIsOpen((prev) => !prev)}>
