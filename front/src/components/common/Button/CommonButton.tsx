@@ -31,6 +31,13 @@ const ButtonContainer = styled.button`
         background: #eae5e0;
         box-shadow: 0px 2px 0px 0px #c9c4c0;
     }
+    &:hover {
+        transform: scale(1.1);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+    transition: all 0.1s ease-in;
 `;
 
 export default CommonButton;
