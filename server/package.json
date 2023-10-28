@@ -35,7 +35,9 @@
     "dotenv": "^16.3.1",
     "glob": "^10.3.10",
     "joi": "^17.10.2",
+    "moment-timezone": "^0.5.43",
     "nanoid": "3",
+    "nest-winston": "^1.9.4",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",
     "pg": "^8.11.3",
@@ -43,8 +45,10 @@
     "rxjs": "^7.8.1",
     "string-width": "3",
     "strip-ansi": "^5.2.0",
-    "wrap-ansi": "^6.2.0",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1",
+    "wrap-ansi": "^6.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.1.18",
