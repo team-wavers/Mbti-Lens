@@ -65,6 +65,7 @@ const BoxContainer = styled.section`
         animation: ${BoxAnimation} 25s linear infinite;
         bottom: -150px;
         background: ${({ theme }) => theme.colors.primary2};
+        opacity: 50%;
         border-radius: 10px;
         &:nth-child(1) {
             width: 40px;
