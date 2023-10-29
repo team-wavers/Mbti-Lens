@@ -14,6 +14,9 @@ import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
 import { Spinner } from "@/components/common/Spinner";
 import * as Sentry from "@sentry/nextjs";
+import usePagination from "@/hooks/usePagination";
+import { Pagination } from "@/components/common/Pagination";
+import PageButton from "@/components/common/Pagination/PageButton";
 
 const ResultPage = () => {
     const router = useRouter();
@@ -26,6 +29,15 @@ const ResultPage = () => {
     const [mounted, setMounted] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [comments, setComments] = useState<CommentType[]>([]);
+    const [count, setCount] = useState<number>(0);
+    const {
+        prevPage,
+        nextPage,
+        currentPage,
+        pageRange,
+        totalPages,
+        setCurrentPage,
+    } = usePagination(count, 5, 5);
     const publicKey = cookie?.public_key || "";
     const fe_endpoint = `${process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT}`;
 
@@ -67,6 +79,10 @@ const ResultPage = () => {
     }, [cookie]);
 
     useEffect(() => {
+        setCurrentPage(1);
+    }, [current]);
+
+    useEffect(() => {
         if (current !== null) {
             if (cookie && response) {
                 setLoading(true);
@@ -84,12 +100,21 @@ const ResultPage = () => {
                     userId: Number(cookie.userid) || -1,
                     mbti: selectedMbti.toLowerCase(),
                     public_key: publicKey,
+                    page: currentPage,
+                    size: 5,
                 })
                     .then((res) => {
-                        const array = res.data.data.filter(
-                            (item: CommentType) => item.comment !== undefined,
-                        );
-                        setComments(array);
+                        if (res.data.data.comments.length > 0) {
+                            const array = res.data.data.comments.filter(
+                                (item: CommentType) =>
+                                    item.comment !== undefined,
+                            );
+                            setComments(array);
+                            setCount(res.data.data.comments.length);
+                        } else {
+                            setComments([]);
+                            setCount(0);
+                        }
                         setLoading(false);
                     })
                     .catch((e) => {
@@ -98,7 +123,7 @@ const ResultPage = () => {
                     });
             }
         }
-    }, [current]);
+    }, [current, currentPage]);
 
     if (!mounted) return <Spinner type="full" />;
     return (
@@ -164,10 +189,17 @@ const ResultPage = () => {
                                             );
                                         }
                                     })}
-                                {comments.length <= 0 && (
+                                {!loading && comments.length <= 0 && (
                                     <NoCommentText>
                                         등록된 코멘트가 없습니다.
                                     </NoCommentText>
+                                )}
+                                {!loading && (
+                                    <Pagination
+                                        total={count}
+                                        size={5}
+                                        pagePerList={5}
+                                    />
                                 )}
                             </CommentContainer>
                             <CommonButton
@@ -229,58 +261,6 @@ const MbtiInputContainer = styled.div`
     width: 100%;
     height: auto;
     gap: 12px;
-`;
-
-const CountInformation = styled.h2`
-    color: ${({ theme }) => theme.colors.primary};
-    font-size: ${({ theme }) => theme.typography.m};
-    font-family: "HSYuji", sans-serif;
-    font-weight: 600;
-    padding-bottom: 14px;
-`;
-
-const CountContainer = styled.div`
-    width: 100%;
-    height: 180px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 20px 0;
-    padding-bottom: 0;
-`;
-
-const MbtiTextContainer = styled.div`
-    ${flexBox("row", "center", "center")}
-    width: 100%;
-    height: auto;
-    gap: 20px;
-    margin-bottom: 10px;
-`;
-
-const MbtiText = styled.span`
-    font-size: ${({ theme }) => theme.typography.x3l};
-    font-family: "RixInooAriDuri", sans-serif;
-    color: ${({ theme }) => theme.colors.primary2};
-`;
-
-const StatContainer = styled.div`
-    ${flexBox("row", "center", "flex-start")}
-    width: 100%;
-    height: auto;
-    padding: 0 5px;
-`;
-
-const StatTextContainer = styled.div`
-    ${flexBox("row", "center", "flex-start")}
-    width: 100%;
-    height: auto;
-    padding-left: 20px;
-    gap: 45px;
-`;
-
-const StatText = styled.span`
-    color: ${({ theme }) => theme.colors.primary};
-    font-size: ${({ theme }) => theme.typography.l};
-    font-family: "RixInooAriDuri", sans-serif;
 `;
 
 const CommentContainer = styled.div`
