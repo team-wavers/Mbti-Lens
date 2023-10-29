@@ -40,6 +40,7 @@ const InputContainer = styled.input<{ selected: boolean }>`
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
     padding: 0;
+    animation: ${InputKeyframe} 1s linear 0.05s 2 alternative forwards;
     ${({ selected }) =>
         selected &&
         `

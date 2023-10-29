@@ -22,6 +22,7 @@ const Container = styled.div`
     font-family: "LINE Seed Sans", sans-serif;
     font-size: ${({ theme }) => theme.typography.s};
     line-height: ${({ theme }) => theme.typography.m};
+    z-index: 2;
 `;
 
 export default Footer;
