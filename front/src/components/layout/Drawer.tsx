@@ -68,7 +68,6 @@ const BackgroundOverlay = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    animation: ${BackGroundOverLayAnimation} 1s forwards;
     z-index: 999;
 `;
 
@@ -81,7 +80,6 @@ const Container = styled.div`
     padding-top: 25%;
     background-color: white;
     box-shadow: -3px 0px 12px 2px rgba(0, 0, 0, 0.05);
-    animation: ${SlideAnimation} 1s forwards;
     z-index: 999;
     font-family: "LINE Seed Sans", sans-serif;
 `;
