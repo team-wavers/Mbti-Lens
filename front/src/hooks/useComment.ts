@@ -40,7 +40,7 @@ const useComment = (
     const postComment = async () => {
         const res = mbtiArray.map((value) => {
             return {
-                mbti: mbtiData[value],
+                mbti: mbtiData[value].toLowerCase(),
                 like: likes?.get(value) || false,
                 comment: comments?.get(value) || "",
             };
@@ -53,20 +53,20 @@ const useComment = (
         });
     };
 
-    const fetchComment = async () => {
-        return await axios
-            .all(
-                mbtiArray.map((value) =>
-                    getResponse(String(userId), mbtiData[value], public_key),
-                ),
-            )
-            .then(
-                axios.spread<AxiosResponse<any>, any>((ei, ns, tf, pj) => {
-                    const resArray = ei.data.concat(ns.data, tf.data, pj.data);
-                    return resArray;
-                }),
-            );
-    };
+    // const fetchComment = async () => {
+    //     return await axios
+    //         .all(
+    //             mbtiArray.map((value) =>
+    //                 getResponse(String(userId), mbtiData[value], public_key),
+    //             ),
+    //         )
+    //         .then(
+    //             axios.spread<AxiosResponse<any>, any>((ei, ns, tf, pj) => {
+    //                 const resArray = ei.data.concat(ns.data, tf.data, pj.data);
+    //                 return resArray;
+    //             }),
+    //         );
+    // };
 
     return {
         current,
@@ -78,7 +78,7 @@ const useComment = (
         likeHandler,
         commentHandler,
         postComment,
-        fetchComment,
+        // fetchComment,
     };
 };
 
