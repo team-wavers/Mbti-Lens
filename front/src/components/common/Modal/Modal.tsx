@@ -47,7 +47,6 @@ const BackgroundOverlay = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    animation: ${BackGroundOverLayAnimation} 0.5s forwards;
     z-index: 999;
 `;
 
@@ -58,7 +57,6 @@ const ModalContainer = styled.div`
     border-radius: 10px;
     box-shadow: 0px 3px 7px 5px rgba(0, 0, 0, 0.05);
     padding: 10px 0;
-    animation: ${OpacityAnimation} 0.5s forwards;
 `;
 
 const Title = styled.h3`

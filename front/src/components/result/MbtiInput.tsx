@@ -18,14 +18,14 @@ const MbtiInput = ({ selected, value, onClick }: Props) => {
     );
 };
 
-const InputKeyframe = keyframes`
-    0%{
-        transform: translateZ(+5%);
-    }
-    100%{
-        transform: translateZ(5%);
-    }
-`;
+// const InputKeyframe = keyframes`
+//     0%{
+//         transform: translateZ(+5%);
+//     }
+//     100%{
+//         transform: translateZ(5%);
+//     }
+// `;
 
 const InputContainer = styled.input<{ selected: boolean }>`
     width: 80px;
@@ -40,7 +40,6 @@ const InputContainer = styled.input<{ selected: boolean }>`
     font-family: "RixInooAriDuri", sans-serif;
     text-align: center;
     padding: 0;
-    animation: ${InputKeyframe} 1s linear 0.05s 2 alternative forwards;
     ${({ selected }) =>
         selected &&
         `
@@ -49,11 +48,6 @@ const InputContainer = styled.input<{ selected: boolean }>`
         box-shadow: 0px 4px 0px 0px rgba(160, 104, 104, 0.25);
         transform: scale(1.1);
     `}
-    animation: ${InputKeyframe} 1s linear 0.05s 2 alternate forwards;
-    &:active {
-        transform: translateY(-20px);
-        transition: all 0.05s ease-in;
-    }
 `;
 
 export default MbtiInput;
