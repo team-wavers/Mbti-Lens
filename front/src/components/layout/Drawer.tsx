@@ -3,6 +3,8 @@ import styled from "styled-components";
 import flexBox from "@/styles/utils/flexbox";
 import Link from "next/link";
 import MenuCloseIcon from "../../assets/icons/menu-close.svg";
+import BackGroundOverLayAnimation from "@/styles/animate/BackGroundOverlayAnmaitationn";
+import SlideAnimation from "@/styles/animate/SlideAnimation";
 
 const menuItemList: Array<{ name: string; link: string }> = [
     { name: "홈", link: "/" },
@@ -61,7 +63,6 @@ const BackgroundOverlay = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.1);
     z-index: 999;
 `;
 
@@ -75,6 +76,7 @@ const Container = styled.div`
     background-color: white;
     box-shadow: -3px 0px 12px 2px rgba(0, 0, 0, 0.05);
     z-index: 999;
+    font-family: "LINE Seed Sans", sans-serif;
 `;
 
 const MenuItemContainer = styled.div`

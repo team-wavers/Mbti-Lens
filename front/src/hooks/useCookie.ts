@@ -7,7 +7,6 @@ const useCookie = () => {
         ? JSON.parse(raw.toString())
         : undefined;
 
-    // return { cookie };
     return { cookie };
 };
 

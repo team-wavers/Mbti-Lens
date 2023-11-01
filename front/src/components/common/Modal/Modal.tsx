@@ -2,6 +2,8 @@ import React from "react";
 import { styled } from "styled-components";
 import { ModalButton } from "../Button";
 import flexBox from "@/styles/utils/flexbox";
+import BackGroundOverLayAnimation from "@/styles/animate/BackGroundOverlayAnmaitationn";
+import OpacityAnimation from "@/styles/animate/OpacityAnimation";
 
 type Props = {
     title: string;
@@ -45,7 +47,6 @@ const BackgroundOverlay = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.1);
     z-index: 999;
 `;
 

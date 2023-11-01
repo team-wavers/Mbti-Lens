@@ -38,50 +38,19 @@ const useComment = (
     };
 
     const postComment = async () => {
-        return await axios
-            .all(
-                mbtiArray.map((value) =>
-                    addComment({
-                        userId,
-                        mbti: mbtiData[value],
-                        public_key,
-                        like: likes?.get(value) || false,
-                        comment: comments?.get(value) || "",
-                    }),
-                ),
-            )
-            .then(
-                axios.spread<AxiosResponse<GeneralResponse>, any>(
-                    (
-                        mbti_e_i_res,
-                        mbti_n_s_res,
-                        mbti_t_f_res,
-                        mbti_p_j_res,
-                    ) => {
-                        return [
-                            mbti_e_i_res,
-                            mbti_n_s_res,
-                            mbti_t_f_res,
-                            mbti_p_j_res,
-                        ];
-                    },
-                ),
-            );
-    };
+        const res = mbtiArray.map((value) => {
+            return {
+                mbti: mbtiData[value].toLowerCase(),
+                like: likes?.get(value) || false,
+                comment: comments?.get(value) || "",
+            };
+        });
 
-    const fetchComment = async () => {
-        return await axios
-            .all(
-                mbtiArray.map((value) =>
-                    getResponse(String(userId), mbtiData[value], public_key),
-                ),
-            )
-            .then(
-                axios.spread<AxiosResponse<any>, any>((ei, ns, tf, pj) => {
-                    const resArray = ei.data.concat(ns.data, tf.data, pj.data);
-                    return resArray;
-                }),
-            );
+        return await addComment({
+            userId: userId,
+            mbtiData: res,
+            public_key: public_key,
+        });
     };
 
     return {
@@ -94,7 +63,7 @@ const useComment = (
         likeHandler,
         commentHandler,
         postComment,
-        fetchComment,
+        // fetchComment,
     };
 };
 

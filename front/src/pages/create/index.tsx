@@ -9,7 +9,8 @@ import addMbti from "@/apis/create/addMbti";
 import searchMbti from "@/apis/create/searchMbti";
 import { CommonButton } from "@/components/common/Button";
 import { useRouter } from "next/router";
-import Spinner from "@/components/common/Spinner/Spinner";
+import { Spinner } from "@/components/common/Spinner";
+import * as Sentry from "@sentry/nextjs";
 
 const CreateMBTI = () => {
     const router = useRouter();
@@ -93,7 +94,7 @@ const CreateMBTI = () => {
             </Container>
         );
 
-    if (!mounted) return <Spinner />;
+    if (!mounted) return <Spinner type="full" />;
     return (
         mounted &&
         !created && (
