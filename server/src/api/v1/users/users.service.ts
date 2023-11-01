@@ -20,10 +20,6 @@ export class UsersService {
   async findOne(options: any): Promise<Users | undefined> {
     const user = await this.usersRepository.findOne(options);
 
-    if (!user) {
-      throw new BadRequestException('user data not found');
-    }
-
-    return user;
+    return user || undefined;
   }
 }
