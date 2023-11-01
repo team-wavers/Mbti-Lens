@@ -36,9 +36,6 @@ const CreateMBTI = () => {
                         e.response.data.data === null
                     ) {
                         setMounted(true);
-                        Sentry.captureMessage(e, "log");
-                    } else {
-                        Sentry.captureMessage(e, "error");
                     }
                 });
         } else {
@@ -55,18 +52,13 @@ const CreateMBTI = () => {
                 ns: mbti_n_s.value,
                 tf: mbti_t_f.value,
                 pj: mbti_p_j.value,
-            })
-                .then((e) => {
-                    if (e.data.statusCode !== 201) {
-                        alert("유효하지 않은 Request 입니다.");
-                        return;
-                    }
-                    setCreated(true);
-                })
-                .catch((e) => {
-                    console.log(e);
-                    Sentry.captureMessage(e, "fatal");
-                });
+            }).then((e) => {
+                if (e.data.statusCode !== 201) {
+                    alert("유효하지 않은 Request 입니다.");
+                    return;
+                }
+                setCreated(true);
+            });
         }
     };
 

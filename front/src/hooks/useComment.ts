@@ -1,7 +1,7 @@
 // 댓글 데이터 종합 및 생성 custom hook
 
 import { addComment } from "@/apis/rating";
-import { SearchResponse } from "@/types/response";
+import { GeneralResponse, SearchResponse } from "@/types/response";
 import { useState } from "react";
 import { mbtiArray } from "@/constants/mbti";
 import axios, { AxiosResponse } from "axios";
@@ -52,21 +52,6 @@ const useComment = (
             public_key: public_key,
         });
     };
-
-    // const fetchComment = async () => {
-    //     return await axios
-    //         .all(
-    //             mbtiArray.map((value) =>
-    //                 getResponse(String(userId), mbtiData[value], public_key),
-    //             ),
-    //         )
-    //         .then(
-    //             axios.spread<AxiosResponse<any>, any>((ei, ns, tf, pj) => {
-    //                 const resArray = ei.data.concat(ns.data, tf.data, pj.data);
-    //                 return resArray;
-    //             }),
-    //         );
-    // };
 
     return {
         current,

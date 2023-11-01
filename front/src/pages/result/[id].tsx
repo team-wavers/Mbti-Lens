@@ -17,7 +17,7 @@ import * as Sentry from "@sentry/nextjs";
 import usePagination from "@/hooks/usePagination";
 import { Pagination } from "@/components/common/Pagination";
 import PageButton from "@/components/common/Pagination/PageButton";
-
+        
 const ResultPage = () => {
     const router = useRouter();
     const { id } = router.query;
@@ -63,10 +63,7 @@ const ResultPage = () => {
                     setResponse(res.data.data);
                     setMounted(true);
                 })
-                .catch((e) => {
-                    console.log(e);
-                    Sentry.captureMessage(e, "error");
-                });
+                .catch((e) => console.log(e));
         } else {
             router.push("/");
         }
