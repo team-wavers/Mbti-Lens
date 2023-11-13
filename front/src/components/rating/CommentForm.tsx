@@ -11,8 +11,13 @@ type Props = {
 const CommentForm = ({ value, onChange, id }: Props) => {
     return (
         <Container>
-            <Title>왜 그렇게 생각하시나요? (선택)</Title>
-            <CommentInput id={id} onChange={onChange} value={value} />
+            <Title>왜 그렇게 생각하시나요? (선택, 최대 40자)</Title>
+            <CommentInput
+                maxLength={40}
+                id={id}
+                onChange={onChange}
+                value={value}
+            />
         </Container>
     );
 };
