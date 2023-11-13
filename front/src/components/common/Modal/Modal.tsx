@@ -64,7 +64,7 @@ const Title = styled.h3`
     height: auto;
     padding: 20px 10px;
     padding-top: 10px;
-    font-size: ${({ theme }) => theme.typography.xl};
+    font-size: ${({ theme }) => theme.typography.l};
     font-weight: 700;
     text-align: center;
     word-break: break-all;

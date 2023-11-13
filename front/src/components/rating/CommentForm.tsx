@@ -11,9 +11,9 @@ type Props = {
 const CommentForm = ({ value, onChange, id }: Props) => {
     return (
         <Container>
-            <Title>왜 그렇게 생각하시나요? (선택, 최대 40자)</Title>
+            <Title>왜 그렇게 생각하시나요? (선택, 최대 80자)</Title>
             <CommentInput
-                maxLength={40}
+                maxLength={80}
                 id={id}
                 onChange={onChange}
                 value={value}
@@ -58,7 +58,7 @@ const CommentInput = styled.textarea`
     outline: none;
     font-family: "HSYuji", sans-serif;
     padding: 10px;
-    z-index: 999;
+    z-index: 998;
     resize: none;
 `;
 
