@@ -108,13 +108,11 @@ const ResultPage = () => {
                     size: 5,
                 })
                     .then((res) => {
-                        console.log(res);
                         if (res.data.data.comments.length > 0) {
                             const array = res.data.data.comments.filter(
                                 (item: CommentType) =>
                                     item.comment !== undefined,
                             );
-                            console.log(array);
                             setComments(array);
                             setCount(res.data.data.total);
                         } else {
