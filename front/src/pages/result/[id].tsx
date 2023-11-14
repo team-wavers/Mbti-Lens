@@ -56,6 +56,10 @@ const ResultPage = () => {
     };
 
     useEffect(() => {
+        console.log(pageRange);
+    }, [pageRange]);
+
+    useEffect(() => {
         if (cookie) {
             if (cookie.userid !== id) router.push(`/result/${cookie.userid}`);
             searchMbti({ userId: Number(cookie.userid) || -1 })
@@ -104,13 +108,15 @@ const ResultPage = () => {
                     size: 5,
                 })
                     .then((res) => {
+                        console.log(res);
                         if (res.data.data.comments.length > 0) {
                             const array = res.data.data.comments.filter(
                                 (item: CommentType) =>
                                     item.comment !== undefined,
                             );
+                            console.log(array);
                             setComments(array);
-                            setCount(res.data.data.comments.length);
+                            setCount(res.data.data.total);
                         } else {
                             setComments([]);
                             setCount(0);
@@ -199,6 +205,8 @@ const ResultPage = () => {
                                         total={count}
                                         size={5}
                                         pagePerList={5}
+                                        currentPage={currentPage}
+                                        setCurrentPage={setCurrentPage}
                                     />
                                 )}
                             </CommentContainer>

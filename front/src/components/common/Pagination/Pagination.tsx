@@ -8,20 +8,32 @@ type Props = {
     total: number;
     size: number;
     pagePerList: number;
+    currentPage: number;
+    setCurrentPage: (e: number) => void;
 };
 
-const Pagination = ({ total, size, pagePerList }: Props) => {
-    const {
-        prevPage,
-        nextPage,
-        currentPage,
-        pageRange,
-        totalPages,
-        setCurrentPage,
-    } = usePagination(total, size, pagePerList);
+const Pagination = ({
+    total,
+    size,
+    pagePerList,
+    currentPage,
+    setCurrentPage,
+}: Props) => {
+    const { prevPage, nextPage, pageRange, totalPages } = usePagination(
+        total,
+        size,
+        pagePerList,
+    );
     return (
         <Container>
-            {currentPage !== 1 && <PageButton type="prev" onClick={prevPage} />}
+            {currentPage !== 1 ? (
+                <PageButton
+                    type="prev"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                />
+            ) : (
+                <PageBtnHolder />
+            )}
             {pageRange
                 .filter((c) => c <= totalPages)
                 .map((e) => (
@@ -34,8 +46,13 @@ const Pagination = ({ total, size, pagePerList }: Props) => {
                         {e}
                     </PageButton>
                 ))}
-            {currentPage < totalPages && (
-                <PageButton type="next" onClick={nextPage} />
+            {currentPage < totalPages ? (
+                <PageButton
+                    type="next"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                />
+            ) : (
+                <PageBtnHolder />
             )}
         </Container>
     );
@@ -46,6 +63,11 @@ const Container = styled.ul`
     width: auto;
     list-style: none;
     gap: 5px;
+`;
+
+const PageBtnHolder = styled.div`
+    width: 30px;
+    height: 30px;
 `;
 
 export default Pagination;
